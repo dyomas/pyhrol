@@ -1,0 +1,2 @@
+ValueError: Null pointer (example_0925.MyClass.say)
+*** Tuple invalid due to one or more previous errors. Call impossible in any way (example_0925.MyClass.say)

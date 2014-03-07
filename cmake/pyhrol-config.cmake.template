@@ -1,0 +1,99 @@
+#  Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+#  GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#  1. Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#  2. Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in the
+#     documentation and/or other materials provided with the distribution.
+#  4. Neither the name of the Pyhrol nor the names of its contributors
+#     may be used to endorse or promote products derived from this software
+#     without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+#  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+#  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+#  ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+#  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+#  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+#  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+#  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+#  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+#  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#  SUCH DAMAGE.
+#
+# $Date: 2014-02-27 22:19:34 +0400 (Thu, 27 Feb 2014) $
+# $Revision: 896 $
+
+# kate: syntax CMake;
+
+set(PYHROL_SAFE_MODE OFF CACHE BOOL "Use library version with minimal functionality")
+set(PYHROL_USE_PYSELF OFF CACHE BOOL "Enable using `pyhrol` module symbolic link (@LIBRARY_pyself_DESTINATION@|@LIBRARY_pyselfsafe_DESTINATION@) into Python dist-packages directory")
+
+set(ROOT_DIRECTORY @CMAKE_INSTALL_PREFIX@ CACHE PATH "")
+set(PYHROL_LIBRARY ${ROOT_DIRECTORY}/@LIBRARY_pyhrol_DESTINATION@)
+set(PYHROLSAFE_LIBRARY ${ROOT_DIRECTORY}/@LIBRARY_pyhrolsafe_DESTINATION@)
+set(PYSELF_LIBRARY ${ROOT_DIRECTORY}/@LIBRARY_pyself_DESTINATION@)
+set(PYSELFSAFE_LIBRARY ${ROOT_DIRECTORY}/@LIBRARY_pyselfsafe_DESTINATION@)
+set(PYHROL_INCLUDE_DIRS ${ROOT_DIRECTORY}/include/pyhrol)
+
+set(PYTHON_INCLUDE_DIRS "@PYTHON_INCLUDE_DIRS@" CACHE STRING "Compiler options to include Python headers")
+set(PYTHON_LIBRARIES "@PYTHON_LIBRARIES@" CACHE STRING "")
+
+if (PYHROL_SAFE_MODE)
+  set (PYHROL_SUFFIX SAFE)
+endif()
+
+
+if (PYHROL_USE_PYSELF)
+  find_package (PythonInterp 2.4 REQUIRED)
+  set(PYTHON_DIST_PACKAGES ${ROOT_DIRECTORY}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/dist-packages/ CACHE PATH "")
+  add_custom_target(link COMMAND sh -c "ln -sf ${PYSELF${PYHROL_SUFFIX}_LIBRARY} ${PYTHON_DIST_PACKAGES}/pyhrol.so")
+endif()
+
+
+function (pyhrol_configure_targets)
+  string(REPLACE ";" " -I" TMP_INCLUDE "${PYTHON_INCLUDE_DIRS}")
+  string(REGEX MATCHALL "([^ ]+)" PYHROL_TARGETS "${ARGV}")
+  foreach (PYHROL_TARGET ${PYHROL_TARGETS})
+    get_target_property (TMP_NAME ${PYHROL_TARGET} PREFIX)
+    if (NOT TMP_NAME)
+      set_target_properties (${PYHROL_TARGET} PROPERTIES PREFIX "")
+    endif()
+    get_target_property (TMP_NAME ${PYHROL_TARGET} LOCATION)
+    get_filename_component(TMP_NAME ${TMP_NAME} NAME_WE)
+    get_target_property (TMP_FLAGS ${PYHROL_TARGET} COMPILE_FLAGS)
+    if (NOT TMP_FLAGS)
+      unset(TMP_FLAGS)
+    endif()
+    get_target_property (TMP_DEFS ${PYHROL_TARGET} COMPILE_DEFINITIONS)
+    if (NOT TMP_DEFS)
+      unset(TMP_DEFS)
+    endif()
+
+    set_target_properties (${PYHROL_TARGET} PROPERTIES
+      COMPILE_FLAGS "${TMP_FLAGS} \\
+        -I${TMP_INCLUDE} \\
+        -I${PYHROL_INCLUDE_DIRS}"
+      COMPILE_DEFINITIONS "${TMP_DEFS}; _OUTPUT=${TMP_NAME}"
+    )
+
+    target_link_libraries (${PYHROL_TARGET} ${PYHROL${PYHROL_SUFFIX}_LIBRARY} ${PYTHON_LIBRARIES})
+    if (PYHROL_USE_PYSELF)
+      add_dependencies(${PYHROL_TARGET} link)
+    endif()
+
+    if (CMAKE_VERBOSE_MAKEFILE)
+      get_target_property (TMP_FLAGS ${PYHROL_TARGET} COMPILE_FLAGS)
+      message (STATUS "CXXFLAGS for ${PYHROL_TARGET}: \"${TMP_FLAGS}\"")
+      get_target_property (TMP_DEFS ${PYHROL_TARGET} COMPILE_DEFINITIONS)
+      message (STATUS "Definitions for ${PYHROL_TARGET}: \"${TMP_DEFS}\"")
+    endif()
+  endforeach()
+endfunction (pyhrol_configure_targets)
+
+
+

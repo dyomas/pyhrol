@@ -1,0 +1,4 @@
+function_with_errors: I am called
+*** Intentional exception (function_with_errors)
+function_with_errors: I am called
+*** I do not like this memory, insert another chip, please

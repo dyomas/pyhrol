@@ -1,0 +1,12 @@
+Happy new year 2014
+Happy new year 1974
+*** i: an integer is required
+s: must be string, not None
+O!: must be example_0495.MyClass, not None
+No one from 3 signatures parsed (MyClass.<nb_inplace_add>)
+*** O!i: function takes exactly 2 arguments (1 given)
+iO!: function takes exactly 2 arguments (1 given)
+O!s: function takes exactly 2 arguments (1 given)
+sO!: function takes exactly 2 arguments (1 given)
+O!O!: function takes exactly 2 arguments (1 given)
+No one from 5 signatures parsed (MyClass.<nb_add>)

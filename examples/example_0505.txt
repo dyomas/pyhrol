@@ -1,0 +1,9 @@
+Bhliain 2014 nua Shona!
+*** unsupported operand type(s) for +: 'int' and 'example_0505.MyClass'
+Y
+Y
+*** 'in <string>' requires string as left operand, not example_0505.MyClass
+Bhliain  nua Shona!
+Bhliain 1974 nua Shona!
+Bhliain 1999 nua Shona!
+Bhliain 2009 nua Shona!

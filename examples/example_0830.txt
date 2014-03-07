@@ -1,0 +1,4 @@
+Help on built-in function help_generation_example in module example_0120:
+
+help_generation_example(...)
+

@@ -1,0 +1,13 @@
+MyClass2: MessageA
+MyClass2: MessageB
+1 1
+2 1
+2 2
+2 3
+2 4
+MessageA
+MessageB
+2 2 2 2 2 2
+1
+~MyClass2: MessageA
+~MyClass2: MessageB

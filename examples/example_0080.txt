@@ -1,0 +1,9 @@
+function_manipulate_objects: I am called
+  Arg type is: "bool"
+bool
+function_manipulate_objects: I am called
+  Arg type is: "NoneType"
+NoneType
+function_manipulate_objects: I am called
+  Arg type is: "int"
+int

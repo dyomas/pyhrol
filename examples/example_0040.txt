@@ -1,0 +1,7 @@
+function_with_default_args: I am called
+  My args: i = 0, pch = "Zero"
+function_with_default_args: I am called
+  My args: i = 1, pch = "Zero"
+function_with_default_args: I am called
+  My args: i = 2, pch = "Two"
+*** |is: integer argument expected, got float (function_with_default_args)

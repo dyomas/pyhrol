@@ -1,0 +1,1 @@
+*** Dummy constructor not overridden (MyClass.<ctor>)

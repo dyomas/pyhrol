@@ -1,0 +1,5 @@
+Help on class MyClass in module example_0850:
+
+class MyClass(__builtin__.object)
+
+*** cannot create 'example_0850.MyClass' instances

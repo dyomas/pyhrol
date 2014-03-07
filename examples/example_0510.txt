@@ -1,0 +1,10 @@
+{1 = One, 3 = 3, Four = Four, Two = 2}
+4
+{1 = One, Four = Four, Two = 2}
+*** Item "0" not found (MyClass.<mp_ass_subscript>)
+*** Item "Two" already exists (MyClass.<mp_ass_subscript>)
+*** ss: must be string, not None
+sL: an integer is required
+Ls: an integer is required
+LL: an integer is required
+No one from 4 signatures parsed (MyClass.<mp_ass_subscript>)

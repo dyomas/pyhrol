@@ -1,0 +1,17 @@
+function_with_overloaded_retvals: I am called
+  Variant 0: i = 1
+1
+function_with_overloaded_retvals: I am called
+  Variant 1: pch = "One"
+One
+function_with_overloaded_retvals: I am called
+  Variant 2: f = 2.72
+2.72
+function_with_overloaded_retvals: I am called
+  Variant 3: <no result>
+None
+function_with_overloaded_retvals: I am called
+  Variant 4: i = 3, pch = "Three", f = 3.14
+(3, 'Three', 3.14)
+function_with_overloaded_retvals: I am called
+*** Build variant 5 not in range [0, 5) (function_with_overloaded_retvals)

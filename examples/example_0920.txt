@@ -1,0 +1,20 @@
+AttributeError: Call of method "prepare_parse" after "before_build" forbidden, previous answer was "true" (example_0920.function_incorrect_order)
+AttributeError: Call of method "prepare_parse" forbidden because of "noarg" modifier (example_0920.function_with_args)
+*** Tuple invalid due to one or more previous errors. Call impossible in any way (example_0920.function_incorrect_order)
+*** Tuple invalid due to one or more previous errors. Call impossible in any way (example_0920.function_with_args)
+*** No variants parsed (example_0920.function_incorrect_input)
+*** Build variant 1 not in range [0, 0] (example_0920.function_incorrect_return)
+*** Tuple format invalid, it has format error: Expected 'O' format unit after '!', but end of units list reached (position 0.1) (example_0920.function_invalid_tuple)
+*** Tuple format invalid, it has format error: Following arguments: 0, 1, 2 has no unique name parts (example_0920.function_non_unique_keywords)
+Help on built-in function function_invalid_tuple in module example_0920:
+
+function_invalid_tuple(...)
+    ->    *** Errors:
+    Expected 'O' format unit after '!', but end of units list reached (position 0.1)
+
+Help on built-in function function_non_unique_keywords in module example_0920:
+
+function_non_unique_keywords(...)
+    ->    *** Errors:
+    Following arguments: 0, 1, 2 has no unique name parts
+

@@ -1,0 +1,16 @@
+function_with_overloaded_args: I am called
+  Signature 0: i = 1
+function_with_overloaded_args: I am called
+  Signature 1: pch = "One"
+function_with_overloaded_args: I am called
+  Signature 2: f = 2.72
+function_with_overloaded_args: I am called
+  Signature 3: <no args>
+function_with_overloaded_args: I am called
+  Signature 4: i = 2, pch = "Two", f = 3.14
+*** i: function takes exactly 1 argument (2 given)
+s: function takes exactly 1 argument (2 given)
+d: function takes exactly 1 argument (2 given)
+"": function takes exactly 0 arguments (2 given)
+isd: function takes exactly 3 arguments (2 given)
+No one from 5 signatures parsed (function_with_overloaded_args)

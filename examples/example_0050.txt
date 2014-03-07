@@ -1,0 +1,6 @@
+*** is: function takes exactly 2 arguments (0 given) (function_with_keywords)
+*** is: Required argument 'counter' (pos 1) not found (function_with_keywords)
+function_with_keywords: I am called
+  My args: counter = 1, description = "One"
+function_with_keywords: I am called
+  My args: counter = 2, description = "Two"

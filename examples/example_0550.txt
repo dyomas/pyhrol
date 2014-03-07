@@ -1,0 +1,12 @@
+Hello world!
+set: 0
+Hej Verden!
+set: 1
+Moikka maailma!
+set: 2
+Pozdrav svijetu!
+*** s: must be string, not int
+O!: must be example_0550.MyClass, not int
+O!: must be example_0550.MyString, not int
+No one from 3 signatures parsed (MyClass.set)
+Pozdrav svijetu!

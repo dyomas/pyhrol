@@ -1,0 +1,4 @@
+AttributeError: Following calls share the same static wrapper {A, B}
+AttributeError: Call name "B" non unique and used 2 times
+*** One or more static wrappers reused (pyhrol_init)
+*** name 'A' is not defined

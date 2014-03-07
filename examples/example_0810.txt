@@ -1,0 +1,40 @@
+I    0 pyhrol::TupleDescriberFlexible::TupleDescriberFlexible()
+=== Creating
+M    1 static PyObject* pyhrol::TypeBase<T>::mediator_constructor(PyTypeObject*, PyObject*, PyObject*) [with T = pyhrol::types]
+I    2 pyhrol::TupleDescriberFlexible::TupleDescriberFlexible()
+M    1 static PyObject* pyhrol::TypeMap<T>::mediator_mp_subscript(PyObject*, PyObject*) [with T = pyhrol::types]
+I    3 pyhrol::TupleBase::TupleBase(const char*, pyhrol::options, int8_t)
+I    4 pyhrol::TupleBase::TupleBase(const char*, pyhrol::options, int8_t)
+I    5 static pyhrol::TypeBase<T>::T_struct* pyhrol::TypeBase<T>::allocate_static() [with T = pyhrol::type]
+I    6 pyhrol::TupleDescriberFlexible::TupleDescriberFlexible()
+M    5 static PyObject* pyhrol::TypeWrapper<T, I>::m_getter(PyObject*, void*) [with O = pyhrol::Type, void (O::* G)(const pyhrol::Ptr<const T>&, pyhrol::Tuples&)const = &pyhrol::Type::get_methods, T = pyhrol::type, I = pyhrol::type]
+I    7 pyhrol::TupleBase::TupleBase(const char*, pyhrol::options, int8_t)
+I    8 static pyhrol::TypeBase<T>::T_struct* pyhrol::TypeBase<T>::allocate_static() [with T = pyhrol::methods]
+I    9 pyhrol::TupleDescriberFlexible::TupleDescriberFlexible()
+M    8 static PyObject* pyhrol::TypeMap<T>::mediator_mp_subscript(PyObject*, PyObject*) [with T = pyhrol::methods]
+I   10 pyhrol::TupleBase::TupleBase(const char*, pyhrol::options, int8_t)
+I   11 pyhrol::TupleBase::TupleBase(const char*, pyhrol::options, int8_t)
+I   12 static pyhrol::TypeBase<T>::T_struct* pyhrol::TypeBase<T>::allocate_static() [with T = pyhrol::method]
+I   13 pyhrol::TupleDescriberFlexible::TupleDescriberFlexible()
+=== Destroying
+M   12 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::method]
+M    8 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::methods]
+M    5 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::type]
+M    1 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::types]
+=== Creating (2)
+M    1 static PyObject* pyhrol::TypeBase<T>::mediator_constructor(PyTypeObject*, PyObject*, PyObject*) [with T = pyhrol::types]
+M    1 static PyObject* pyhrol::TypeMap<T>::mediator_mp_subscript(PyObject*, PyObject*) [with T = pyhrol::types]
+I   12 static pyhrol::TypeBase<T>::T_struct* pyhrol::TypeBase<T>::allocate_static() [with T = pyhrol::type]
+M   12 static PyObject* pyhrol::TypeWrapper<T, I>::m_getter(PyObject*, void*) [with O = pyhrol::Type, void (O::* G)(const pyhrol::Ptr<const T>&, pyhrol::Tuples&)const = &pyhrol::Type::get_methods, T = pyhrol::type, I = pyhrol::type]
+I    8 static pyhrol::TypeBase<T>::T_struct* pyhrol::TypeBase<T>::allocate_static() [with T = pyhrol::methods]
+M    8 static PyObject* pyhrol::TypeMap<T>::mediator_mp_subscript(PyObject*, PyObject*) [with T = pyhrol::methods]
+M    8 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::methods]
+M   12 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::type]
+M    1 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::types]
+None
+=== Creating (3)
+M    1 static PyObject* pyhrol::TypeBase<T>::mediator_constructor(PyTypeObject*, PyObject*, PyObject*) [with T = pyhrol::types]
+M    1 static PyObject* pyhrol::TypeMap<T>::mediator_mp_subscript(PyObject*, PyObject*) [with T = pyhrol::types]
+M    1 static void pyhrol::TypeBase<T>::mediator_destructor(PyObject*) [with T = pyhrol::types]
+None
+M      static PyObject* pyhrol::TypeSpecial<T>::m_static_method3(PyObject*, PyObject*, PyObject*) [with void (* F)(pyhrol::Tuples&) = pyhrol::ContainerObject::set_trace_options, T = pyhrol::pointer<pyhrol::ContainerObject>]

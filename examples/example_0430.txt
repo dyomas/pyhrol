@@ -1,0 +1,2 @@
+example_0430.MyClass: Hello world!
+example_0430.MyClass: Ciao mondo!

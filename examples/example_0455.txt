@@ -1,0 +1,13 @@
+(-2.03, 0.91)
+(1.134, -1245.0)
+1.134
+(1.134, -1245.0)
+*** d: a float is required
+(dd): must be sequence of length 2, not 3
+D: a float is required
+No one from 3 signatures parsed (point.rw)
+*** d: a float is required
+(dd): must be 2-item sequence, not str
+D: a float is required
+No one from 3 signatures parsed (point.rw)
+*** attribute 'wo' of 'example_0455.point' objects is not readable

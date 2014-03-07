@@ -1,0 +1,6 @@
+*** is: function takes exactly 2 arguments (1 given) (function_with_args)
+function_with_args: I am called
+  My args: i = 1, pch = "One"
+function_with_args: I am called
+  My args: i = 2, pch = "Two"
+*** is: an integer is required (function_with_args)

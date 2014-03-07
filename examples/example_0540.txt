@@ -1,0 +1,5 @@
+Hej Verden!
+Bonjour tout le monde!
+*** 'example_0540.MyClass' object has no attribute 'reset'
+Hej Verden!
+Здравствуй мир!

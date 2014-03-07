@@ -1,0 +1,12 @@
+AttributeError: Method name "_method" starts from underscore, therefore will be ignored by interpreter (MyClass._method)
+AttributeError: Function name "_function" starts from underscore, therefore will be ignored by interpreter
+AttributeError: Function name "lambda" invalid because it is language keyword
+*** name '_function' is not defined
+Help on class MyClass in module example_0940:
+
+class MyClass(__builtin__.object)
+ |  Data and other attributes defined here:
+ |  
+ |  __new__ = <built-in method __new__ of type object>
+ |      T.__new__(S, ...) -> a new object with type S, a subtype of T
+

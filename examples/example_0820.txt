@@ -1,0 +1,133 @@
+=== Before
+Help on built-in function help_generation_example in module example_0120:
+
+help_generation_example(...)
+    Automatic help generation on function arguments
+    ->    s#|id tuple with per argument help:
+          char */*not null*/, int32_t   si  str                                sample string
+          int32_t                       i   i                   12             integer value with default
+          double                        d   f                   3.14           float value with default
+    ->    ids# tuple with brief help
+    ...and addition
+          int32_t                       i   i                                  
+          double                        d   f                                  
+          char */*not null*/, int32_t   si  str                                
+    
+    <-    idis 
+          int32_t                       i                                      help on res1
+          double                        d                                      help on res2
+          int32_t                       i                                      help on res3
+          char */*nullable*/            s                                      help on res4
+
+=== After
+Help on built-in function help_generation_example in module example_0120:
+
+help_generation_example(...)
+    Automatic help generation on function arguments
+    
+      -> <s#|id>, "tuple with per argument help:"
+           +------------------------------+----+--------------------+---------------+------------------------------+
+           |C++ signature                 |fmt |Name                |Value          |Description                   |
+           +------------------------------+----+--------------------+---------------+------------------------------+
+           |char */*not null*/, int32_t   |si  |str                 |               |sample string                 |
+           |int32_t                       |i   |i                   |12             |integer value with default    |
+           |double                        |d   |f                   |3.14           |float value with default      |
+    
+      -> <ids#>, "tuple with brief help
+    ...and addition"
+           +------------------------------+----+--------------------+---------------+------------------------------+
+           |C++ signature                 |fmt |Name                |Value          |Description                   |
+           +------------------------------+----+--------------------+---------------+------------------------------+
+           |int32_t                       |i   |i                   |               |                              |
+           |double                        |d   |f                   |               |                              |
+           |char */*not null*/, int32_t   |si  |str                 |               |                              |
+    
+    
+      <- <idis>, ""
+           +------------------------------+----+--------------------+---------------+------------------------------+
+           |C++ signature                 |fmt |Name                |Value          |Description                   |
+           +------------------------------+----+--------------------+---------------+------------------------------+
+           |int32_t                       |i   |                    |               |help on res1                  |
+           |double                        |d   |                    |               |help on res2                  |
+           |int32_t                       |i   |                    |               |help on res3                  |
+           |char */*nullable*/            |s   |                    |               |help on res4                  |
+
+=== Help
+<ctor>
+Constructors:
+
+  -> <s>, ""
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |char */*not null*/            |s   |msg                 |               |                              |
+
+say
+Returns previously assigned message
+
+<nb_add>
+
+  -> <O!i>, "MyClass + int"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |PyTypeObject, $MyClass        |!O  |                    |               |self                          |
+       |int32_t                       |i   |                    |               |int                           |
+
+  -> <iO!>, "int + MyClass"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |int32_t                       |i   |                    |               |int                           |
+       |PyTypeObject, $MyClass        |!O  |                    |               |self                          |
+
+  -> <O!s>, "MyClass + str"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |PyTypeObject, $MyClass        |!O  |                    |               |self                          |
+       |char */*not null*/            |s   |                    |               |str                           |
+
+ 3-> <sO!>, "str + MyClass"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |char */*not null*/            |s   |                    |               |str                           |
+       |PyTypeObject, $MyClass        |!O  |                    |               |self                          |
+
+ 4-> <O!O!>, "MyClass + MyClass"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |PyTypeObject, $MyClass        |!O  |                    |               |_1                            |
+       |PyTypeObject, $MyClass        |!O  |                    |               |_2                            |
+
+<nb_inplace_add>
+
+  -> <i>, "MyClass += int"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |int32_t                       |i   |                    |               |int                           |
+
+  -> <s>, "MyClass += str"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |char */*not null*/            |s   |                    |               |str                           |
+
+  -> <O!>, "MyClass += MyClass"
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |PyTypeObject, $MyClass        |!O  |                    |               |MyClass                       |
+
+<nb_or>
+
+  -> <O&O&>, ""
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |C++ signature                 |fmt |Name                |Value          |Description                   |
+       +------------------------------+----+--------------------+---------------+------------------------------+
+       |soother::converter, void *    |&O  |                    |               |                              |
+       |soother::converter, void *    |&O  |                    |               |                              |
+

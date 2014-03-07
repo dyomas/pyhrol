@@ -1,0 +1,4 @@
+Прывітанне свет!
+Привіт світ!
+*** Message can not be empty (new_myclass)
+*** Message can not be empty (new_myclass2)

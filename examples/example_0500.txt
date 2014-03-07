@@ -1,0 +1,21 @@
+Moikka maailma!
+15
+Moikka maailma!
+Moikka maailma!Moikka maailma!
+M
+maa
+*** Range [12, 15) exceeds object size 8 (MyClass.<sq_slice>)
+Moimaailma! maailma!Moikka maailma!
+Moi maailma!Moikka maailma!
+Y
+N
+m
+a
+a
+i
+l
+m
+a
+!
+*** Method `repeat` not implemented (MyClass.<sq_repeat>)
+*** O!: must be example_0500.MyClass, not bool (MyClass.<sq_inplace_concat>)

@@ -1,0 +1,6 @@
+Hey!
+Hey!
+Hey!
+*** attribute 'message_ro' of 'example_0450.MyClass' objects is not writable
+Comment allez-vous?
+Comment allez-vous?

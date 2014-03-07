@@ -1,0 +1,5 @@
+¡Hola, mundo!
+Здравствуй мир!
+0.0
+*** readonly attribute
+1.5

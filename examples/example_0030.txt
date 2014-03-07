@@ -1,0 +1,4 @@
+*** retval_function() takes no arguments (1 given)
+retval_function: I am called
+  My return values: i = 1, pch = "One"
+(1, 'One') <type 'tuple'>

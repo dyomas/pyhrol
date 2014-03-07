@@ -1,0 +1,2 @@
+*** std::bad_cast (MyClass.say)
+*** Tuple invalid due to one or more previous errors. Call impossible in any way (MyClass.say)

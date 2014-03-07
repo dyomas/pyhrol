@@ -1,0 +1,2 @@
+example_0500.MyClass
+example_0505.MyClass

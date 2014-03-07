@@ -1,0 +1,7 @@
+function_manipulate_objects_strict: I am called
+  Signature 0: 1970
+function_manipulate_objects_strict: I am called
+  Signature 1: "Origin" 6 bytes length
+*** O!: must be int, not float
+O!: must be str, not float
+No one from 2 signatures parsed (function_manipulate_objects_strict)

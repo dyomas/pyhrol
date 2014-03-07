@@ -1,0 +1,5 @@
+*** unsupported operand type(s) for -: 'example_0490.MyClass' and 'example_0490.MyClass'
+*** unsupported operand type(s) for +: 'example_0490.MyClass' and 'int'
+Hello world!
+Hello world!
+!dlrow olleH
