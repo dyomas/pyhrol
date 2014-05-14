@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-04-17 18:17:40 +0400 (Wed, 17 Apr 2013) $
-// $Revision: 706 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #include "pyhrol_tuple_fill_state_normal.h"
 
@@ -70,4 +70,4 @@ TupleFillStateNormal::TupleFillStateNormal()
 {
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol

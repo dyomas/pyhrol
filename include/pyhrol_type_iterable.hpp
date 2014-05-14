@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-10 16:05:29 +0400 (Tue, 10 Dec 2013) $
-// $Revision: 862 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_type_iterable_hpp__
 #define __pyhrol_type_iterable_hpp__
@@ -131,17 +131,17 @@ template <typename T, typename I> bool TypeIterable<T, I>::next(const Ptr<I> &, 
 template <typename T, typename I> PyObject *TypeIterable<T, I>::mediator_tp_iter(PyObject *self)
 {
   call_iter c(self, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_tp_iter));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_tp_iter));
   return c.retval;
 }
 
 template <typename T, typename I> PyObject *TypeIterable<T, I>::mediator_tp_iternext(PyObject *self)
 {
   call_next c(self, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_tp_iternext));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_tp_iternext));
   return c.retval;
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_type_iterable_hpp__

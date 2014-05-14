@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-03-07 00:18:03 +0400 (Fri, 07 Mar 2014) $
-// $Revision: 899 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_type_base_hpp__
 #define __pyhrol_type_base_hpp__
@@ -335,7 +335,7 @@ template <class T> void TypeBase<T>::m_init(const char *name, const char *doc)
 
 template <class T> PyObject *TypeBase<T>::mediator_constructor(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_ctor, reinterpret_cast<void *>(mediator_constructor)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_ctor, reinterpret_cast<size_t>(mediator_constructor)));
   std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
   call_constructor c(*tuples, type, __PRETTY_FUNCTION__, !type);
   tuples->ubiquitous_caller(c, args, kwds, !type);
@@ -454,27 +454,27 @@ template <class T> TypeBase<T>::call_str::call_str(const PyObject *_self, const 
 template <class T> void TypeBase<T>::mediator_destructor(PyObject* self)
 {
   call_destructor cd(self, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cd, reinterpret_cast<void *>(mediator_destructor));
+  exceptionHandler::call(cd, reinterpret_cast<size_t>(mediator_destructor));
 }
 
 template <class T> int TypeBase<T>::mediator_print(PyObject *self, FILE *fp, int /*flags*/)
 {
   call_print cp(self, fp, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cp, reinterpret_cast<void *>(mediator_print));
+  exceptionHandler::call(cp, reinterpret_cast<size_t>(mediator_print));
   return cp.retval;
 }
 
 template <class T> PyObject *TypeBase<T>::mediator_repr(PyObject *self)
 {
   call_repr cr(self, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cr, reinterpret_cast<void *>(mediator_repr));
+  exceptionHandler::call(cr, reinterpret_cast<size_t>(mediator_repr));
   return cr.retval;
 }
 
 template <class T> PyObject *TypeBase<T>::mediator_str(PyObject *self)
 {
   call_str cs(self, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cs, reinterpret_cast<void *>(mediator_str));
+  exceptionHandler::call(cs, reinterpret_cast<size_t>(mediator_str));
   return cs.retval;
 }
 

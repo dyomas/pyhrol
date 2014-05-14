@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-27 22:19:34 +0400 (Thu, 27 Feb 2014) $
-// $Revision: 896 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #include "pyhrol.h"
 #include "pyhrol_self_modules.h"
@@ -167,7 +167,7 @@ void Type::get_flags(const pyhrol::Ptr<const type> &obj, pyhrol::Tuples &_args) 
   PYHROL_AFTER_BUILD_VALUE(_args)
 
   const Container &c = Container::container();
-  static_cast<SmartFlagInt &>(retval) = c.type(c.index().get(obj->pos)->offset)->tp_flags;
+  static_cast<SmartFlagUint &>(retval) = c.type(c.index().get(obj->pos)->offset)->tp_flags;
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
@@ -273,14 +273,14 @@ void Types::get(const Ptr<const endosome_t> &types, pyhrol::Tuples &_args) const
 using namespace pyhrol;
 
 
-SmartFlagInt::ftree_t type_flags_struct::m_ftree;
+SmartFlagUint::ftree_t type_flags_struct::m_ftree;
 
 type_flags_struct::type_flags_struct()
-  : SmartFlagInt(init())
+  : SmartFlagUint(init())
 {
 }
 
-const SmartFlagInt::ftree_t *type_flags_struct::init()
+const SmartFlagUint::ftree_t *type_flags_struct::init()
 {
   if (!m_ftree.filled())
   {

@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-01-08 14:43:52 +0400 (Wed, 08 Jan 2014) $
-// $Revision: 867 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_container_hpp__
 #define __pyhrol_container_hpp__
@@ -91,7 +91,7 @@ template <void (*F)(Tuples &)> void Container::add_function_no_args(const char *
 
 template <void (*F)(Tuples &)> PyObject *Container::m_function(PyObject *self)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function_no_arg, reinterpret_cast<void *>(m_function<F>)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function_no_arg, reinterpret_cast<size_t>(m_function<F>)));
   std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
   __container_internal::call_function<F> c(*tuples, __PRETTY_FUNCTION__, self);
   return tuples->ubiquitous_caller(c, NULL, NULL, self);
@@ -99,7 +99,7 @@ template <void (*F)(Tuples &)> PyObject *Container::m_function(PyObject *self)
 
 template <void (*F)(Tuples &)> PyObject *Container::m_function2(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function, reinterpret_cast<void *>(m_function2<F>)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function, reinterpret_cast<size_t>(m_function2<F>)));
   std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
   __container_internal::call_function<F> c(*tuples, __PRETTY_FUNCTION__, self);
   return tuples->ubiquitous_caller(c, args, NULL, self);
@@ -107,12 +107,12 @@ template <void (*F)(Tuples &)> PyObject *Container::m_function2(PyObject *self, 
 
 template <void (*F)(Tuples &)> PyObject *Container::m_function3(PyObject *self, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function_kw, reinterpret_cast<void *>(m_function3<F>)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function_kw, reinterpret_cast<size_t>(m_function3<F>)));
   std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
   __container_internal::call_function<F> c(*tuples, __PRETTY_FUNCTION__, self);
   return tuples->ubiquitous_caller(c, args, kwds, self);
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_container_hpp__

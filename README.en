@@ -1,0 +1,81 @@
+See http://pyhrol.com/ for detailed description
+
+Pyhrol IS:
+  * bridge between C++ and Python
+  * one way bridge, from C++ to Python only
+  * libpyhrol.so, pyhrol.h, tests, examples and site pyhrol.com
+  * thing, imprisoned solely under Python 2.x
+  * honest open source software
+
+Pyhrol is NOT:
+  * magic button, it requires at least declare objects and a little bit
+    of programming
+  * thing that supports Python 3.x
+
+Build:
+  tar -x -f pyhrol-${VERSION}.tar.gz
+  cd pyhrol-${VERSION}
+  cmake -D CMAKE_BUILD_TYPE=Release .
+  make
+
+Install:
+  make install
+
+Run examples:
+  make test
+    or
+  ctest
+    or
+  ctest -R <example number>
+
+Examples list (directory examples/):
+  Functions:
+    0010 Simple function
+    0020 Function with arguments
+    0030 Function with return value
+    0040 Default argument values
+    0050 Named arguments
+    0060 Overload arguments
+    0070 "Overload" return values
+    0080 Object types
+    0090 Objects of the specified type
+    0100 Arbitrary types
+    0110 Error Handling
+    0120 Help
+  Classes:
+    0400 Introduction
+    0410 Creation/destruction
+    0420 Methods
+    0430 Static methods
+    0440 Data members
+    0450 Attributes
+    0455 Attributes 2
+    0460 Pointers
+    0470 Singleton
+    0480 Smart pointers
+    0490 Arithmetic operations (Number Protocol)
+    0495 Arithmetic operations on arbitrary types
+    0500 Sequence Protocol
+    0505 Sequence protocol on arbitrary types
+    0510 Associative arrays (Mapping Protocol)
+    0520 Iterator Protocol
+    0540 Inheritance
+    0550 Object type arguments
+    0560 "External" constructor
+  Other:
+    0800 Pyhrol module
+    0810 Tracing
+    0820 Help formatting
+    0830 Safe mode
+    0840 Overload by argument name
+    0850 Methods concealment
+  Typical errors:
+    0900 Incorrect inheritance
+    0910 Symbol conflicts
+    0920 Incorrect macros usage
+    0925 Incorrect macros usage inside classes
+    0926 Incorrect macros usage inside classes (workaround)
+    0930 Non unique pointers
+    0940 Invalid names and symbols
+    0950 std::bad_cast
+    0960 Noncopyable objects

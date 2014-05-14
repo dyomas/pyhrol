@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-10 16:05:29 +0400 (Tue, 10 Dec 2013) $
-// $Revision: 862 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_type_number_hpp__
 #define __pyhrol_type_number_hpp__
@@ -447,42 +447,42 @@ template <typename T> template <void (TypeNumber<T>::*M)(const Ptr<T> &, const P
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_add(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::add> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_add));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_add));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_subtract(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::subtract> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_subtract));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_subtract));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_multiply(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::multiply> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_multiply));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_multiply));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_divide(PyObject *left, PyObject *right)
 {
    call_binary<&TypeNumber<T>::divide> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_divide));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_divide));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_remainder(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::remainder> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_remainder));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_remainder));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_divmod(PyObject *left, PyObject *right)
 {
   call_divmod cd(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cd, reinterpret_cast<void *>(mediator_nb_divmod));
+  exceptionHandler::call(cd, reinterpret_cast<size_t>(mediator_nb_divmod));
   return cd.retval;
 }
 
@@ -491,13 +491,13 @@ template <typename T> PyObject *TypeNumber<T>::mediator_nb_power(PyObject *self,
   if (arg2 == Py_None)
   {
     call_binary<&TypeNumber<T>::power> c(self, arg, __PRETTY_FUNCTION__);
-    exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_power));
+    exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_power));
     return c.retval;
   }
   else
   {
     call_ternary<&TypeNumber<T>::power> c(self, arg, arg2, __PRETTY_FUNCTION__);
-    exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_power));
+    exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_power));
     return c.retval;
   }
 }
@@ -505,70 +505,70 @@ template <typename T> PyObject *TypeNumber<T>::mediator_nb_power(PyObject *self,
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_lshift(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::lshift> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_lshift));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_lshift));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_rshift(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::rshift> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_rshift));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_rshift));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_and(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::nb_and> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_and));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_and));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_xor(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::nb_xor> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_xor));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_xor));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_or(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::nb_or> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_or));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_or));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_add(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_add> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_add));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_add));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_subtract(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_subtract> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_subtract));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_subtract));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_multiply(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_multiply> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_multiply));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_multiply));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_divide(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_divide> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_divide));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_divide));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_remainder(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_remainder> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_remainder));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_remainder));
   return c.self;
 }
 
@@ -577,13 +577,13 @@ template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_power(PyObjec
   if (arg2 == Py_None)
   {
     call_inplace_unary<&TypeNumber<T>::inplace_power> c(self, arg, __PRETTY_FUNCTION__, raiseError);
-    exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_power));
+    exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_power));
     return c.self;
   }
   else
   {
     call_inplace_binary<&TypeNumber<T>::inplace_power> c(self, arg, arg2, __PRETTY_FUNCTION__, raiseError);
-    exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_power));
+    exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_power));
     return c.self;
   }
 }
@@ -591,63 +591,63 @@ template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_power(PyObjec
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_lshift(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_lshift> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_lshift));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_lshift));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_rshift(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_rshift> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_rshift));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_rshift));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_and(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_and> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_and));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_and));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_xor(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_xor> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_xor));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_xor));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_or(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_or> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_or));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_or));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_floor_divide(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::floor_divide> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_floor_divide));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_floor_divide));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_true_divide(PyObject *left, PyObject *right)
 {
   call_binary<&TypeNumber<T>::true_divide> c(left, right, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_true_divide));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_true_divide));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_floor_divide(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_floor_divide> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_floor_divide));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_floor_divide));
   return c.self;
 }
 
 template <typename T> PyObject *TypeNumber<T>::mediator_nb_inplace_true_divide(PyObject *self, PyObject *arg)
 {
   call_inplace_unary<&TypeNumber<T>::inplace_true_divide> c(self, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_nb_inplace_true_divide));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_nb_inplace_true_divide));
   return c.self;
 }
 

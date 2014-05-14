@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,10 +27,12 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-04-11 11:29:19 +0400 (Thu, 11 Apr 2013) $
-// $Revision: 700 $
+// $Date: 2014-04-18 01:08:27 +0400 (Fri, 18 Apr 2014) $
+// $Revision: 909 $
 
 #include <errno.h>
+// Enables series of macros U?INT(8|16|32|64)_(MIN|MAX) used below
+#define __STDC_LIMIT_MACROS
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -382,7 +384,7 @@ int8_t c_string_to_int8(const char *src)
 uint8_t c_string_to_uint8(const char *src)
 {
   const char *errstr;
-  uint8_t res = strtonum(src, 0, 255LL, &errstr);
+  uint8_t res = strtonum(src, 0, UINT8_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -402,7 +404,7 @@ uint8_t c_string_to_uint8(const char *src)
 int16_t c_string_to_int16(const char *src)
 {
   const char *errstr;
-  int16_t res = strtonum(src, -32768LL, 32767LL, &errstr);
+  int16_t res = strtonum(src, INT16_MIN, INT16_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -422,7 +424,7 @@ int16_t c_string_to_int16(const char *src)
 uint16_t c_string_to_uint16(const char *src)
 {
   const char *errstr;
-  uint16_t res = strtonum(src, 0, 0xffffLL, &errstr);
+  uint16_t res = strtonum(src, 0, UINT16_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -499,7 +501,7 @@ int32_t string_to_int(const string &src)
 uint32_t c_string_to_uint(const char *src)
 {
   const char *errstr;
-  uint32_t res = strtonum(src, 0, 0xffffffffLL, &errstr);
+  uint32_t res = strtonum(src, 0, UINT32_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -576,7 +578,7 @@ int64_t string_to_int64(const string &src)
 uint64_t c_string_to_uint64(const char *src)
 {
   const char *errstr;
-  uint64_t res = strtonum(src, 0, 0x7fffffffffffffffLL, &errstr);
+  uint64_t res = strtonum(src, 0, UINT64_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -653,7 +655,7 @@ void string_to_number(int8_t *pres, const string &src)
 void string_to_number(uint8_t *pres, const string &src)
 {
   const char *errstr;
-  *pres = strtonum(src.c_str(), 0, 255LL, &errstr);
+  *pres = strtonum(src.c_str(), 0, UINT8_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -672,7 +674,7 @@ void string_to_number(uint8_t *pres, const string &src)
 void string_to_number(int16_t *pres, const string &src)
 {
   const char *errstr;
-  *pres = strtonum(src.c_str(), -32768LL, 32767LL, &errstr);
+  *pres = strtonum(src.c_str(), INT16_MIN, INT16_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -691,7 +693,7 @@ void string_to_number(int16_t *pres, const string &src)
 void string_to_number(uint16_t *pres, const string &src)
 {
   const char *errstr;
-  *pres = strtonum(src.c_str(), 0, 0xffffLL, &errstr);
+  *pres = strtonum(src.c_str(), 0, UINT16_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -728,7 +730,7 @@ void string_to_number(int32_t *pres, const string &src)
 void string_to_number(uint32_t *pres, const string &src)
 {
   const char *errstr;
-  *pres = strtonum(src.c_str(), 0, 0xffffffffLL, &errstr);
+  *pres = strtonum(src.c_str(), 0, UINT32_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)
@@ -765,7 +767,7 @@ void string_to_number(int64_t *pres, const string &src)
 void string_to_number(uint64_t *pres, const string &src)
 {
   const char *errstr;
-  *pres = strtonum(src.c_str(), 0, 0x7fffffffffffffffLL, &errstr);
+  *pres = strtonum(src.c_str(), 0, UINT64_MAX, &errstr);
   int errno_copy = errno;
 
   if (errstr)

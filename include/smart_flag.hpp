@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-04-16 15:46:59 +0400 (Tue, 16 Apr 2013) $
-// $Revision: 703 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #ifndef _smart_flag_hpp_
 #define _smart_flag_hpp_
@@ -128,19 +128,19 @@ template <class T> std::ostream &operator << (std::ostream &os, const SmartFlag<
 }
 
 #define SMART_FLAG_INSTANTIATION_BEGIN(type, var)\
-  template std::ostream &operator << (std::ostream &/*os*/, const SmartFlag<type> &/*sf*/);\
-  template class enum_2_string_stree<type>;\
-  template class SmartFlag<type>;\
   template <> const SmartFlag<type>::ttree_t &SmartFlag<type>::m_get_tree()\
   {\
     static ttree_t var;\
     if (!var.filled())\
     {
 
-#define SMART_FLAG_INSTANTIATION_END(var)\
+#define SMART_FLAG_INSTANTIATION_END(type, var)\
       var.free_index();\
     }\
     return var;\
-  }
+  }\
+  template std::ostream &operator << (std::ostream &/*os*/, const SmartFlag<type> &/*sf*/);\
+  template class enum_2_string_stree<type>;\
+  template class SmartFlag<type>;\
 
 #endif //_smart_flag_hpp_

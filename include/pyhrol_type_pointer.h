@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-06 01:08:07 +0400 (Fri, 06 Dec 2013) $
-// $Revision: 859 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_type_pointer_h__
 #define __pyhrol_type_pointer_h__
@@ -130,6 +130,6 @@ private:
   template <typename O, void (O::*G)(const Ptr<const T> &, Tuples &) const, void (O::*S)(const Ptr<T> &, Tuples &) const> static int m_setter_paired(PyObject */*self*/, PyObject */*value*/, void */*closure*/);
 };
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_type_pointer_h__

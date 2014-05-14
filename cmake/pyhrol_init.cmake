@@ -1,4 +1,4 @@
-#  Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+#  Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
 #  GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -38,8 +38,8 @@
 #     not defined warns and continue;
 #     Python related targets must be inactivated by PYTHONLIBS_FOUND switch
 
-# $Date: 2014-02-27 22:19:34 +0400 (Thu, 27 Feb 2014) $
-# $Revision: 896 $
+# $Date: 2014-05-15 01:28:53 +0400 (Thu, 15 May 2014) $
+# $Revision: 917 $
 
 find_package (PythonLibs 2.4)
 
@@ -260,5 +260,3 @@ function (pyhrol_configure_targets)
     endif()
   endforeach()
 endfunction (pyhrol_configure_targets)
-
-

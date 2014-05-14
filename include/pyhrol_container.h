@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-03-07 00:18:03 +0400 (Fri, 07 Mar 2014) $
-// $Revision: 899 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_container_h__
 #define __pyhrol_container_h__
@@ -99,8 +99,8 @@ class Container
     const char *protof_name(const size_t, const size_t) const;
     const char *protof_doc(const size_t, const size_t) const;
 
-    const char **doc_by_address(const void *) const;
-    const std::string context_by_address(const void *) const throw();
+    const char **doc_by_address(const size_t) const;
+    const std::string context_by_address(const size_t) const throw();
 
     void indexate(const char *module_name);
     void check_calls() const;
@@ -199,7 +199,7 @@ class Container
     typedef std::multimap<std::string, call_position> name_idx_t;
     typedef std::set<std::string> reserved_t;
     typedef std::map<std::pair<size_t, size_t>, artificial> artificials_t;
-    typedef std::map<std::pair<size_t, size_t>, std::pair<const char *, const void *> > others_t;
+    typedef std::map<std::pair<size_t, size_t>, std::pair<const char *, size_t> > others_t;
     typedef std::vector<module> modules_t;
 
     template <void (*F)(Tuples &)> static PyObject *m_function(PyObject */*self*/);
@@ -237,6 +237,6 @@ class Container
   #endif //PYHROL_SAFE_MODE
 };
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_container_h__

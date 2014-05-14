@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-10 16:05:29 +0400 (Tue, 10 Dec 2013) $
-// $Revision: 862 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_type_map_hpp__
 #define __pyhrol_type_map_hpp__
@@ -159,13 +159,13 @@ template <typename T> void TypeMap<T>::assign(const Ptr<T> &, Tuples &_args) con
 template <typename T> Py_ssize_t TypeMap<T>::mediator_mp_length(PyObject *self)
 {
   mp_call_length c(self, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_mp_length));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_mp_length));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeMap<T>::mediator_mp_subscript(PyObject *self, PyObject *key)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof_retval, reinterpret_cast<void *>(mediator_mp_subscript)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof_retval, reinterpret_cast<size_t>(mediator_mp_subscript)));
   PyObject *key_packed = pack_tuple(key);
   if (key && !key_packed)
   {
@@ -181,8 +181,8 @@ template <typename T> PyObject *TypeMap<T>::mediator_mp_subscript(PyObject *self
 template <typename T> int TypeMap<T>::mediator_mp_ass_subscript(PyObject *self, PyObject *key, PyObject *value)
 {
   static std::auto_ptr<TuplesData>
-      data_assign(TuplesData::factory(v_protof, reinterpret_cast<void *>(mediator_mp_ass_subscript)))
-    , data_del(TuplesData::factory(v_protof, reinterpret_cast<void *>(mediator_mp_ass_subscript)))
+      data_assign(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_mp_ass_subscript)))
+    , data_del(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_mp_ass_subscript)))
   ;
   PyObject *args_packed = pack_tuple(key, value);
   if (key && !args_packed)
@@ -205,7 +205,7 @@ template <typename T> int TypeMap<T>::mediator_mp_ass_subscript(PyObject *self, 
   return is_error_occured() ? -1 : 0;
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_type_map_hpp__
 

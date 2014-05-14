@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-11-29 03:26:15 +0400 (Fri, 29 Nov 2013) $
-// $Revision: 847 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __smart_flag_int_h__
 #define __smart_flag_int_h__
@@ -48,34 +48,38 @@ SmartFlagInt::m_pftree используется для преобразован�
 либо для преобразовании флага в строку (например, при выводе в stdout)
 Если значение флага, заданное конструктором, изменяется, метод SmartFlagInt::assigned возвращает true
 */
-class SmartFlagInt
+template <typename T> class SmartFlagNumeric
 {
   public:
-    typedef enum_2_string_stree<int> ftree_t;
-    SmartFlagInt(const ftree_t *);
-    SmartFlagInt(const ftree_t *, const int /*value*/);
-    SmartFlagInt(const SmartFlagInt &);
+    typedef enum_2_string_stree<T> ftree_t;
+    SmartFlagNumeric(const ftree_t *);
+    SmartFlagNumeric(const ftree_t *, const T /*value*/);
+    SmartFlagNumeric(const SmartFlagNumeric &);
 
     const std::string as_string() const;
     void convert(std::ostream &/*os*/) const;
     const ftree_t *operator ->() const;
     bool assigned() const;
-    const int get() const;
-    operator const int () const;
+    const T get() const;
+    operator const T () const;
 
-    void assign (const int &);
+    void assign (const T &);
     void assign (const std::string &);
-    SmartFlagInt &operator = (const int &);
-    SmartFlagInt &operator = (const std::string &);
+    SmartFlagNumeric &operator = (const T &);
+    SmartFlagNumeric &operator = (const std::string &);
     void clear();
 
   private:
     bool m_assigned;
-    int m_value;
+    T m_value;
     const ftree_t *m_pftree;
 };
 
+typedef SmartFlagNumeric<int32_t> SmartFlagInt;
+typedef SmartFlagNumeric<uint32_t> SmartFlagUint;
+
 std::ostream &operator << (std::ostream &os, const SmartFlagInt &f);
+std::ostream &operator << (std::ostream &os, const SmartFlagUint &f);
 
 #endif //__smart_flag_int_h__
 

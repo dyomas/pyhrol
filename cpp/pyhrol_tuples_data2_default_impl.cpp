@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-11-30 03:02:42 +0400 (Sat, 30 Nov 2013) $
-// $Revision: 850 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #include "pyhrol_trace.h"
 #include "pyhrol_tuples_data2_default_impl.h"
@@ -38,9 +38,9 @@
 namespace pyhrol
 {
 
-TuplesData2DefaultImpl::TuplesData2DefaultImpl(const callVariants cv, const void *ptr)
+TuplesData2DefaultImpl::TuplesData2DefaultImpl(const callVariants cv, const size_t address)
   : TuplesDataDefaultImpl(cv)
-  , m_address(ptr)
+  , m_address(address)
 {
   PYHROL_TRACE(tpInternal, this, __PRETTY_FUNCTION__);
 }
@@ -59,9 +59,9 @@ TuplesData2DefaultImpl::~TuplesData2DefaultImpl()
   }
 }
 
-TuplesData *TuplesData::factory(const callVariants cv, const void *ptr)
+TuplesData *TuplesData::factory(const callVariants cv, const size_t address)
 {
-  return new TuplesData2DefaultImpl(cv, ptr);
+  return new TuplesData2DefaultImpl(cv, address);
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol

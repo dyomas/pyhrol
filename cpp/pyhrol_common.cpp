@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-13 01:38:33 +0400 (Thu, 13 Feb 2014) $
-// $Revision: 888 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #include <string.h>
 #include <stdlib.h>
@@ -184,7 +184,7 @@ SMART_FLAG_INSTANTIATION_BEGIN(options, t)
   t.add(npAnd, optIncrementReferenceCount, "IncrementReferenceCount", optNoneEnabled);
   t.add(npAnd, optNotRecode, "NotRecode", optIncrementReferenceCount);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(options, t)
 
 SMART_FLAG_INSTANTIATION_BEGIN(callModifiers, t)
 {
@@ -194,14 +194,14 @@ SMART_FLAG_INSTANTIATION_BEGIN(callModifiers, t)
   t.add(npOr, f_const, "const", f_void);
   t.add(npOr, f_keywords, "keywords", f_const);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(callModifiers, t)
 
 SMART_FLAG_INSTANTIATION_BEGIN(callContexts, t)
 {
   t.add(npOr, c_function, "function");
   t.add(npOr, c_method, "method", c_function);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(callContexts, t)
 
 SMART_FLAG_INSTANTIATION_BEGIN(callPurposes, t)
 {
@@ -210,7 +210,7 @@ SMART_FLAG_INSTANTIATION_BEGIN(callPurposes, t)
   t.add(npAnd, p_getter, "getter", p_protof);
   t.add(npAnd, p_setter, "setter", p_getter);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(callPurposes, t)
 
 SMART_FLAG_INSTANTIATION_BEGIN(callVariants, t)
 {
@@ -245,4 +245,4 @@ SMART_FLAG_INSTANTIATION_BEGIN(callVariants, t)
   t.add(npOr, v_protof, "protof", v_ctor);
   t.add(npOr, v_protof_retval, "protof_retval", v_protof);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(callVariants, t)

@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-10 16:05:29 +0400 (Tue, 10 Dec 2013) $
-// $Revision: 862 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_type_sequence_hpp__
 #define __pyhrol_type_sequence_hpp__
@@ -405,13 +405,13 @@ template <typename T> void TypeSequence<T>::m_init()
 template <typename T> Py_ssize_t TypeSequence<T>::mediator_sq_length(PyObject *self)
 {
   call_length c(self, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_sq_length));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_sq_length));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_concat(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<void *>(mediator_sq_concat)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_concat)));
   PyObject *args_packed = pack_tuple(args);
   if (args && !args_packed)
   {
@@ -427,21 +427,21 @@ template <typename T> PyObject *TypeSequence<T>::mediator_sq_concat(PyObject *se
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_repeat(PyObject *self, Py_ssize_t cnt)
 {
   call_repeat c(self, cnt, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_sq_repeat));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_sq_repeat));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_item(PyObject *self, Py_ssize_t idx)
 {
   call_get c(self, idx, idx + 1, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_sq_item));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_sq_item));
   return c.retval;
 }
 
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_slice(PyObject *self, Py_ssize_t begin, Py_ssize_t end)
 {
   call_get c(self, begin, end, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_sq_slice));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_sq_slice));
   return c.retval;
 }
 
@@ -451,11 +451,11 @@ template <typename T> int TypeSequence<T>::mediator_sq_ass_item(PyObject *self, 
   if (self && !args)
   {
     call_del c(self, idx, idx + 1, __PRETTY_FUNCTION__);
-    retval = exceptionHandler::call(c, reinterpret_cast<void *>(mediator_sq_ass_item)) ? 0 : -1;
+    retval = exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_sq_ass_item)) ? 0 : -1;
   }
   else
   {
-    static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<void *>(mediator_sq_ass_item)));
+    static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_ass_item)));
     PyObject *args_packed = pack_tuple(args);
     if (args && !args_packed)
     {
@@ -476,11 +476,11 @@ template <typename T> int TypeSequence<T>::mediator_sq_ass_slice(PyObject *self,
   if (self && !args)
   {
     call_del c(self, begin, end, __PRETTY_FUNCTION__);
-    retval = exceptionHandler::call(c, reinterpret_cast<void *>(mediator_sq_ass_slice)) ? 0 : -1;
+    retval = exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_sq_ass_slice)) ? 0 : -1;
   }
   else
   {
-    static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<void *>(mediator_sq_ass_slice)));
+    static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_ass_slice)));
     PyObject *args_packed = pack_tuple(args);
     if (args && !args_packed)
     {
@@ -497,7 +497,7 @@ template <typename T> int TypeSequence<T>::mediator_sq_ass_slice(PyObject *self,
 
 template <typename T> int TypeSequence<T>::mediator_sq_contains(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<void *>(mediator_sq_contains)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_contains)));
   PyObject *args_packed = pack_tuple(args);
   if (args && !args_packed)
   {
@@ -512,7 +512,7 @@ template <typename T> int TypeSequence<T>::mediator_sq_contains(PyObject *self, 
 
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_inplace_concat(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<void *>(mediator_sq_inplace_concat)));
+  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_inplace_concat)));
   PyObject *args_packed = pack_tuple(args);
   if (args && !args_packed)
   {
@@ -528,10 +528,10 @@ template <typename T> PyObject *TypeSequence<T>::mediator_sq_inplace_concat(PyOb
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_inplace_repeat(PyObject *self, Py_ssize_t cnt)
 {
   call_repeat_inplace c(self, cnt, __PRETTY_FUNCTION__);
-  exceptionHandler::call(c, reinterpret_cast<void *>(mediator_sq_inplace_repeat));
+  exceptionHandler::call(c, reinterpret_cast<size_t>(mediator_sq_inplace_repeat));
   return c.self;
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_type_sequence_hpp__

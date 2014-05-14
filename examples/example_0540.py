@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-#  Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+#  Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
 #  GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
 #
 #  Redistribution and use in source and binary forms, with or without

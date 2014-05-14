@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-02-01 18:07:57 +0400 (Fri, 01 Feb 2013) $
-// $Revision: 690 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #include "printf_parser.h"
 #include "smart_flag.hpp"
@@ -41,4 +41,4 @@ SMART_FLAG_INSTANTIATION_BEGIN(fieldPartTypes, t)
   t.add(npOr, fieldPartTypes(fptModifier | fptModifierPre), "Modifier&Pre", fptModifier);
   t.add(npOr, fptSpecifier, "Specifier", fieldPartTypes(fptModifier | fptModifierPre));
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(fieldPartTypes, t)

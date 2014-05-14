@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-05-21 13:23:01 +0400 (Tue, 21 May 2013) $
-// $Revision: 718 $
+// $Date: 2014-04-22 18:14:41 +0400 (Tue, 22 Apr 2014) $
+// $Revision: 913 $
 
 #ifndef __enum_shell_hpp__
 #define __enum_shell_hpp__
@@ -279,10 +279,8 @@ template <typename E> void enum_2_string_stree<E>::__report(std::ostream &os) co
       level = 0
     , cnt = 0
   ;
-  const _st_node
-      *pnodes[m_depth_max + 1]
-    , *pnode_cur
-  ;
+  const _st_node *pnode_cur;
+  _stg_t pnodes(m_depth_max + 1);
 
   if (!m_stg.size())
   {
@@ -581,10 +579,9 @@ template <typename E> void enum_2_string_stree<E>::graph(std::ostream &os) const
       level = 0
     , cnt = 0
   ;
-  const _st_node
-      *pnodes[m_depth_max + 1]
-    , *pnode_cur
-  ;
+
+  const _st_node *pnode_cur;
+  _stg_t pnodes(m_depth_max + 1);
   _poses_by_type_t _all;
   _poses_by_node_t _alln;
 
@@ -770,76 +767,89 @@ template <typename E> void enum_2_string_stree<E>::graph(std::ostream &os) const
     ;
   }
 
-  os
-    << std::endl
-    << "#Links:" << std::endl
-    << "  edge [color=black];" << std::endl
-  ;
+  /*
+  Порядок следования ссылок не должен зависеть от адресов узлов _st_node;
+  размещаясь в _links_t он определяется именами узлов графа;
+  требуется исключительно для устойчивости результатов в тестах
+  */
+  typedef std::set<std::pair<std::string, std::string> > _links_t;
+  _links_t _links;
   for (typename _poses_by_node_t::const_iterator iter = _alln.begin(); iter != _alln.end(); iter ++)
   {
     pnode_cur = iter->first;
     if (!(pnode_cur->type & ntiValue))
     {
-      m_graph_node(os, pnode_cur, iter->second, false);
-      os << " -> ";
+      const std::string link_from = m_graph_node(pnode_cur, iter->second, false, false);
+      std::string link_to;
       if (pnode_cur->ptrue)
       {
-        m_graph_node(os, pnode_cur->ptrue, _alln.at(pnode_cur->ptrue), false, false);
+        link_to = m_graph_node(pnode_cur->ptrue, _alln.at(pnode_cur->ptrue), false, false);
       }
       else
       {
-        os << "ERROR";
+        link_to = "ERROR";
       }
-      os << " [label=\"";
+      link_to += " [label=\"";
       switch (pnode_cur->type)
       {
         case ntiAnd:
-          os << "&=";
+          link_to += "&=";
           break;
         case ntiMask:
-          os << "&";
+          link_to += "&";
           break;
         case ntiFilter:
-          os << "!&";
+          link_to += "!&";
           break;
         case ntiOr:
-          os << '+';
+          link_to += '+';
           break;
         default:
-          os << '?';
+          link_to += '?';
           break;
       }
-      os
-        << "\"]" << std::endl
-      ;
+      link_to += "\"]";
+      _links.insert(_links_t::value_type(link_from, link_to));
 
-      m_graph_node(os, pnode_cur, iter->second, false);
-      os << " -> ";
       if (pnode_cur->pfalse)
       {
-        m_graph_node(os, pnode_cur->pfalse, _alln.at(pnode_cur->pfalse), false, false);
+        link_to = m_graph_node(pnode_cur->pfalse, _alln.at(pnode_cur->pfalse), false, false);
       }
       else
       {
-        os << "ERROR";
+        link_to = "ERROR";
       }
-      os << " [label=\"";
+      link_to += " [label=\"";
       switch (pnode_cur->type)
       {
         case ntiAnd:
         case ntiMask:
         case ntiFilter:
-          os << "&~";
+          link_to += "&~";
           break;
         case ntiOr:
-          os << '-';
+          link_to += '-';
           break;
         default:
-          os << '?';
+          link_to += '?';
           break;
       }
+      link_to += "\"]";
+      _links.insert(_links_t::value_type(link_from, link_to));
+    }
+  }
+
+  if (_links.size())
+  {
+    os
+      << std::endl
+      << "#Links:" << std::endl
+      << "  edge [color=black];" << std::endl
+    ;
+    for (typename _links_t::const_iterator iter = _links.begin(); iter != _links.end(); iter ++)
+    {
       os
-        << "\"]" << std::endl
+        << "  " << iter->first << " -> " << iter->second << std::endl
       ;
     }
   }
@@ -859,14 +869,13 @@ template <typename E> const std::string enum_2_string_stree<E>::statement() cons
 template <typename E> void enum_2_string_stree<E>::statement(std::ostream &os) const
 {
   //TODO неэкономное расходование памяти, размер буфера должен соответствовать максимальной длине пути
-  const size_t buff_size = m_stg.size();
   uint32_t level = 0;
+  _stg_t pnodes(m_stg.size());
   const _st_node
-      *pnodes[buff_size]
-    , *pnode_cur
+      *pnode_cur
     , *pnode_parent
   ;
-  char braces[buff_size];
+  std::vector<char> braces(m_stg.size());
 
   if (!m_stg.size())
   {
@@ -1031,11 +1040,6 @@ template <typename E> bool enum_2_string_stree<E>::m_convert(std::string *pres, 
 #ifdef _DEBUG_UTILS_ENSH
   uint32_t __iters_cnt = 0;
 #endif //_DEBUG_UTILS_ENSH
-  struct stack_item
-  {
-    const _st_node *pnode;
-    E value;
-  };
   bool
       ret_val = true
     , name_found = false
@@ -1045,10 +1049,8 @@ template <typename E> bool enum_2_string_stree<E>::m_convert(std::string *pres, 
       *pnode_cur
     , *pnode_child
   ;
-  stack_item
-      _stack[m_depth_max + 1]
-    , *pstack = &_stack[0]
-  ;
+  std::vector<stack_item> _stack(m_depth_max + 1);
+  stack_item *pstack = &_stack[0];
 
   pstack->pnode = m_stg[0];
   pstack->value = value;
@@ -1127,7 +1129,7 @@ template <typename E> bool enum_2_string_stree<E>::m_convert(std::string *pres, 
         #ifdef _DEBUG_UTILS_ENSH
           if (!__g_quiet)
           {
-            std::cout << setw((pstack - &_stack[0]) * 2) << ' ' << '+' << ' ' << static_cast<size_t>(pstack->value) << ' ';
+            std::cout << std::setw((pstack - &_stack[0]) * 2) << ' ' << '+' << ' ' << static_cast<size_t>(pstack->value) << ' ';
             __m_report_node(std::cout, pstack->pnode, 0);
           }
         #endif //_DEBUG_UTILS_ENSH
@@ -1180,7 +1182,7 @@ template <typename E> bool enum_2_string_stree<E>::m_convert(std::string *pres, 
       if (!__g_quiet)
       {
         std::cout
-          << setw((pstack - &_stack[0]) * 2) << ' ' << '-' << std::endl
+          << std::setw((pstack - &_stack[0]) * 2) << ' ' << '-' << std::endl
         ;
       }
     #endif //_DEBUG_UTILS_ENSH
@@ -1205,19 +1207,12 @@ template <typename E> E enum_2_string_stree<E>::m_convert_reverse(_ids_t &ids) c
 #ifdef _DEBUG_UTILS_ENSH
   uint32_t __iters_cnt = 0;
 #endif //_DEBUG_UTILS_ENSH
-  struct stack_item
-  {
-    const _st_node *pnode;
-    bool is_filter;
-  };
   const _st_node
       *pnode_cur
     , *pnode_child
   ;
-  stack_item
-      _stack[m_depth_max + 1]
-    , *pstack = &_stack[0]
-  ;
+  std::vector<stack_item_reverse> _stack(m_depth_max + 1);
+  stack_item_reverse *pstack = &_stack[0];
 
   pstack->pnode = m_stg[0];
 
@@ -1228,7 +1223,7 @@ template <typename E> E enum_2_string_stree<E>::m_convert_reverse(_ids_t &ids) c
       , required_string = false
     ;
 
-    const stack_item *pstack_parent = (pstack == &_stack[0] ? NULL : pstack - 1);
+    const stack_item_reverse *pstack_parent = (pstack == &_stack[0] ? NULL : pstack - 1);
     pstack->is_filter = (pnode_cur->type == ntiFilter || pstack_parent && pstack_parent->is_filter);
 
   #ifdef _DEBUG_UTILS_ENSH
@@ -1505,12 +1500,12 @@ template <typename E> const E enum_2_string_stree<E>::m_calculate_value(node_typ
   else if (mask_assigned)
   {//values_include.size() == 0
     const size_t vars_capacity = values_exclude.size() + 1;
-    size_t vars[vars_capacity];
+    std::vector<size_t> vars(vars_capacity);
     /*
     Количество вариантов значений маски -- M = 2 ** N, где N -- количество установленных битов в маске
     Если из всего списка M значений, M - 1 являются исключениями (values_exclude), итоговое значение определено однозначно, если список значений превосходит список исключений, итоговое значение неоднозначно и список не проверяется (и даже не заполняется)
     */
-    const size_t vars_cnt = expand_mask<size_t>(vars, vars_capacity, size_t(mask), zero_enabled);
+    const size_t vars_cnt = expand_mask<size_t>(&vars[0], vars_capacity, size_t(mask), zero_enabled);
     if (vars_cnt <= vars_capacity)
     {
       size_t value_cnt = 0;
@@ -1545,6 +1540,19 @@ template <typename E> const E enum_2_string_stree<E>::m_calculate_value(node_typ
   }
 
   return ret_val;
+}
+
+template <typename E> std::string enum_2_string_stree<E>::m_graph_node
+(
+    const _st_node *pnode
+  , const size_t node_id
+  , const bool label
+  , const bool indent
+)
+{
+  std::ostringstream ostr;
+  m_graph_node(ostr, pnode, node_id, label, indent);
+  return ostr.str();
 }
 
 template <typename E> void enum_2_string_stree<E>::m_graph_node

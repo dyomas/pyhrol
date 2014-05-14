@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-01-31 16:41:58 +0400 (Fri, 31 Jan 2014) $
-// $Revision: 883 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #include <stdio.h>
 #include <pyport.h>
@@ -168,7 +168,7 @@ void TupleOutDefaultImpl::add(const Py_UNICODE *value, const char *name)
 void TupleOutDefaultImpl::add(out_cconv_t converter, const char *name)
 {
   //O& (object) [converter, anything]
-  m_add_format_unit('&', name, NULL, reinterpret_cast<const void *>(converter), 0);
+  m_add_format_unit('&', "out_cconv_t", name, NULL, 0);
 }
 
 void TupleOutDefaultImpl::add(const anything *p, const char *name)
@@ -187,4 +187,4 @@ void TupleOutDefaultImpl::add(const anything *p, const char *name)
 /* NOTE Following datatypes unsupported:
 n (int) [Py_ssize_t]*/
 
-}; //namespace pyhrol
+} //namespace pyhrol

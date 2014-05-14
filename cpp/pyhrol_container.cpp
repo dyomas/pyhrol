@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-03-07 00:18:03 +0400 (Fri, 07 Mar 2014) $
-// $Revision: 899 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #include <iostream>
 #include <sstream>
@@ -283,9 +283,9 @@ const char *Container::protof_doc(const size_t offset_type, const size_t offset_
   return m_artificials.at(artificials_t::key_type(offset_type, offset_call)).doc;
 }
 
-const char **Container::doc_by_address(const void *ptr) const
+const char **Container::doc_by_address(const size_t address) const
 {
-  address_idx_t::const_iterator iter = m_address_idx.find(reinterpret_cast<size_t>(ptr));
+  address_idx_t::const_iterator iter = m_address_idx.find(address);
   if (iter != m_address_idx.end())
   {
     const call_position &p = iter->second;
@@ -314,11 +314,11 @@ const char **Container::doc_by_address(const void *ptr) const
   throw InvalidLink();
 }
 
-const std::string Container::context_by_address(const void *ptr) const throw()
+const std::string Container::context_by_address(const size_t address) const throw()
 {
   bool valid = false;
   string retval;
-  address_idx_t::const_iterator iter = m_address_idx.find(reinterpret_cast<size_t>(ptr));
+  address_idx_t::const_iterator iter = m_address_idx.find(address);
 
   if (iter != m_address_idx.end())
   {
@@ -381,7 +381,7 @@ const std::string Container::context_by_address(const void *ptr) const throw()
   if (!valid)
   {
     ostringstream ostr;
-    ostr << "0x" << hex << reinterpret_cast<size_t>(ptr) << dec;
+    ostr << "0x" << hex << address << dec;
     retval += ostr.str();
   }
   return retval;
@@ -902,157 +902,157 @@ void Container::m_fill_others(others_t &others, const module &m) const
       const PyNumberMethods *pmethods = ptype->tp_as_number;
       if (pmethods->nb_negative)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_negative>", reinterpret_cast<void *>(pmethods->nb_negative));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_negative>", reinterpret_cast<size_t>(pmethods->nb_negative));
       }
       if (pmethods->nb_positive)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_positive>", reinterpret_cast<void *>(pmethods->nb_positive));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_positive>", reinterpret_cast<size_t>(pmethods->nb_positive));
       }
       if (pmethods->nb_absolute)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_absolute>", reinterpret_cast<void *>(pmethods->nb_absolute));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_absolute>", reinterpret_cast<size_t>(pmethods->nb_absolute));
       }
       if (pmethods->nb_nonzero)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_nonzero>", reinterpret_cast<void *>(pmethods->nb_nonzero));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_nonzero>", reinterpret_cast<size_t>(pmethods->nb_nonzero));
       }
       if (pmethods->nb_invert)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_invert>", reinterpret_cast<void *>(pmethods->nb_invert));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_invert>", reinterpret_cast<size_t>(pmethods->nb_invert));
       }
       if (pmethods->nb_int)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_int>", reinterpret_cast<void *>(pmethods->nb_int));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_int>", reinterpret_cast<size_t>(pmethods->nb_int));
       }
       if (pmethods->nb_long)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_long>", reinterpret_cast<void *>(pmethods->nb_long));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_long>", reinterpret_cast<size_t>(pmethods->nb_long));
       }
       if (pmethods->nb_float)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_float>", reinterpret_cast<void *>(pmethods->nb_float));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_float>", reinterpret_cast<size_t>(pmethods->nb_float));
       }
       if (pmethods->nb_oct)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_oct>", reinterpret_cast<void *>(pmethods->nb_oct));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_oct>", reinterpret_cast<size_t>(pmethods->nb_oct));
       }
       if (pmethods->nb_hex)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_hex>", reinterpret_cast<void *>(pmethods->nb_hex));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_hex>", reinterpret_cast<size_t>(pmethods->nb_hex));
       }
       if (pmethods->nb_index)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_index>", reinterpret_cast<void *>(pmethods->nb_index));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_index>", reinterpret_cast<size_t>(pmethods->nb_index));
       }
       if (!(ptype->tp_flags & Py_TPFLAGS_CHECKTYPES))
       {
         if (pmethods->nb_add)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_add>", reinterpret_cast<void *>(pmethods->nb_add));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_add>", reinterpret_cast<size_t>(pmethods->nb_add));
         }
         if (pmethods->nb_subtract)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_subtract>", reinterpret_cast<void *>(pmethods->nb_subtract));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_subtract>", reinterpret_cast<size_t>(pmethods->nb_subtract));
         }
         if (pmethods->nb_multiply)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_multiply>", reinterpret_cast<void *>(pmethods->nb_multiply));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_multiply>", reinterpret_cast<size_t>(pmethods->nb_multiply));
         }
         if (pmethods->nb_divide)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_divide>", reinterpret_cast<void *>(pmethods->nb_divide));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_divide>", reinterpret_cast<size_t>(pmethods->nb_divide));
         }
         if (pmethods->nb_remainder)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_remainder>", reinterpret_cast<void *>(pmethods->nb_remainder));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_remainder>", reinterpret_cast<size_t>(pmethods->nb_remainder));
         }
         if (pmethods->nb_divmod)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_divmod>", reinterpret_cast<void *>(pmethods->nb_divmod));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_divmod>", reinterpret_cast<size_t>(pmethods->nb_divmod));
         }
         if (pmethods->nb_power)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_power>", reinterpret_cast<void *>(pmethods->nb_power));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_power>", reinterpret_cast<size_t>(pmethods->nb_power));
         }
         if (pmethods->nb_lshift)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_lshift>", reinterpret_cast<void *>(pmethods->nb_lshift));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_lshift>", reinterpret_cast<size_t>(pmethods->nb_lshift));
         }
         if (pmethods->nb_rshift)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_rshift>", reinterpret_cast<void *>(pmethods->nb_rshift));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_rshift>", reinterpret_cast<size_t>(pmethods->nb_rshift));
         }
         if (pmethods->nb_and)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_and>", reinterpret_cast<void *>(pmethods->nb_and));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_and>", reinterpret_cast<size_t>(pmethods->nb_and));
         }
         if (pmethods->nb_xor)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_xor>", reinterpret_cast<void *>(pmethods->nb_xor));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_xor>", reinterpret_cast<size_t>(pmethods->nb_xor));
         }
         if (pmethods->nb_or)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_or>", reinterpret_cast<void *>(pmethods->nb_or));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_or>", reinterpret_cast<size_t>(pmethods->nb_or));
         }
         if (pmethods->nb_floor_divide)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_floor_divide>", reinterpret_cast<void *>(pmethods->nb_floor_divide));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_floor_divide>", reinterpret_cast<size_t>(pmethods->nb_floor_divide));
         }
         if (pmethods->nb_true_divide)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_true_divide>", reinterpret_cast<void *>(pmethods->nb_true_divide));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_true_divide>", reinterpret_cast<size_t>(pmethods->nb_true_divide));
         }
         if (pmethods->nb_inplace_add)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_add>", reinterpret_cast<void *>(pmethods->nb_inplace_add));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_add>", reinterpret_cast<size_t>(pmethods->nb_inplace_add));
         }
         if (pmethods->nb_inplace_subtract)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_subtract>", reinterpret_cast<void *>(pmethods->nb_inplace_subtract));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_subtract>", reinterpret_cast<size_t>(pmethods->nb_inplace_subtract));
         }
         if (pmethods->nb_inplace_multiply)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_multiply>", reinterpret_cast<void *>(pmethods->nb_inplace_multiply));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_multiply>", reinterpret_cast<size_t>(pmethods->nb_inplace_multiply));
         }
         if (pmethods->nb_inplace_divide)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_divide>", reinterpret_cast<void *>(pmethods->nb_inplace_divide));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_divide>", reinterpret_cast<size_t>(pmethods->nb_inplace_divide));
         }
         if (pmethods->nb_inplace_remainder)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_remainder>", reinterpret_cast<void *>(pmethods->nb_inplace_remainder));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_remainder>", reinterpret_cast<size_t>(pmethods->nb_inplace_remainder));
         }
         if (pmethods->nb_inplace_power)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_power>", reinterpret_cast<void *>(pmethods->nb_inplace_power));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_power>", reinterpret_cast<size_t>(pmethods->nb_inplace_power));
         }
         if (pmethods->nb_inplace_lshift)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_lshift>", reinterpret_cast<void *>(pmethods->nb_inplace_lshift));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_lshift>", reinterpret_cast<size_t>(pmethods->nb_inplace_lshift));
         }
         if (pmethods->nb_inplace_rshift)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_rshift>", reinterpret_cast<void *>(pmethods->nb_inplace_rshift));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_rshift>", reinterpret_cast<size_t>(pmethods->nb_inplace_rshift));
         }
         if (pmethods->nb_inplace_and)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_and>", reinterpret_cast<void *>(pmethods->nb_inplace_and));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_and>", reinterpret_cast<size_t>(pmethods->nb_inplace_and));
         }
         if (pmethods->nb_inplace_xor)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_xor>", reinterpret_cast<void *>(pmethods->nb_inplace_xor));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_xor>", reinterpret_cast<size_t>(pmethods->nb_inplace_xor));
         }
         if (pmethods->nb_inplace_or)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_or>", reinterpret_cast<void *>(pmethods->nb_inplace_or));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_or>", reinterpret_cast<size_t>(pmethods->nb_inplace_or));
         }
         if (pmethods->nb_inplace_floor_divide)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_floor_divide>", reinterpret_cast<void *>(pmethods->nb_inplace_floor_divide));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_floor_divide>", reinterpret_cast<size_t>(pmethods->nb_inplace_floor_divide));
         }
         if (pmethods->nb_inplace_true_divide)
         {
-          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_true_divide>", reinterpret_cast<void *>(pmethods->nb_inplace_true_divide));
+          others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<nb_inplace_true_divide>", reinterpret_cast<size_t>(pmethods->nb_inplace_true_divide));
         }
       }
     }
@@ -1061,23 +1061,23 @@ void Container::m_fill_others(others_t &others, const module &m) const
       const PySequenceMethods *pmethods = ptype->tp_as_sequence;
       if (pmethods->sq_length)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_length>", reinterpret_cast<void *>(pmethods->sq_length));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_length>", reinterpret_cast<size_t>(pmethods->sq_length));
       }
       if (pmethods->sq_repeat)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_repeat>", reinterpret_cast<void *>(pmethods->sq_repeat));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_repeat>", reinterpret_cast<size_t>(pmethods->sq_repeat));
       }
       if (pmethods->sq_item)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_item>", reinterpret_cast<void *>(pmethods->sq_item));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_item>", reinterpret_cast<size_t>(pmethods->sq_item));
       }
       if (pmethods->sq_slice)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_slice>", reinterpret_cast<void *>(pmethods->sq_slice));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_slice>", reinterpret_cast<size_t>(pmethods->sq_slice));
       }
       if (pmethods->sq_inplace_repeat)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_inplace_repeat>", reinterpret_cast<void *>(pmethods->sq_inplace_repeat));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<sq_inplace_repeat>", reinterpret_cast<size_t>(pmethods->sq_inplace_repeat));
       }
     }
     if (ptype->tp_as_mapping)
@@ -1086,97 +1086,97 @@ void Container::m_fill_others(others_t &others, const module &m) const
 
       if (pmethods->mp_length)
       {
-        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<mp_length>", reinterpret_cast<void *>(pmethods->mp_length));
+        others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<mp_length>", reinterpret_cast<size_t>(pmethods->mp_length));
       }
     }
 
     if (ptype->tp_dealloc)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_dealloc>", reinterpret_cast<void *>(ptype->tp_dealloc));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_dealloc>", reinterpret_cast<size_t>(ptype->tp_dealloc));
     }
     if (ptype->tp_print)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_print>", reinterpret_cast<void *>(ptype->tp_print));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_print>", reinterpret_cast<size_t>(ptype->tp_print));
     }
     if (ptype->tp_getattr)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_getattr>", reinterpret_cast<void *>(ptype->tp_getattr));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_getattr>", reinterpret_cast<size_t>(ptype->tp_getattr));
     }
     if (ptype->tp_setattr)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_setattr>", reinterpret_cast<void *>(ptype->tp_setattr));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_setattr>", reinterpret_cast<size_t>(ptype->tp_setattr));
     }
     if (ptype->tp_compare)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_compare>", reinterpret_cast<void *>(ptype->tp_compare));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_compare>", reinterpret_cast<size_t>(ptype->tp_compare));
     }
     if (ptype->tp_repr)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_repr>", reinterpret_cast<void *>(ptype->tp_repr));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_repr>", reinterpret_cast<size_t>(ptype->tp_repr));
     }
     if (ptype->tp_hash)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_hash>", reinterpret_cast<void *>(ptype->tp_hash));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_hash>", reinterpret_cast<size_t>(ptype->tp_hash));
     }
     if (ptype->tp_call)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_call>", reinterpret_cast<void *>(ptype->tp_call));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_call>", reinterpret_cast<size_t>(ptype->tp_call));
     }
     if (ptype->tp_str)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_str>", reinterpret_cast<void *>(ptype->tp_str));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_str>", reinterpret_cast<size_t>(ptype->tp_str));
     }
     if (ptype->tp_getattro)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_getattro>", reinterpret_cast<void *>(ptype->tp_getattro));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_getattro>", reinterpret_cast<size_t>(ptype->tp_getattro));
     }
     if (ptype->tp_traverse)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_traverse>", reinterpret_cast<void *>(ptype->tp_traverse));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_traverse>", reinterpret_cast<size_t>(ptype->tp_traverse));
     }
     if (ptype->tp_clear)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_clear>", reinterpret_cast<void *>(ptype->tp_clear));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_clear>", reinterpret_cast<size_t>(ptype->tp_clear));
     }
     if (ptype->tp_richcompare)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_richcompare>", reinterpret_cast<void *>(ptype->tp_richcompare));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_richcompare>", reinterpret_cast<size_t>(ptype->tp_richcompare));
     }
     if (ptype->tp_iter)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_iter>", reinterpret_cast<void *>(ptype->tp_iter));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_iter>", reinterpret_cast<size_t>(ptype->tp_iter));
     }
     if (ptype->tp_iternext)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_iternext>", reinterpret_cast<void *>(ptype->tp_iternext));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_iternext>", reinterpret_cast<size_t>(ptype->tp_iternext));
     }
     if (ptype->tp_descr_get)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_descr_get>", reinterpret_cast<void *>(ptype->tp_descr_get));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_descr_get>", reinterpret_cast<size_t>(ptype->tp_descr_get));
     }
     if (ptype->tp_descr_set)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_descr_set>", reinterpret_cast<void *>(ptype->tp_descr_set));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_descr_set>", reinterpret_cast<size_t>(ptype->tp_descr_set));
     }
     if (ptype->tp_init)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_init>", reinterpret_cast<void *>(ptype->tp_init));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_init>", reinterpret_cast<size_t>(ptype->tp_init));
     }
     if (ptype->tp_alloc)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_alloc>", reinterpret_cast<void *>(ptype->tp_alloc));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_alloc>", reinterpret_cast<size_t>(ptype->tp_alloc));
     }
     if (ptype->tp_free)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_free>", reinterpret_cast<void *>(ptype->tp_free));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_free>", reinterpret_cast<size_t>(ptype->tp_free));
     }
     if (ptype->tp_is_gc)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_is_gc>", reinterpret_cast<void *>(ptype->tp_is_gc));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_is_gc>", reinterpret_cast<size_t>(ptype->tp_is_gc));
     }
     if (ptype->tp_del)
     {
-      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_del>", reinterpret_cast<void *>(ptype->tp_del));
+      others[others_t::key_type(offset_type, offset_call ++)] = others_t::mapped_type("<tp_del>", reinterpret_cast<size_t>(ptype->tp_del));
     }
   }
 }
@@ -1254,7 +1254,7 @@ void Container::m_indexate_addresses_and_names(address_idx_t &address_idx, name_
     while (iter_others != m_others.end() && iter_others->first.first == pos)
     {
       call_position p = {ctOther, iter_others->first.first, iter_others->first.second, m.offset_self};
-      address_idx.insert(address_idx_t::value_type(reinterpret_cast<size_t>(iter_others->second.second), p));
+      address_idx.insert(address_idx_t::value_type(iter_others->second.second, p));
       iter_others ++;
     }
   }
@@ -1632,4 +1632,4 @@ void Container::m_add_function(const char *name, const PyCFunction &function, co
   mf.insert(-- mf.end(), md);
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol

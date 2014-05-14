@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,80 +27,80 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-11-29 03:26:15 +0400 (Fri, 29 Nov 2013) $
-// $Revision: 847 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #include "smart_flag_int.h"
 
 using namespace std;
 
-SmartFlagInt::SmartFlagInt(const ftree_t *pftree)
+template <typename T> SmartFlagNumeric<T>::SmartFlagNumeric(const ftree_t *pftree)
   : m_assigned(false)
   , m_value(0)
   , m_pftree(pftree)
 {
 }
 
-SmartFlagInt::SmartFlagInt(const ftree_t *pftree, const int value)
+template <typename T> SmartFlagNumeric<T>::SmartFlagNumeric(const ftree_t *pftree, const T value)
   : m_assigned(false)
   , m_value(value)
   , m_pftree(pftree)
 {
 }
 
-SmartFlagInt::SmartFlagInt(const SmartFlagInt &cp)
+template <typename T> SmartFlagNumeric<T>::SmartFlagNumeric(const SmartFlagNumeric<T> &cp)
   : m_assigned(cp.m_assigned)
   , m_value(cp.m_value)
   , m_pftree(cp.m_pftree)
 {
 }
 
-const string SmartFlagInt::as_string() const
+template <typename T> const string SmartFlagNumeric<T>::as_string() const
 {
   ostringstream os;
   m_pftree->convert(os, m_value);
   return os.str();
 }
 
-void SmartFlagInt::convert(ostream &os) const
+template <typename T> void SmartFlagNumeric<T>::convert(ostream &os) const
 {
   m_pftree->convert(os, m_value);
 }
 
-const SmartFlagInt::ftree_t *SmartFlagInt::operator ->() const
+template <typename T> const typename SmartFlagNumeric<T>::ftree_t *SmartFlagNumeric<T>::operator ->() const
 {
   return m_pftree;
 }
 
-bool SmartFlagInt::assigned() const
+template <typename T> bool SmartFlagNumeric<T>::assigned() const
 {
   return m_assigned;
 }
 
-const int SmartFlagInt::get() const
+template <typename T> const T SmartFlagNumeric<T>::get() const
 {
   return m_value;
 }
 
-SmartFlagInt::operator const int () const
+template <typename T> SmartFlagNumeric<T>::operator const T () const
 {
   return m_value;
 }
 
-void SmartFlagInt::assign(const int &i)
+template <typename T> void SmartFlagNumeric<T>::assign(const T &i)
 {
   m_pftree->check(i);
   m_value = i;
   m_assigned = true;
 }
 
-void SmartFlagInt::assign(const string &s)
+template <typename T> void SmartFlagNumeric<T>::assign(const string &s)
 {
   m_value = m_pftree->convert(s);
   m_assigned = true;
 }
 
-SmartFlagInt &SmartFlagInt::operator = (const int &i)
+template <typename T> SmartFlagNumeric<T> &SmartFlagNumeric<T>::operator = (const T &i)
 {
   m_pftree->check(i);
   m_value = i;
@@ -108,21 +108,30 @@ SmartFlagInt &SmartFlagInt::operator = (const int &i)
   return *this;
 }
 
-SmartFlagInt &SmartFlagInt::operator = (const string &s)
+template <typename T> SmartFlagNumeric<T> &SmartFlagNumeric<T>::operator = (const string &s)
 {
   m_value = m_pftree->convert(s);
   m_assigned = true;
   return *this;
 }
 
-void SmartFlagInt::clear()
+template <typename T> void SmartFlagNumeric<T>::clear()
 {
   m_assigned = false;
   m_value = 0;
 }
 
-ostream &operator << (ostream &os, const SmartFlagInt &f)
+template <typename T> ostream &operator << (ostream &os, const SmartFlagInt &f)
 {
   f.convert(os);
   return os;
 }
+
+template <typename T> ostream &operator << (ostream &os, const SmartFlagUint &f)
+{
+  f.convert(os);
+  return os;
+}
+
+template class SmartFlagNumeric<int32_t>;
+template class SmartFlagNumeric<uint32_t>;

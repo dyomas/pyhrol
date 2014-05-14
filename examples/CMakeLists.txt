@@ -1,4 +1,4 @@
-#  Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+#  Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
 #  GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
 #
 #  Redistribution and use in source and binary forms, with or without
@@ -25,8 +25,8 @@
 #  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 #  SUCH DAMAGE.
 #
-# $Date: 2014-02-27 22:19:34 +0400 (Thu, 27 Feb 2014) $
-# $Revision: 896 $
+# $Date: 2014-05-15 00:45:21 +0400 (Thu, 15 May 2014) $
+# $Revision: 916 $
 
 cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 
@@ -71,7 +71,7 @@ foreach (PYHROL_TARGET ${OTHER_EXAMPLES})
 endforeach()
 
 
-string(REGEX REPLACE "[ ]*\([0-9]+\)[ ]*" "example_\\1;" ERRORS_EXAMPLES "0900 0910 0920 0925 0926 0930 0940 0950")
+string(REGEX REPLACE "[ ]*\([0-9]+\)[ ]*" "example_\\1;" ERRORS_EXAMPLES "0900 0910 0920 0925 0926 0930 0940 0950 0960")
 foreach (PYHROL_TARGET ${ERRORS_EXAMPLES})
   if (${PYHROL_TARGET} MATCHES "example_0(910|926)")
 #     No such target
@@ -144,8 +144,12 @@ foreach (PYHROL_TARGET ${PYHROL_TARGETS})
   elseif (${PYHROL_TARGET} MATCHES "example_(0910|0926)")
     #No such target
   else()
+    set (TMP_PROPS "USE_TRACER")
+    if (${PYHROL_TARGET} STREQUAL "example_0960" AND DISABLE_EXPLICIT_TEMPLATE_INSTANTIATION)
+      set (TMP_PROPS "DISABLE_EXPLICIT_TEMPLATE_INSTANTIATION;${TMP_PROPS}")
+    endif()
     set_target_properties (${PYHROL_TARGET} PROPERTIES
-      COMPILE_DEFINITIONS "USE_TRACER"
+      COMPILE_DEFINITIONS "${TMP_PROPS}"
     )
   endif()
 endforeach()

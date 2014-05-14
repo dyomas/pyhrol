@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-04 02:49:13 +0400 (Wed, 04 Dec 2013) $
-// $Revision: 854 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_type_special_h__
 #define __pyhrol_type_special_h__
@@ -81,6 +81,6 @@ private:
   template <void (*F)(const PyTypeObject &, Tuples &)> static PyObject *m_class_method3(PyObject */*self*/, PyObject */*args*/, PyObject */*kwds*/);
 };
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_type_special_h__

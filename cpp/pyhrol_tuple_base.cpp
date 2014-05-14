@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-23 20:22:57 +0400 (Sun, 23 Feb 2014) $
-// $Revision: 895 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #include <sys/types.h>
 #include <cxxabi.h>
@@ -317,8 +317,8 @@ void TupleBase::value(ostream &os, const size_t pos) const
         os << (is_null ? "NULL" : "<Py_UNICODE>");
         shown = true;
         break;
-      case '&': //out_cconv_t, out_conv_t
-        os << (is_null ? "NULL" : "<int (*)([const] PyObject *, void *)>");
+      case '&': //in_conv_t, out_cconv_t
+        os << m_arg_names[pos];
         shown = true;
         break;
       case 'N':
@@ -660,4 +660,4 @@ const string demangle(const std::type_info &ti)
   return ::demangle(ti);
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol

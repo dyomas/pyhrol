@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-10 16:05:29 +0400 (Tue, 10 Dec 2013) $
-// $Revision: 862 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #ifndef __pyhrol_type_number_common_hpp__
 #define __pyhrol_type_number_common_hpp__
@@ -125,7 +125,7 @@ template <typename T> void TypeNumberCommon<T>::m_init()
 
 template <typename T> template <void (TypeNumberCommon<T>::*M)(const Ptr<T> &, const Ptr<const T> &) const> void TypeNumberCommon<T>::call_wrapper<M>::call()
 {
-  TypeNumberCommon &type = dynamic_cast<TypeNumberCommon &>(TypeBase<T>::m_get());
+  TypeNumberCommon<T> &type = dynamic_cast<TypeNumberCommon<T> &>(TypeBase<T>::m_get());
   typename TypeBase<T>::T_struct *pres = NULL;
   const T &obj = reinterpret_cast<const typename TypeBase<T>::T_struct *>(self)->endosome;
   try
@@ -222,35 +222,35 @@ template <typename T> TypeNumberCommon<T>::call_nonzero::call_nonzero(PyObject *
 template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_negative(PyObject *arg)
 {
   call_wrapper<&TypeNumberCommon<T>::negative> cw(arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cw, reinterpret_cast<void *>(mediator_nb_negative));
+  exceptionHandler::call(cw, reinterpret_cast<size_t>(mediator_nb_negative));
   return cw.retval;
 }
 
 template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_positive(PyObject *arg)
 {
   call_wrapper<&TypeNumberCommon<T>::positive> cw(arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cw, reinterpret_cast<void *>(mediator_nb_positive));
+  exceptionHandler::call(cw, reinterpret_cast<size_t>(mediator_nb_positive));
   return cw.retval;
 }
 
 template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_absolute(PyObject *arg)
 {
   call_wrapper<&TypeNumberCommon<T>::absolute> cw(arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cw, reinterpret_cast<void *>(mediator_nb_absolute));
+  exceptionHandler::call(cw, reinterpret_cast<size_t>(mediator_nb_absolute));
   return cw.retval;
 }
 
 template <typename T> int TypeNumberCommon<T>::mediator_nb_nonzero(PyObject *arg)
 {
   call_nonzero cn(arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cn, reinterpret_cast<void *>(mediator_nb_nonzero));
+  exceptionHandler::call(cn, reinterpret_cast<size_t>(mediator_nb_nonzero));
   return cn.retval;
 }
 
 template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_invert(PyObject *arg)
 {
   call_wrapper<&TypeNumberCommon<T>::invert> cw(arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cw, reinterpret_cast<void *>(mediator_nb_invert));
+  exceptionHandler::call(cw, reinterpret_cast<size_t>(mediator_nb_invert));
   return cw.retval;
 }
 
@@ -258,7 +258,7 @@ template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_int(PyObject *a
 {
   to_long_converter ci;
   call_converter cc(ci, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cc, reinterpret_cast<void *>(mediator_nb_int));
+  exceptionHandler::call(cc, reinterpret_cast<size_t>(mediator_nb_int));
   return cc.retval;
 }
 
@@ -266,7 +266,7 @@ template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_long(PyObject *
 {
   to_long_converter cl;
   call_converter cc(cl, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cc, reinterpret_cast<void *>(mediator_nb_long));
+  exceptionHandler::call(cc, reinterpret_cast<size_t>(mediator_nb_long));
   return cc.retval;
 }
 
@@ -274,7 +274,7 @@ template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_float(PyObject 
 {
   to_double_converter cf;
   call_converter cc(cf, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cc, reinterpret_cast<void *>(mediator_nb_float));
+  exceptionHandler::call(cc, reinterpret_cast<size_t>(mediator_nb_float));
   return cc.retval;
 }
 
@@ -282,7 +282,7 @@ template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_oct(PyObject *a
 {
   to_oct_converter co;
   call_converter cc(co, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cc, reinterpret_cast<void *>(mediator_nb_oct));
+  exceptionHandler::call(cc, reinterpret_cast<size_t>(mediator_nb_oct));
   return cc.retval;
 }
 
@@ -290,14 +290,14 @@ template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_hex(PyObject *a
 {
   to_hex_converter ch;
   call_converter cc(ch, arg, __PRETTY_FUNCTION__);
-  exceptionHandler::call(cc, reinterpret_cast<void *>(mediator_nb_hex));
+  exceptionHandler::call(cc, reinterpret_cast<size_t>(mediator_nb_hex));
   return cc.retval;
 }
 
 template <typename T> PyObject *TypeNumberCommon<T>::mediator_nb_index(PyObject *arg)
 {
   call_wrapper<&TypeNumberCommon<T>::index> cw(arg, __PRETTY_FUNCTION__, raiseError);
-  exceptionHandler::call(cw, reinterpret_cast<void *>(mediator_nb_index));
+  exceptionHandler::call(cw, reinterpret_cast<size_t>(mediator_nb_index));
   return cw.retval;
 }
 

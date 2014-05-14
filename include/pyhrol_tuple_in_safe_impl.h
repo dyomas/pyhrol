@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-06 00:23:12 +0400 (Thu, 06 Feb 2014) $
-// $Revision: 886 $
+// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Revision: 906 $
 
 #ifndef __pyhrol_tuple_in_safe_impl_h__
 #define __pyhrol_tuple_in_safe_impl_h__
@@ -74,6 +74,6 @@ class TupleInSafeImpl: public TupleBaseSafe, public TupleIn
     virtual void add(const anything *, const char *name);
 };
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 #endif //__pyhrol_tuple_in_safe_impl_h__

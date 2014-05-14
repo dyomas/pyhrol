@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-08-14 02:05:16 +0400 (Wed, 14 Aug 2013) $
-// $Revision: 750 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #include "pyhrol_tuple_fill_state.h"
 #include "smart_flag.hpp"
@@ -45,7 +45,7 @@ TupleFillState::~TupleFillState()
 {
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 SMART_FLAG_INSTANTIATION_BEGIN(pyhrol::TupleFillState::modes, t)
 {
@@ -53,4 +53,4 @@ SMART_FLAG_INSTANTIATION_BEGIN(pyhrol::TupleFillState::modes, t)
   t.add(npOr, pyhrol::TupleFillState::modGetter, "Getter", pyhrol::TupleFillState::modUnspecified);
   t.add(npOr, pyhrol::TupleFillState::modSetter, "Setter", pyhrol::TupleFillState::modGetter);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(pyhrol::TupleFillState::modes, t)

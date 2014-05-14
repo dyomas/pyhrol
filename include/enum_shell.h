@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-04-14 11:48:09 +0400 (Sun, 14 Apr 2013) $
-// $Revision: 701 $
+// $Date: 2014-04-22 18:14:41 +0400 (Tue, 22 Apr 2014) $
+// $Revision: 913 $
 
 #ifndef __enum_shell_h__
 #define __enum_shell_h__
@@ -157,7 +157,6 @@ template <typename E> struct enum_2_string_stree
   private:
     enum_2_string_stree(const enum_2_string_stree &);
     enum_2_string_stree &operator =(const enum_2_string_stree &);
-
     enum node_types
     {
         ntiAnd = 0x01
@@ -198,10 +197,22 @@ template <typename E> struct enum_2_string_stree
     _stg_t m_stg;
     uint32_t m_depth_max;
 
+    struct stack_item
+    {
+      const _st_node *pnode;
+      E value;
+    };
+    struct stack_item_reverse
+    {
+      const _st_node *pnode;
+      bool is_filter;
+    };
+
     bool m_convert(std::string */*pres*/, const E /*value*/) const;
     E m_convert_reverse(_ids_t &/*ids*/) const;
     void m_build_error_description(std::ostream &/*os*/, _ids_t &/*ids*/) const;
     static const E m_calculate_value(node_types &/*_type*/, const bool /*is_true*/, const _st_node */*_pparent*/);
+    static std::string m_graph_node (const _st_node */*pnode*/, const size_t /*node_id*/, const bool /*label*/ = true, const bool /*indent*/ = true);
     static void m_graph_node (std::ostream &/*os*/, const _st_node */*pnode*/, const size_t /*node_id*/, const bool /*label*/ = true, const bool /*indent*/ = true);
 
   #ifdef _DEBUG_UTILS

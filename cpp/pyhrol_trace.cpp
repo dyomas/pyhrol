@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-01-26 21:24:54 +0400 (Sun, 26 Jan 2014) $
-// $Revision: 881 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #include <iostream>
 #include <iomanip>
@@ -243,4 +243,4 @@ SMART_FLAG_INSTANTIATION_BEGIN(traceParts, t)
   t.add(npAnd, tpMediator, "mediator", tpInternal);
   t.add(npAnd, tpUser, "user", tpMediator);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(traceParts, t)

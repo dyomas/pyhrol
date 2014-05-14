@@ -39,6 +39,6 @@ Returns previously assigned message
 
 <nb_or>
 ->    O&O& 
-      soother::converter, void *    &O                                     
-      soother::converter, void *    &O                                     
+      in_conv_t, void *             &O                                     
+      in_conv_t, void *             &O                                     
 

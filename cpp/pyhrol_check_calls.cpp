@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-13 01:38:33 +0400 (Thu, 13 Feb 2014) $
-// $Revision: 888 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #include <sstream>
 #include "pyhrol_check_calls.h"
@@ -261,7 +261,7 @@ CheckCalls::CheckCalls(const CheckCalls &cp)
 {
 }
 
-}; //namespace pyhrol
+} //namespace pyhrol
 
 SMART_FLAG_INSTANTIATION_BEGIN(pyhrol::CheckCalls::calls, t)
 {
@@ -281,4 +281,4 @@ SMART_FLAG_INSTANTIATION_BEGIN(pyhrol::CheckCalls::calls, t)
   t.add(npOr, pyhrol::CheckCalls::c_choose_build_variant, "choose_build_variant", pyhrol::CheckCalls::c_parsed_variant);
   t.add(npOr, pyhrol::CheckCalls::c_just_filled, "just_filled", pyhrol::CheckCalls::c_choose_build_variant);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(pyhrol::CheckCalls::calls, t)

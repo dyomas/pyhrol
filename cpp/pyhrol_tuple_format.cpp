@@ -1,5 +1,5 @@
 /*
- *   Copyright (c) 2013 Pyhrol, pyhrol@rambler.ru
+ *   Copyright (c) 2013, 2014, Pyhrol, pyhrol@rambler.ru
  *   GEO: N55.703431,E37.623324 .. N48.742359,E44.536997
  * 
  *   Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-11-28 15:03:59 +0400 (Thu, 28 Nov 2013) $
-// $Revision: 845 $
+// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Revision: 914 $
 
 #include <string.h>
 
@@ -234,7 +234,7 @@ void TupleFormat::m_init()
   m_error_body = ret_val;
 }
 
-}; //pyhrol
+} //pyhrol
 
 
 using namespace pyhrol;
@@ -244,14 +244,14 @@ SMART_FLAG_INSTANTIATION_BEGIN(tupleFormatFlags, t)
   t.add(npOr, tffNo, "");
   t.add(npOr, tffLeft, "Left", tffNo);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(tupleFormatFlags, t)
 
 SMART_FLAG_INSTANTIATION_BEGIN(tupleFormatModifiers, t)
 {
   t.add(npOr, tfmSignificant, "significant");
   t.add(npOr, tfmAll, "all", tfmSignificant);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(tupleFormatModifiers, t)
 
 SMART_FLAG_INSTANTIATION_BEGIN(tupleFormatParts, t)
 {
@@ -266,5 +266,5 @@ SMART_FLAG_INSTANTIATION_BEGIN(tupleFormatParts, t)
   t.add(npOr, tfpError, "Error", tfpAddress);
   t.add(npOr, tfpPercent, "Percent", tfpError);
 }
-SMART_FLAG_INSTANTIATION_END(t);
+SMART_FLAG_INSTANTIATION_END(tupleFormatParts, t)
 
