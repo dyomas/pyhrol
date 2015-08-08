@@ -27,16 +27,13 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
 public:
-  const string &message() const
+  const std::string &message() const
   {
     return m_msg;
   }
@@ -52,17 +49,17 @@ public:
 };
 
 
-class PyType: public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
-    : TypeBase<MyClass2>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass", "help")
   {
     m_add_getter<PyType, &PyType::get>("message_ro", NULL);
     m_add_getseter<PyType, &PyType::get, &PyType::set>("message_rw", NULL);
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
@@ -79,9 +76,9 @@ class PyType: public TypeWrapper<MyClass2>
     obj.~MyClass2();
   }
 
-  void get(const Ptr<const MyClass2> &obj, Tuples &_args) const
+  void get(const pyhrol::Ptr<const MyClass2> &obj, pyhrol::Tuples &_args) const
   {
-    string msg;
+    std::string msg;
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_BUILD_VALUE_1(NULL, _args, msg.c_str())
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -91,7 +88,7 @@ class PyType: public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  void set(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void set(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
@@ -103,7 +100,7 @@ class PyType: public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)

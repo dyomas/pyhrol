@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-09-18 02:14:07 +0400 (Wed, 18 Sep 2013) $
+// $Date: 2013-09-18 02:14:07 +0400 (Ср., 18 сент. 2013) $
 // $Revision: 785 $
 
 #ifndef __self_addressed_cstring_h__

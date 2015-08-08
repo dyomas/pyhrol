@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-05-15 00:45:21 +0400 (Thu, 15 May 2014) $
-// $Revision: 916 $
+// $Date: 2014-05-25 00:37:43 +0400 (Вс., 25 мая 2014) $
+// $Revision: 923 $
 
 #ifndef __pyhrol_type_h__
 #define __pyhrol_type_h__
@@ -86,7 +86,7 @@ public:
   TypeWrapper();
   ~TypeWrapper();
 
-  virtual PyObject *convert(T &obj);
+  virtual PyObject *convert(const T &obj);
 
 protected:
   template <void (I::*F)(const Ptr<T> &, Tuples &) const> void m_add_method(const char */*name*/, const char */*help*/);

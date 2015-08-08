@@ -6,39 +6,39 @@ example_0495
 === Help
 <ctor>
 Constructors:
-->    s 
+->    (str) 
       char */*not null*/            s   msg                                
 
 say
 Returns previously assigned message
 
 <nb_add>
-->    O!i MyClass + int
+->    (MyClass, int) MyClass + int
       PyTypeObject, $MyClass        !O                                     self
       int32_t                       i                                      int
-->    iO! int + MyClass
+->    (int, MyClass) int + MyClass
       int32_t                       i                                      int
       PyTypeObject, $MyClass        !O                                     self
-->    O!s MyClass + str
+->    (MyClass, str) MyClass + str
       PyTypeObject, $MyClass        !O                                     self
       char */*not null*/            s                                      str
-->  3 sO! str + MyClass
+->  3 (str, MyClass) str + MyClass
       char */*not null*/            s                                      str
       PyTypeObject, $MyClass        !O                                     self
-->  4 O!O! MyClass + MyClass
+->  4 (MyClass, MyClass) MyClass + MyClass
       PyTypeObject, $MyClass        !O                                     _1
       PyTypeObject, $MyClass        !O                                     _2
 
 <nb_inplace_add>
-->    i MyClass += int
+->    (int) MyClass += int
       int32_t                       i                                      int
-->    s MyClass += str
+->    (str) MyClass += str
       char */*not null*/            s                                      str
-->    O! MyClass += MyClass
+->    (MyClass) MyClass += MyClass
       PyTypeObject, $MyClass        !O                                     MyClass
 
 <nb_or>
-->    O&O& 
+->    (object, object) 
       in_conv_t, void *             &O                                     
       in_conv_t, void *             &O                                     
 

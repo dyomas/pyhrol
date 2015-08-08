@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void function_with_args(Tuples &_args)
+void function_with_args(pyhrol::Tuples &_args)
 {
   int i;
   const char *pch;
@@ -42,17 +39,15 @@ void function_with_args(Tuples &_args)
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-    << "  My args: i = " << i << ", pch = \"" << pch << "\"" << endl
+  std::cout
+    << __func__ << ": I am called\n"
+    << "  My args: i = " << i << ", pch = \"" << pch << "\"\n"
   ;
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_with_args, "Function takes primitive args but returns no values")
 }

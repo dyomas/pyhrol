@@ -27,22 +27,18 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
+#include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-
-class PyType: public TypePointer<MyClass>
+class PyType: public pyhrol::TypePointer<MyClass>
 {
   PyType()
-    : TypeBase<pointer<MyClass> >("MyClass", "help")
+    : pyhrol::TypeBase<pyhrol::pointer<MyClass> >("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  void say(const Ptr<MyClass> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -52,19 +48,19 @@ class PyType: public TypePointer<MyClass>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(pointer<MyClass> &obj, Tuples &_args) const
+  virtual void constructor(pyhrol::pointer<MyClass> &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    new (&obj) pointer<MyClass> (*msg ? new MyClass(msg) : NULL);
+    new (&obj) pyhrol::pointer<MyClass> (*msg ? new MyClass(msg) : NULL);
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void destructor(pointer<MyClass> &obj) const
+  virtual void destructor(pyhrol::pointer<MyClass> &obj) const
   {
     delete &*obj;
     obj.~pointer();

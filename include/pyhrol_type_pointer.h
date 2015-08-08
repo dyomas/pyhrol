@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-04-07 01:20:06 +0300 (Вт., 07 апр. 2015) $
+// $Revision: 1029 $
 
 #ifndef __pyhrol_type_pointer_h__
 #define __pyhrol_type_pointer_h__
@@ -75,9 +75,9 @@ protected:
   template <void (I::*F)(const Ptr<T> &, Tuples &) const> void m_add_method_with_keywords(const char */*name*/, const char */*help*/);
   template <void (I::*F)(const Ptr<T> &, Tuples &) const> void m_add_method_no_args(const char */*name*/, const char */*help*/);
 
-  template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method(const char */*name*/, const char */*help*/);
-  template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_with_keywords(const char */*name*/, const char */*help*/);
-  template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_no_args(const char */*name*/, const char */*help*/);
+  template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_const(const char */*name*/, const char */*help*/);
+  template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_with_keywords_const(const char */*name*/, const char */*help*/);
+  template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_no_args_const(const char */*name*/, const char */*help*/);
 
   template <void (I::*G)(const Ptr<const T> &, Tuples &) const> void m_add_getter(const char */*name*/, const char */*doc*/);
   template <void (I::*S)(const Ptr<T> &, Tuples &) const> void m_add_setter(const char */*name*/, const char */*doc*/);
@@ -88,9 +88,9 @@ protected:
   template <typename O, void (O::*F)(const Ptr<T> &, Tuples &) const> void m_add_method_with_keywords(const char */*name*/, const char */*help*/);
   template <typename O, void (O::*F)(const Ptr<T> &, Tuples &) const> void m_add_method_no_args(const char */*name*/, const char */*help*/);
 
-  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method(const char */*name*/, const char */*help*/);
-  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_with_keywords(const char */*name*/, const char */*help*/);
-  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_no_args(const char */*name*/, const char */*help*/);
+  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_const(const char */*name*/, const char */*help*/);
+  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_with_keywords_const(const char */*name*/, const char */*help*/);
+  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void m_add_method_no_args_const(const char */*name*/, const char */*help*/);
 
   template <typename O, void (O::*G)(const Ptr<const T> &, Tuples &) const> void m_add_getter(const char */*name*/, const char */*doc*/);
   template <typename O, void (O::*S)(const Ptr<T> &, Tuples &) const> void m_add_setter(const char */*name*/, const char */*doc*/);
@@ -120,9 +120,9 @@ private:
   template <typename O, void (O::*F)(const Ptr<T> &, Tuples &) const> static PyObject *m_method2(PyObject */*self*/, PyObject */*args*/);
   template <typename O, void (O::*F)(const Ptr<T> &, Tuples &) const> static PyObject *m_method3(PyObject */*self*/, PyObject */*args*/, PyObject */*kwds*/);
 
-  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> static PyObject *m_method(PyObject */*self*/);
-  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> static PyObject *m_method2(PyObject */*self*/, PyObject */*args*/);
-  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> static PyObject *m_method3(PyObject */*self*/, PyObject */*args*/, PyObject */*kwds*/);
+  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> static PyObject *m_method_const(PyObject */*self*/);
+  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> static PyObject *m_method2_const(PyObject */*self*/, PyObject */*args*/);
+  template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> static PyObject *m_method3_const(PyObject */*self*/, PyObject */*args*/, PyObject */*kwds*/);
 
   template <typename O, void (O::*G)(const Ptr<const T> &, Tuples &) const> static PyObject *m_getter(PyObject */*self*/, void */*closure*/);
   template <typename O, void (O::*S)(const Ptr<T> &, Tuples &) const> static int m_setter(PyObject */*self*/, PyObject */*value*/, void */*closure*/);

@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void retval_function(Tuples &_args)
+void retval_function(pyhrol::Tuples &_args)
 {
   int i;
   const char *pch;
@@ -45,17 +42,15 @@ void retval_function(Tuples &_args)
   i = 1;
   pch = "One";
 
-  cout
-    << __func__ << ": I am called" << endl
-    << "  My return values: i = " << i << ", pch = \"" << pch << "\"" << endl
+  std::cout
+    << __func__ << ": I am called\n"
+    << "  My return values: i = " << i << ", pch = \"" << pch << "\"\n"
   ;
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION_NO_ARGS(retval_function, "Function with return value")
 }

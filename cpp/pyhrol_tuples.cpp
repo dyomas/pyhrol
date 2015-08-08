@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-09-28 22:13:35 +0400 (Sat, 28 Sep 2013) $
+// $Date: 2013-09-28 22:13:35 +0400 (Сб., 28 сент. 2013) $
 // $Revision: 791 $
 
 #include "pyhrol_tuples.h"

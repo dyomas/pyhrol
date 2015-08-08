@@ -27,11 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
@@ -49,17 +46,17 @@ public:
   }
 };
 
-class PyType: public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
-    : TypeBase<MyClass2>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass", "help")
   {
     m_add_member<double, &MyClass2::weight>("weight", NULL);
     m_add_member<const char *, &MyClass2::say_spanish>("say_spanish", NULL);
     m_add_member<char [29], &MyClass2::say_russian>("say_russian", NULL);
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

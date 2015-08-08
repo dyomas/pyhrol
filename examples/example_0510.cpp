@@ -29,23 +29,20 @@
 
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
 struct myClass
 {
-  typedef map<string, string> strings_t;
+  typedef std::map<std::string, std::string> strings_t;
   strings_t strings;
 };
 
-class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
+class PyType: public pyhrol::TypeMap<myClass>, public pyhrol::TypeWrapper<myClass>
 {
   PyType()
-    : TypeBase<myClass>("MyClass", "help")
+    : pyhrol::TypeBase<myClass>("MyClass", "help")
   {
   }
 
-  virtual void constructor(myClass &obj, Tuples &_args) const
+  virtual void constructor(myClass &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -60,7 +57,7 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
     obj.~myClass();
   }
 
-  virtual void print(ostream &os, const myClass &obj) const
+  virtual void print(std::ostream &os, const myClass &obj) const
   {
     bool delimit = false;
     os << '{';
@@ -80,11 +77,11 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
     return obj->strings.size();
   }
 
-  virtual void get(const Ptr<const myClass> &obj, Tuples &_args) const
+  virtual void get(const pyhrol::Ptr<const myClass> &obj, pyhrol::Tuples &_args) const
   {
     const char *arg;
     long long num;
-    string res;
+    std::string res;
 
     PYHROL_PARSE_TUPLE_1(NULL, _args, arg)
     PYHROL_PARSE_TUPLE_1(NULL, _args, num)
@@ -92,7 +89,7 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
     PYHROL_BUILD_VALUE_1(NULL, _args, res.c_str())
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     switch (_args.parsed_variant())
     {
       case 0:
@@ -107,7 +104,7 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void del(const Ptr<myClass> &obj, Tuples &_args) const
+  virtual void del(const pyhrol::Ptr<myClass> &obj, pyhrol::Tuples &_args) const
   {
     const char *arg;
     long long num;
@@ -117,7 +114,7 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     switch (_args.parsed_variant())
     {
       case 0:
@@ -130,13 +127,13 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
 
     if (!obj->strings.erase(ostr.str()))
     {
-      throw out_of_range(string("Item \"") + ostr.str() + "\" not found");
+      throw std::out_of_range(std::string("Item \"") + ostr.str() + "\" not found");
     }
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void assign(const Ptr<myClass> &obj, Tuples &_args) const
+  virtual void assign(const pyhrol::Ptr<myClass> &obj, pyhrol::Tuples &_args) const
   {
     const char *key_str, *value_str;
     long long key_num, value_num;
@@ -148,7 +145,7 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream key, value;
+    std::ostringstream key, value;
     switch (_args.parsed_variant())
     {
       case 0:
@@ -171,7 +168,7 @@ class PyType: public TypeMap<myClass>, public TypeWrapper<myClass>
 
     if (!obj->strings.insert(myClass::strings_t::value_type(key.str(), value.str())).second)
     {
-      throw out_of_range(string("Item \"") + key.str() + "\" already exists");
+      throw std::out_of_range(std::string("Item \"") + key.str() + "\" already exists");
     }
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)

@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-18 01:08:27 +0400 (Fri, 18 Apr 2014) $
-// $Revision: 909 $
+// $Date: 2014-06-18 05:19:55 +0400 (Ср., 18 июня 2014) $
+// $Revision: 952 $
 
 #include <errno.h>
 // Enables series of macros U?INT(8|16|32|64)_(MIN|MAX) used below
@@ -577,19 +577,18 @@ int64_t string_to_int64(const string &src)
 
 uint64_t c_string_to_uint64(const char *src)
 {
-  const char *errstr;
-  uint64_t res = strtonum(src, 0, UINT64_MAX, &errstr);
+  char *endptr;
+  uint64_t res = strtoull(src, &endptr, 10);
   int errno_copy = errno;
 
-  if (errstr)
+  if (*endptr)
   {
     ostringstream ostr;
-    ostr << "Conversion failed from string \"" << src << "\" to uint64_t (";
+    ostr << "Conversion failed from string \"" << src << "\" to uint64_t";
     if (errno_copy)
     {
-      ostr << errno_copy << ", ";
+      ostr << ", " << errno_copy << ", " << strerror(errno_copy);
     }
-    ostr << errstr << ")";
     throw runtime_error(ostr.str());
   }
   return res;

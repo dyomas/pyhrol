@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_type_number_any_hpp__
 #define __pyhrol_type_number_any_hpp__
@@ -575,216 +575,216 @@ bool actual_call_inplace(exceptionHandler &, Tuples &, const bool is_probe, PyOb
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_add(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_add)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_add)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::add> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_subtract(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_subtract)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_subtract)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::subtract> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_multiply(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_multiply)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_multiply)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::multiply> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_divide(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_divide)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_divide)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::divide> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_remainder(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_remainder)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_remainder)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::remainder> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_divmod(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_remainder)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_remainder)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_divmod c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_power(PyObject *self, PyObject *power, PyObject *modulo)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_power)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_power)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::power> c(*tuples, __PRETTY_FUNCTION__, !self);
   return actual_call(c, *tuples, self, power, modulo) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_lshift(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_lshift)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_lshift)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::lshift> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_rshift(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_rshift)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_rshift)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::rshift> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_and(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_and)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_and)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::nb_and> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_xor(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_xor)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_xor)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::nb_xor> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_or(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_or)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_or)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::nb_or> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_floor_divide(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_floor_divide)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_floor_divide)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::floor_divide> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_true_divide(PyObject *left, PyObject *right)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_true_divide)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_true_divide)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_std<&TypeNumberAny<T>::true_divide> c(*tuples, __PRETTY_FUNCTION__, !left);
   return actual_call(c, *tuples, left, right) ? clear_on_error(c.retval) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_add(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_add)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_add)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_add> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_subtract(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_subtract)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_subtract)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_subtract> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_multiply(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_multiply)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_multiply)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_multiply> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_divide(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_divide)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_divide)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_divide> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_remainder(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_remainder)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_remainder)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_remainder> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_power(PyObject *self, PyObject *power, PyObject *modulo)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_power)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_power)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_power> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, power, modulo) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_lshift(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_lshift)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_lshift)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_lshift> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_rshift(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_rshift)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_rshift)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_rshift> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_and(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_and)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_and)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_and> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_xor(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_xor)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_xor)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_xor> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_or(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_or)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_or)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_or> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_floor_divide(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_floor_divide)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_floor_divide)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_floor_divide> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }
 
 template <typename T> PyObject *TypeNumberAny<T>::mediator_nb_inplace_true_divide(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_true_divide)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_nb_inplace_true_divide)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_inplace<&TypeNumberAny<T>::inplace_true_divide> c(*tuples, self, __PRETTY_FUNCTION__);
   return actual_call_inplace(c, *tuples, !self, args) ? clear_on_error(c.self) : NULL;
 }

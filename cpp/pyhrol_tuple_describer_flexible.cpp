@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-01-26 21:24:54 +0400 (Sun, 26 Jan 2014) $
-// $Revision: 881 $
+// $Date: 2015-07-23 01:08:43 +0300 (Чт., 23 июля 2015) $
+// $Revision: 1049 $
 
 #include <sstream>
 #include <iomanip>
@@ -343,10 +343,13 @@ void TupleDescriberFlexible::m_description_formatted_header
         }
         break;
       case tfpSignature: //S, сигнатура C++
-        ostr << m_signature(tuple, dir);
+        ostr << m_signature_cpp(tuple, dir);
         break;
       case tfpPythonFormatString: //F, форматная строка Python
         ostr << tuple.format_no_throw();
+        break;
+      case tfpPythonSignature: //P, сигнатура Python
+        ostr << m_signature_python(tuple, dir);
         break;
       case tfpDescription: //D[*] описание
         if (opt == optPerLineWithHeader)
@@ -447,7 +450,7 @@ void TupleDescriberFlexible::m_description_formatted_body
             string tmp;
             if (field.modifier == tfmSignificant)
             {
-              tmp.append(tuple.args()[idx.significant].type_name);
+              tmp.append(tuple.args().at(idx.significant).type_name_cpp);
             }
             else
             {
@@ -457,7 +460,7 @@ void TupleDescriberFlexible::m_description_formatted_body
                 {
                   tmp.append(", ");
                 }
-                tmp.append(tuple.args()[pos].type_name);
+                tmp.append(tuple.args().at(pos).type_name_cpp);
               }
             }
             ostr << tmp;
@@ -468,7 +471,7 @@ void TupleDescriberFlexible::m_description_formatted_body
             string tmp;
             if (field.modifier == tfmSignificant)
             {
-              const TupleBase::arg &arg = tuple.args()[idx.significant];
+              const TupleBase::arg &arg = tuple.args().at(idx.significant);
               tmp += arg.format_unit;
               if (arg.format_unit2)
               {
@@ -479,7 +482,7 @@ void TupleDescriberFlexible::m_description_formatted_body
             {
               for (uint8_t pos = idx.begin; pos != idx.end; pos ++)
               {
-                const TupleBase::arg &arg = tuple.args()[pos];
+                const TupleBase::arg &arg = tuple.args().at(pos);
                 tmp += arg.format_unit;
                 if (arg.format_unit2)
                 {
@@ -489,6 +492,9 @@ void TupleDescriberFlexible::m_description_formatted_body
             }
             ostr << tmp;
           }
+          break;
+        case tfpPythonSignature: //P*, Python variable type
+          ostr << tuple.args().at(idx.significant).type_name_python;
           break;
         case tfpDescription: //D[*], описание
           if (opt != optRaw)
@@ -598,7 +604,7 @@ void TupleDescriberFlexible::m_description_formatted_body
   }
 }
 
-const string TupleDescriberFlexible::m_signature(const TupleBase &tuple, const tupleDirection dir) const
+const string TupleDescriberFlexible::m_signature_cpp(const TupleBase &tuple, const tupleDirection dir) const
 {
   ostringstream ostr;
   TupleBase::args_t::const_iterator iter_arg = tuple.args().begin();
@@ -612,7 +618,7 @@ const string TupleDescriberFlexible::m_signature(const TupleBase &tuple, const t
       ostr << ", ";
     }
     const TupleBase::arg &arg = *iter_arg;
-    ostr << arg.type_name;
+    ostr << arg.type_name_cpp;
     if (dir == dirIn)
     {
       const TupleBase::idx &idx = *iter_idx;
@@ -626,6 +632,63 @@ const string TupleDescriberFlexible::m_signature(const TupleBase &tuple, const t
     if (++ pos == iter_idx->end)
     {
       iter_idx ++;
+    }
+  }
+  return ostr.str();
+}
+
+const string TupleDescriberFlexible::m_signature_python(const TupleBase &tuple, const tupleDirection dir) const
+{
+  ostringstream ostr;
+  TupleBase::idx_t::const_iterator iter_idx = tuple.index().begin();
+  size_t pos = 0;
+
+  if (tuple.opts & optTuple)
+  {
+    ostr << '(';
+  }
+  else if (dir == dirOut)
+  {
+    if (tuple.opts & optList)
+    {
+      ostr << '[';
+    }
+    else if (tuple.opts & optDictionary)
+    {
+      ostr << '{';
+    }
+  }
+
+  while (iter_idx != tuple.index().end())
+  {
+    const TupleBase::idx &idx = *iter_idx;
+    const TupleBase::arg &arg = tuple.args().at(idx.significant);
+    if (iter_idx != tuple.index().begin())
+    {
+      ostr << ", ";
+    }
+    ostr << arg.type_name_python;
+    if (dir == dirIn && idx.optional)
+    {
+      ostr << " = " << tuple.value(idx.significant, TupleBase::vsPython);
+    }
+
+    iter_idx ++;
+  }
+
+  if (tuple.opts & optTuple)
+  {
+    ostr << ')';
+  }
+  else if (dir == dirOut)
+  {
+    if (tuple.opts & optList)
+    {
+      ostr << ']';
+    }
+    else if (tuple.opts & optDictionary)
+    {
+      ostr << '}';
     }
   }
   return ostr.str();

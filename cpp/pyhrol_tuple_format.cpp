@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
-// $Revision: 914 $
+// $Date: 2015-07-23 01:08:43 +0300 (Чт., 23 июля 2015) $
+// $Revision: 1049 $
 
 #include <string.h>
 
@@ -44,7 +44,7 @@ namespace pyhrol
 using namespace std;
 
 const string
-    TupleFormat::defaultTupleHeaderFormat = "%-3d%2.2n %F %D\n"
+    TupleFormat::defaultTupleHeaderFormat = "%-3d%2.2n (%P) %D\n"
   , TupleFormat::defaultTupleBodyFormat = "      %-30aS%-4aF%-20N%-15aV%D\n"
   , TupleFormat::defaultErrorHeaderFormat = "%-3d%2.2n *** Errors:\n"
   , TupleFormat::defaultErrorBodyFormat = "      %E\n"
@@ -203,6 +203,7 @@ void TupleFormat::m_init()
   addSpecifier('n', tfpSerialNumber);
   addSpecifier('S', tfpSignature);
   addSpecifier('F', tfpPythonFormatString);
+  addSpecifier('P', tfpPythonSignature);
   addSpecifier('D', tfpDescription);
   addSpecifier('N', tfpName);
   addSpecifier('V', tfpValue);
@@ -259,7 +260,8 @@ SMART_FLAG_INSTANTIATION_BEGIN(tupleFormatParts, t)
   t.add(npOr, tfpSerialNumber, "SerialNumber", tfpDirection);
   t.add(npOr, tfpSignature, "Signature", tfpSerialNumber);
   t.add(npOr, tfpPythonFormatString, "PythonFormatString", tfpSignature);
-  t.add(npOr, tfpDescription, "Description", tfpPythonFormatString);
+  t.add(npOr, tfpPythonSignature, "PythonSignature", tfpPythonFormatString);
+  t.add(npOr, tfpDescription, "Description", pyhrol::tfpPythonSignature);
   t.add(npOr, tfpName, "Name", tfpDescription);
   t.add(npOr, tfpValue, "Value", tfpName);
   t.add(npOr, tfpAddress, "Address", tfpValue);

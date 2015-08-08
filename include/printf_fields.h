@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-05-21 13:23:01 +0400 (Tue, 21 May 2013) $
+// $Date: 2013-05-21 13:23:01 +0400 (Вт., 21 мая 2013) $
 // $Revision: 718 $
 
 #ifndef __printf_fields_h__

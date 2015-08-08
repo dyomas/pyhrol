@@ -27,21 +27,17 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
+#include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-
-class PyType: public TypeWrapper<MyClass>
+class PyType: public pyhrol::TypeWrapper<MyClass>
 {
   PyType()
-    : TypeBase<MyClass>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass>("MyClass", "help")
   {
   }
 
-  virtual void constructor(MyClass &obj, Tuples &_args) const
+  virtual void constructor(MyClass &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

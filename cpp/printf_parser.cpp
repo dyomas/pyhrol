@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
+// $Date: 2014-04-30 17:24:23 +0400 (Ср., 30 апр. 2014) $
 // $Revision: 914 $
 
 #include "printf_parser.h"

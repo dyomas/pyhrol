@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-08-08 11:22:54 +0300 (Сб., 08 авг. 2015) $
+// $Revision: 1052 $
 
 #ifndef __pyhrol_tuple_fill_state_h__
 #define __pyhrol_tuple_fill_state_h__
@@ -55,7 +55,7 @@ public:
   virtual void clear() = 0;
 
   TupleFillState();
-  ~TupleFillState();
+  virtual ~TupleFillState();
 };
 
 } //namespace pyhrol

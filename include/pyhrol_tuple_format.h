@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-07-20 23:24:41 +0300 (Пн., 20 июля 2015) $
+// $Revision: 1047 $
 
 #ifndef __pyhrol_tuple_format_h__
 #define __pyhrol_tuple_format_h__
@@ -45,6 +45,7 @@ namespace pyhrol
      n      порядковый номер (сигнатуры, аргумента или ошибки)
   [a]S      сигнатура/тип C++
   [a]F      форматная строка Python
+     P      сигнатура/тип Python
      D      описание
      N      имя (ключевое слово, только TupleIn)
   [a]V      значение (только TupleIn и TupleBase::idx::optional = true)
@@ -55,6 +56,7 @@ Head Table
    +     + n
    +     + S
    +     + F
+   +     + P
    +     + D
          + N
          + V
@@ -68,8 +70,8 @@ Head Table
   a показывать все значения
 Способы представления:
   ошибки (все параметры игнорируются)
-  строка "{[%dnSFD]}"
-  таблица "{%*.*[nSFDNVA]}"
+  строка "{[%dnSFPD]}"
+  таблица "{%*.*[nSFPDNVA]}"
 */
 
 enum tupleFormatFlags
@@ -90,6 +92,7 @@ enum tupleFormatParts
   , tfpSerialNumber
   , tfpSignature
   , tfpPythonFormatString
+  , tfpPythonSignature
   , tfpDescription
   , tfpName
   , tfpValue

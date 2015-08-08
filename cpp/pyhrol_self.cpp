@@ -27,12 +27,15 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-23 20:22:57 +0400 (Sun, 23 Feb 2014) $
-// $Revision: 895 $
+// $Date: 2015-07-20 23:24:41 +0300 (Пн., 20 июля 2015) $
+// $Revision: 1047 $
 
 #include "pyhrol.h"
 #include "pyhrol_self.h"
 #include "pyhrol_self_modules.h"
+#include "pyhrol_self_functions.h"
+#include "pyhrol_self_types.h"
+#include "pyhrol_self_methods.h"
 #include "pyhrol_trace.h"
 #include "pyhrol_tuple_format.h"
 #include "pyhrol_index.h"
@@ -91,11 +94,11 @@ void ContainerObject::set_trace_options(Tuples &_args)
     case 0:
       if (src)
       {
-        _G_show_parts = trace_parts_flag_t(src);
+        reset_tracer(trace_parts_flag_t(src));
       }
       else
       {
-        _G_show_parts = tpNo;
+        reset_tracer(tpNo);
       }
       break;
     case 1:
@@ -121,8 +124,8 @@ void ContainerObject::get_trace_options(Tuples &_args)
   PYHROL_BUILD_VALUE_2("\nas string\nas numeric", _args, res.c_str(), res_int)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  res = trace_parts_flag_t(_G_show_parts).to_string();
-  res_int = _G_show_parts;
+  res = trace_parts_flag_t(tracer_state()).to_string();
+  res_int = tracer_state();
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
@@ -241,7 +244,7 @@ void ContainerClass::init()
   cls->m_add_static_method<ContainerObject::is_signature_hack_enabled>("is_signature_hack_enabled", NULL);
   cls->m_add_static_method<ContainerObject::enable_signature_hack>("enable_signature_hack", NULL);
   cls->m_add_static_method<ContainerObject::disable_signature_hack>("disable_signature_hack", NULL);
-  cls->m_add_static_method_with_keywords<ContainerObject::set_help_format>("set_help_format", "set help format and rebuild help info for all loaded pyhrol modules\n\
+  cls->m_add_static_method_with_keywords<ContainerObject::set_help_format>("set_help_format", "set help format and rebuild help info for all loaded pyhrol dynamically linked modules\n\
 help format is printf like format strings with any specifications of the form \'%[<flag>][<width>][.<precision>][<modifier>]<part>\', where:\n\
   <flag> may be only \'-\', means left alignment\n\
   <width> is minimum field width, shorter fields padded with spaces\n\
@@ -253,6 +256,7 @@ help format is printf like format strings with any specifications of the form \'
    +  +  +  +    n -- serial number of tuple or parameter in tuple \n\
    +  +       [a]S -- C++ signature\n\
    +  +       [a]F -- Python format string\n\
+   +  +          P -- Python signature\n\
    +  +          D -- description of tuple or parameter in tuple \n\
       +          N -- tuple parameter name, only for input tuples with keywords\n\
       +       [a]V -- tuple parameter default value, only for optional parameteres in input tuples\n\
@@ -271,4 +275,25 @@ ContainerClass &ContainerClass::get()
 
 } //namespace pyhrol
 
+
 using namespace pyhrol;
+
+static void __attribute__ ((constructor)) __on_load_self()
+{
+  /* NOTE
+  Порядок инициализации классов принципиален для прохождения тестов,
+  поэтому все классы инициализируются здесь
+  */
+  Module::init();
+  ModulesIterator::init();
+  Modules::init();
+  Type::init();
+  TypesIterator::init();
+  Types::init();
+  Method::init();
+  MethodsIterator::init();
+  Methods::init();
+  Function::init();
+  FunctionsIterator::init();
+  Functions::init();
+}

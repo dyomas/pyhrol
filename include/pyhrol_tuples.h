@@ -27,13 +27,14 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_tuples_h__
 #define __pyhrol_tuples_h__
 
 #include <stdint.h>
+#include <memory>
 #include "pyhrol_common.h"
 
 typedef struct _object PyObject;
@@ -148,6 +149,20 @@ class Tuples
 };
 
 typedef Tuples Args;
+typedef
+#if __cplusplus > 201100L
+std::unique_ptr<Tuples>
+#else
+std::auto_ptr<Tuples>
+#endif
+tuples_auto_release_t;
+typedef
+#if __cplusplus > 201100L
+std::unique_ptr<TuplesData>
+#else
+std::auto_ptr<TuplesData>
+#endif
+tuples_data_auto_release_t;
 
 
 } //namespace pyhrol

@@ -27,22 +27,18 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
+#include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-
-class PyType: TypeWrapper<MyClass>
+class PyType: pyhrol::TypeWrapper<MyClass>
 {
   PyType()
-    : TypeBase<MyClass>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass>("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  void say(const Ptr<MyClass> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -52,7 +48,7 @@ class PyType: TypeWrapper<MyClass>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(MyClass &obj, Tuples &_args) const
+  virtual void constructor(MyClass &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

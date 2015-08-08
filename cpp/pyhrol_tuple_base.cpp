@@ -27,18 +27,20 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-08-08 11:22:54 +0300 (Сб., 08 авг. 2015) $
+// $Revision: 1052 $
 
 #include <sys/types.h>
 #include <cxxabi.h>
 #include <sstream>
+#include <pyport.h>
+#include <object.h>
+#include <complexobject.h>
 
 #include "pyhrol_tuple_base.h"
 #include "pyhrol_container.h"
 #include "pyhrol_keywords.h"
 #include "pyhrol_trace.h"
-#include "demangling.h"
 
 using namespace std;
 
@@ -165,7 +167,7 @@ const TupleBase::strings_t &TupleBase::errors() const
   return m_errors;
 }
 
-void TupleBase::value(ostream &os, const size_t pos) const
+void TupleBase::value(ostream &os, const size_t pos, const value_styles vs) const
 {
   size_t length;
   void const *pdata = m_values.get(length, pos);
@@ -202,7 +204,7 @@ void TupleBase::value(ostream &os, const size_t pos) const
         */
         if (is_null)
         {
-          os << "(null)";
+          os << (vs == vsCpp ? "(null)" : "\"\"");
         }
         else
         {
@@ -213,7 +215,14 @@ void TupleBase::value(ostream &os, const size_t pos) const
       case 'B': //bool
         if (length)
         {
-          os << (*reinterpret_cast<const bool *>(pdata) ? "true" : "false");
+          if (vs == vsCpp)
+          {
+            os << (*reinterpret_cast<const bool *>(pdata) ? "true" : "false");
+          }
+          else if (vs == vsPython)
+          {
+            os << (*reinterpret_cast<const bool *>(pdata) ? "True" : "False");
+          }
           shown = true;
         }
         break;
@@ -221,6 +230,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
         if (length)
         {
           os << static_cast<const int16_t>(*reinterpret_cast<const uint8_t *>(pdata));
+          if (vs == vsCpp)
+          {
+            os << "U";
+          }
           shown = true;
         }
         break;
@@ -235,6 +248,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
         if (length)
         {
           os << *reinterpret_cast<const uint16_t *>(pdata);
+          if (vs == vsCpp)
+          {
+            os << "U";
+          }
           shown = true;
         }
         break;
@@ -249,6 +266,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
         if (length)
         {
           os << *reinterpret_cast<const uint32_t *>(pdata);
+          if (vs == vsCpp)
+          {
+            os << "U";
+          }
           shown = true;
         }
         break;
@@ -256,6 +277,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
         if (length)
         {
           os << *reinterpret_cast<const long *>(pdata);
+          if (vs == vsCpp)
+          {
+            os << "L";
+          }
           shown = true;
         }
         break;
@@ -263,6 +288,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
         if (length)
         {
           os << *reinterpret_cast<const unsigned long *>(pdata);
+          if (vs == vsCpp)
+          {
+            os << "UL";
+          }
           shown = true;
         }
         break;
@@ -270,6 +299,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
         if (length)
         {
           os << *reinterpret_cast<const int64_t *>(pdata);
+          if (vs == vsCpp)
+          {
+            os << "LL";
+          }
           shown = true;
         }
         break;
@@ -277,6 +310,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
         if (length)
         {
           os << *reinterpret_cast<const uint64_t *>(pdata);
+          if (vs == vsCpp)
+          {
+            os << "ULL";
+          }
           shown = true;
         }
         break;
@@ -295,35 +332,108 @@ void TupleBase::value(ostream &os, const size_t pos) const
         }
         break;
       case 'D':
-        os << (is_null ? "NULL" : "<Py_complex>");
+        if (is_null)
+        {
+          os << (vs == vsCpp ? "NULL" : "None");
+        }
+        else
+        {
+          const Py_complex &val = *reinterpret_cast<const Py_complex *>(pdata);
+          if (vs == vsCpp)
+          {
+            os << '{' << val.real << ", " << val.imag << '}';
+          }
+          else if (vs == vsPython)
+          {
+            os << '(' << val.real << "+" << val.imag << 'j' << ')';
+          }
+        }
         shown = true;
         break;
       case '!':
         if (length)
         {
-          os << '<' << reinterpret_cast<const PyTypeObject *>(pdata)->tp_name << '>';
+          if (vs == vsCpp)
+          {
+            os << '<' << reinterpret_cast<const PyTypeObject *>(pdata)->tp_name << '>';
+          }
+          else if (vs == vsPython)
+          {
+            os << reinterpret_cast<const PyTypeObject *>(pdata)->tp_name;
+          }
           shown = true;
         }
         break;
       case 'U':
-        os << (is_null ? "NULL" : "<PyUnicodeObject>");
+        if (is_null)
+        {
+          os << (vs == vsCpp ? "NULL" : "None");
+        }
+        else if (vs == vsCpp)
+        {
+          os << "<PyUnicodeObject>";
+        }
+        else if (vs == vsPython)
+        {
+          os << "unicode";
+        }
         shown = true;
         break;
       case 'S':
-        os << (is_null ? "NULL" : "<PyStringObject>");
+        if (is_null)
+        {
+          os << (vs == vsCpp ? "NULL" : "None");
+        }
+        else if (vs == vsCpp)
+        {
+          os << "<PyStringObject>";
+        }
+        else if (vs == vsPython)
+        {
+          os << "str";
+        }
         shown = true;
         break;
       case 'u':
-        os << (is_null ? "NULL" : "<Py_UNICODE>");
+        if (is_null)
+        {
+          os << (vs == vsCpp ? "NULL" : "None");
+        }
+        else if (vs == vsCpp)
+        {
+          os << "<Py_UNICODE>";
+        }
+        else if (vs == vsPython)
+        {
+          os << "unicode";
+        }
         shown = true;
         break;
       case '&': //in_conv_t, out_cconv_t
-        os << m_arg_names[pos];
+        if (vs == vsCpp)
+        {
+          os << m_arg_names[pos];
+        }
+        else if (vs == vsPython)
+        {
+          os << "object";
+        }
         shown = true;
         break;
       case 'N':
       case 'O': //const void *value, const PyObject *
-        os << (is_null ? "NULL" : "<PyObject>");
+        if (is_null)
+        {
+          os << (vs == vsCpp ? "NULL" : "None");
+        }
+        else if (vs == vsCpp)
+        {
+          os << "<PyObject>";
+        }
+        else if (vs == vsPython)
+        {
+          os << "object";
+        }
         shown = true;
         break;
       default:
@@ -344,10 +454,10 @@ void TupleBase::value(ostream &os, const size_t pos) const
   }
 }
 
-const string TupleBase::value(const size_t pos) const
+const string TupleBase::value(const size_t pos, const value_styles vs) const
 {
   ostringstream ostr;
-  value(ostr, pos);
+  value(ostr, pos, vs);
   return ostr.str();
 }
 
@@ -393,7 +503,8 @@ bool TupleBase::m_arg_is_optional() const
 void TupleBase::m_add_format_unit
 (
     const char format_unit
-  , const char *type_name
+  , const char *type_name_cpp
+  , const char *type_name_python
   , const char *arg_name
   , const void *value
   , const size_t value_length
@@ -402,7 +513,7 @@ void TupleBase::m_add_format_unit
 {
   if (!m_format_actual)
   {
-    struct arg _arg = {format_unit, format_unit2, type_name ? type_name : ""};
+    struct arg _arg = {format_unit, format_unit2, type_name_cpp ? type_name_cpp : "", type_name_python ? type_name_python : ""};
     m_args.push_back(_arg);
     m_arg_names.push_back(arg_name ? arg_name : "");
   }
@@ -422,8 +533,10 @@ void TupleBase::m_swap_type_names(const size_t pos)
     , &o = m_args[pos] //PyObject
   ;
 
-  o.type_name = "$" + t.type_name;
-  t.type_name = "PyTypeObject";
+  o.type_name_cpp = "$" + t.type_name_cpp;
+  o.type_name_python = t.type_name_cpp;
+  t.type_name_cpp = "PyTypeObject";
+  t.type_name_python = "";
 }
 
 void TupleBase::build_format(const bool with_keywords)
@@ -653,11 +766,6 @@ void TupleBase::build_format(const bool with_keywords)
   }
 
   m_format_actual = true;
-}
-
-const string demangle(const std::type_info &ti)
-{
-  return ::demangle(ti);
 }
 
 } //namespace pyhrol

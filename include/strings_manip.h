@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-08-29 23:50:28 +0400 (Thu, 29 Aug 2013) $
+// $Date: 2013-08-29 23:50:28 +0400 (Чт., 29 авг. 2013) $
 // $Revision: 759 $
 
 #ifndef __strings_manip_h__

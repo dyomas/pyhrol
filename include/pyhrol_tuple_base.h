@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-07-20 23:24:41 +0300 (Пн., 20 июля 2015) $
+// $Revision: 1047 $
 
 #ifndef __pyhrol_tuple_h__
 #define __pyhrol_tuple_h__
@@ -52,7 +52,10 @@ class TupleBase
           format_unit
         , format_unit2
       ;
-      std::string type_name;
+      std::string
+          type_name_cpp
+        , type_name_python
+      ;
     };
     struct idx
     {
@@ -92,8 +95,14 @@ class TupleBase
     const addresses_t &addresses() const;
     const strings_t &errors() const;
 
-    void value(std::ostream &, const size_t pos) const;
-    const std::string value(const size_t pos) const;
+    enum value_styles
+    {
+        vsCpp
+      , vsPython
+    };
+
+    void value(std::ostream &, const size_t pos, const value_styles = vsCpp) const;
+    const std::string value(const size_t pos, const value_styles = vsCpp) const;
     void address(std::ostream &, const size_t pos) const;
     const std::string address(const size_t pos) const;
 
@@ -105,7 +114,8 @@ class TupleBase
     void m_add_format_unit
     (
         const char format_unit
-      , const char *type_name
+      , const char *type_name_cpp
+      , const char *type_name_python
       , const char *arg_name
       , const void *value
       , const size_t value_length

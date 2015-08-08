@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
+// $Date: 2014-04-04 16:35:38 +0400 (Пт., 04 апр. 2014) $
 // $Revision: 906 $
 
 #ifndef __smart_flag_int_h__

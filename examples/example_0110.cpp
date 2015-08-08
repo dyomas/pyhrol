@@ -31,10 +31,7 @@
 #include <pyhrol.h>
 #include <pyerrors.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void function_with_errors(Tuples &_args)
+void function_with_errors(pyhrol::Tuples &_args)
 {
   uint8_t behaviour_variant = 0;
 
@@ -43,14 +40,12 @@ void function_with_errors(Tuples &_args)
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-  ;
+  std::cout << __func__ << ": I am called\n";
 
   switch (behaviour_variant)
   {
     case 0:
-      throw runtime_error("Intentional exception");
+      throw std::runtime_error("Intentional exception");
       break;
     case 1:
       PyErr_Format(PyExc_MemoryError, "I do not like this memory, insert another chip, please");
@@ -62,9 +57,7 @@ void function_with_errors(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_with_errors, "Function demonstraits errors and exceptions")
 }

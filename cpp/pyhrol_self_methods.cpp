@@ -27,11 +27,10 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
-// $Revision: 914 $
+// $Date: 2015-05-29 00:10:31 +0300 (Пт., 29 мая 2015) $
+// $Revision: 1034 $
 
 #include "pyhrol.h"
-#include "pyhrol_self_functions.h"
 #include "pyhrol_self_modules.h"
 #include "pyhrol_self_types.h"
 #include "pyhrol_self_methods.h"
@@ -409,26 +408,3 @@ SMART_FLAG_INSTANTIATION_BEGIN(methodKinds, t)
   t.add(npOr, mkSpecialCall, "specialCall", mkGetsetter);
 }
 SMART_FLAG_INSTANTIATION_END(methodKinds, t)
-
-
-static void __on_load_self() __attribute__ ((constructor));
-
-void __on_load_self()
-{
-  /* NOTE
-  Порядок инициализации классов принципиален для прохождения тестов,
-  поэтому все классы инициализируются здесь
-  */
-  Module::init();
-  ModulesIterator::init();
-  Modules::init();
-  Type::init();
-  TypesIterator::init();
-  Types::init();
-  Method::init();
-  MethodsIterator::init();
-  Methods::init();
-  Function::init();
-  FunctionsIterator::init();
-  Functions::init();
-}

@@ -27,10 +27,9 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
-// $Revision: 914 $
+// $Date: 2015-04-25 01:51:34 +0300 (Сб., 25 апр. 2015) $
+// $Revision: 1033 $
 
-#include <iostream>
 #include <iomanip>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,96 +50,112 @@ using namespace std;
 namespace pyhrol
 {
 
-static traceParts m_init_trace_parts()
+static traceParts m_init_trace_parts(const traceParts *new_value = NULL)
 {
-  const char *const env_name = "PYHROL_TRACE";
-  trace_parts_flag_t ret_val (tpNo);
-  const char *val = getenv(env_name);
+  static trace_parts_flag_t ret_val (tpNo);
 
-  if (val && *val)
+  if (new_value)
   {
-    try
+    ret_val = *new_value;
+  }
+  else if (!ret_val.assigned())
+  {
+    const char *const env_name = "PYHROL_TRACE";
+    const char *val = getenv(env_name);
+
+    if (val && *val)
     {
-      ret_val = val;
+      try
+      {
+        ret_val = val;
+      }
+      catch(const exception &ex)
+      {
+        ret_val = tpNo;
+        PyErr_Format(PyExc_UserWarning, "Environment variable \"%s\" has invalid value, tracing not started\n  %s\n  Possible values: %s", env_name, ex.what(), ret_val->statement().c_str());
+        PyErr_PrintEx(0);
+        PyErr_Clear();
+      }
     }
-    catch(const exception &ex)
+    else
     {
-      PyErr_Format(PyExc_UserWarning, "Environment variable \"%s\" has invalid value, tracing not started\n  %s\n  Possible values: %s", env_name, ex.what(), ret_val->statement().c_str());
-      PyErr_PrintEx(0);
-      PyErr_Clear();
+      ret_val = tpNo;
     }
   }
   return ret_val;
 }
 
 typedef map<size_t, size_t> addresses_t;
-traceParts _G_show_parts = m_init_trace_parts();
-addresses_t _G_addresses;
+static addresses_t &addresses()
+{
+  static addresses_t retval;
+  return retval;
+}
 
-static void trace_head(const traceParts tp, const void *ptr, const char *signature)
+static void trace_head(const traceParts tp, const traceParts show_parts, const void *ptr, const char *signature)
 {
   if (tp & tpInternal)
   {
-    cerr << 'I';
+    fprintf(stderr, "I");
   }
   else if (tp & tpMediator)
   {
-    cerr << 'M';
+    fprintf(stderr, "M");
   }
   else if (tp & tpUser)
   {
-    cerr << 'U';
+    fprintf(stderr, "U");
   }
 
-  const size_t buff_size = 32;
-  char buff[buff_size];
   const size_t address = reinterpret_cast<size_t>(ptr);
 
-  if (!(_G_show_parts & tpHideAddress))
+  if (!(show_parts & tpHideAddress))
   {
   #ifdef __LP64__
     if (address)
     {
-      snprintf(buff, buff_size, " 0x%016lX", address);
-      cerr << buff;
+      fprintf(stderr, " 0x%016lX", address);
     }
     else
     {
-      cerr << setw(19) << ' ';
+      fprintf(stderr, "%*c", 19, ' ');
     }
   #else
     if (address)
     {
-      snprintf(buff, buff_size, " 0x%08X", address);
-      cerr << buff;
+      fprintf(stderr, " 0x%08X", address);
     }
     else
     {
-      cerr << setw(11) << ' ';
+      fprintf(stderr, "%*c", 11, ' ');
     }
   #endif
   }
 
-  if (_G_show_parts & tpShowNum)
+  if (show_parts & tpShowNum)
   {
-    cerr << setw(5);
     if (address)
     {
-      addresses_t::const_iterator iter = _G_addresses.find(address);
-      if (iter == _G_addresses.end())
+      const addresses_t::const_iterator iter = addresses().find(address);
+      size_t num;
+      if (iter == addresses().end())
       {
-        const size_t num = _G_addresses.size();
-        _G_addresses[address] = num;
-        cerr << num;
+        num = addresses().size();
+        addresses()[address] = num;
       }
       else
       {
-        cerr << iter->second;
+        num = iter->second;
       }
+#ifdef __LP64__
+      fprintf(stderr, "%5lu", num);
+#else
+      fprintf(stderr, "%5u", num);
+#endif
     }
     else
     {
-      cerr << ' ';
+      fprintf(stderr, "%*c", 5, ' ');
     }
   }
 
@@ -160,7 +175,7 @@ static void trace_head(const traceParts tp, const void *ptr, const char *signatu
       switch (st.part)
       {
         case ParserState::pSignature:
-          cerr << ' ' << string(begin, end);
+          fprintf(stderr, " %.*s", static_cast<int>(end - begin), begin);
           break;
         case ParserState::pTemplateName:
           {
@@ -170,59 +185,68 @@ static void trace_head(const traceParts tp, const void *ptr, const char *signatu
             {
               if (with)
               {
-                cerr << ", ";
+                fprintf(stderr, ", ");
               }
               else
               {
-                cerr << " [with ";
+                fprintf(stderr, " [with ");
                 with = true;
               }
-              cerr << name;
+              fprintf(stderr, "%.*s", static_cast<int>(end - begin), begin);
             }
           }
           break;
         case ParserState::pTemplateValue:
           if (!filtered)
           {
-            cerr << " = " << string(begin, end);
+            fprintf(stderr, " = %.*s", static_cast<int>(end - begin), begin);
           }
           break;
         case ParserState::pTemplates:
-          cerr << string(begin, end);
+          fprintf(stderr, "%.*s", static_cast<int>(end - begin), begin);
           break;
         default:
-          cerr << "<?parse error>";
+          fprintf(stderr, "<?parse error>");
       }
     }
     if (with)
     {
-      cerr << "]";
+      fprintf(stderr, "]");
     }
   }
 }
 
+traceParts tracer_state()
+{
+  return m_init_trace_parts();
+}
+
+void reset_tracer(const traceParts tp)
+{
+  m_init_trace_parts(&tp);
+}
+
 void trace(const traceParts tp, const void *address, const char *signature)
 {
-  if (!(tp & _G_show_parts))
+  const traceParts show_parts = m_init_trace_parts();
+  if (!(tp & show_parts))
   {
     return;
   }
 
-  trace_head(tp, address, signature);
+  trace_head(tp, show_parts, address, signature);
 
-  cerr
-    << endl
-  ;
+  fprintf(stderr, "\n");
 }
 
 bool user_trace_enbled()
 {
-  return _G_show_parts & tpUser;
+  return m_init_trace_parts() & tpUser;
 }
 
 ostream &user_trace(const void *address, const char *signature)
 {
-  trace_head(tpUser, address, signature);
+  trace_head(tpUser, m_init_trace_parts(), address, signature);
   cerr << ' ';
   return cerr;
 }

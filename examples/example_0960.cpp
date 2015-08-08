@@ -27,23 +27,20 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
   MyClass2(const MyClass2 &cp);
 
 public:
-  const string &get() const
+  const std::string &get() const
   {
     return m_msg;
   }
 
-  MyClass2(const string &msg)
+  MyClass2(const std::string &msg)
     : MyClass(msg.c_str())
   {
   }
@@ -54,11 +51,11 @@ namespace pyhrol
 /* NOTE
 To provoke compilation error caused by private copy constructor:
   cmake -D DISABLE_EXPLICIT_TEMPLATE_INSTANTIATION:BOOL=ON .
-  make example_096
+  make example_0960
 */
 
 #ifndef DISABLE_EXPLICIT_TEMPLATE_INSTANTIATION
-template <> PyObject *TypeWrapper<MyClass2>::convert(MyClass2 &cp)
+template <> PyObject *TypeWrapper<MyClass2>::convert(const MyClass2 &cp)
 {
   PyObject *ret_val = NULL;
 
@@ -82,15 +79,15 @@ template <> PyObject *TypeWrapper<MyClass2>::convert(MyClass2 &cp)
 }
 
 
-class PyType: public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
-    : TypeBase<MyClass2>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass", "help")
   {
      m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -100,7 +97,7 @@ class PyType: public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
@@ -129,7 +126,7 @@ public:
   }
 };
 
-void copy_myclass(Tuples &_args)
+void copy_myclass(pyhrol::Tuples &_args)
 {
   PyType::argObject cp;
   PyObject *res;
@@ -144,8 +141,7 @@ void copy_myclass(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PyType::init();
   PYHROL_REGISTER_FUNCTION(copy_myclass, NULL)

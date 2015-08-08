@@ -27,42 +27,39 @@
  *   SUCH DAMAGE.
  */
 
+#include "myclass.h"
 #include <algorithm>
 #include <pyhrol.h>
-#include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
 
 class MyClass2: public MyClass
 {
 public:
-  const string &message() const
+  const std::string &message() const
   {
     return m_msg;
   }
 
-  void set_message(const string &msg)
+  void set_message(const std::string &msg)
   {
     m_msg = msg;
   }
 
-  MyClass2(const string &msg)
+  MyClass2(const std::string &msg)
     : MyClass(msg.c_str())
   {
   }
 };
 
 
-class PyType: public TypeNumber<MyClass2>, public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeNumber<MyClass2>, public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
-    : TypeBase<MyClass2>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -72,25 +69,25 @@ class PyType: public TypeNumber<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void add(const Ptr<MyClass2> &res, const Ptr<const MyClass2> &left, const Ptr<const MyClass2> &right) const
+  virtual void add(const pyhrol::Ptr<MyClass2> &res, const pyhrol::Ptr<const MyClass2> &left, const pyhrol::Ptr<const MyClass2> &right) const
   {
     new (&*res) MyClass2(left->message() + right->message());
   }
 
-  virtual void inplace_add(const Ptr<MyClass2> &obj, const Ptr<const MyClass2> &arg) const
+  virtual void inplace_add(const pyhrol::Ptr<MyClass2> &obj, const pyhrol::Ptr<const MyClass2> &arg) const
   {
-    const string s = obj->message();
+    const std::string s = obj->message();
     obj->set_message(s + arg->message());
   }
 
-  virtual void invert(const Ptr<MyClass2> &obj, const Ptr<const MyClass2> &arg) const
+  virtual void invert(const pyhrol::Ptr<MyClass2> &obj, const pyhrol::Ptr<const MyClass2> &arg) const
   {
-    string res(arg->message().length(), '\0');
-    reverse_copy(arg->message().begin(), arg->message().end(), res.begin());
+    std::string res(arg->message().length(), '\0');
+    std::reverse_copy(arg->message().begin(), arg->message().end(), res.begin());
     new (&*obj) MyClass2(res);
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

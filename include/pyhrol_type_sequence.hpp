@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_type_sequence_hpp__
 #define __pyhrol_type_sequence_hpp__
@@ -411,13 +411,13 @@ template <typename T> Py_ssize_t TypeSequence<T>::mediator_sq_length(PyObject *s
 
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_concat(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_concat)));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_concat)));
   PyObject *args_packed = pack_tuple(args);
   if (args && !args_packed)
   {
     return NULL;
   }
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_concat c(*tuples, self, __PRETTY_FUNCTION__);
   tuples->ubiquitous_caller(c, args_packed, NULL, !self);
   Py_DecRef(args_packed);
@@ -455,13 +455,13 @@ template <typename T> int TypeSequence<T>::mediator_sq_ass_item(PyObject *self, 
   }
   else
   {
-    static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_ass_item)));
+    static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_ass_item)));
     PyObject *args_packed = pack_tuple(args);
     if (args && !args_packed)
     {
       return -1;
     }
-    std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+    tuples_auto_release_t tuples(Tuples::factory(*data));
     call_assign c(*tuples, self, idx, idx + 1, __PRETTY_FUNCTION__);
     tuples->ubiquitous_caller(c, args_packed, NULL, !self);
     Py_DecRef(args_packed);
@@ -480,13 +480,13 @@ template <typename T> int TypeSequence<T>::mediator_sq_ass_slice(PyObject *self,
   }
   else
   {
-    static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_ass_slice)));
+    static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_ass_slice)));
     PyObject *args_packed = pack_tuple(args);
     if (args && !args_packed)
     {
       return -1;
     }
-    std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+    tuples_auto_release_t tuples(Tuples::factory(*data));
     call_assign c(*tuples, self, begin, end, __PRETTY_FUNCTION__);
     tuples->ubiquitous_caller(c, args_packed, NULL, !self);
     Py_DecRef(args_packed);
@@ -497,13 +497,13 @@ template <typename T> int TypeSequence<T>::mediator_sq_ass_slice(PyObject *self,
 
 template <typename T> int TypeSequence<T>::mediator_sq_contains(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_contains)));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_contains)));
   PyObject *args_packed = pack_tuple(args);
   if (args && !args_packed)
   {
     return -1;
   }
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_contains c(*tuples, self, __PRETTY_FUNCTION__);
   tuples->ubiquitous_caller(c, args_packed, NULL, !self);
   Py_DecRef(args_packed);
@@ -512,13 +512,13 @@ template <typename T> int TypeSequence<T>::mediator_sq_contains(PyObject *self, 
 
 template <typename T> PyObject *TypeSequence<T>::mediator_sq_inplace_concat(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_inplace_concat)));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_sq_inplace_concat)));
   PyObject *args_packed = pack_tuple(args);
   if (args && !args_packed)
   {
     return NULL;
   }
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_concat_inplace c(*tuples, self, __PRETTY_FUNCTION__);
   tuples->ubiquitous_caller(c, args_packed, NULL, !self);
   Py_DecRef(args_packed);

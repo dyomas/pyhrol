@@ -25,8 +25,8 @@
 #  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 #  SUCH DAMAGE.
 #
-# $Date: 2014-05-15 00:45:21 +0400 (Thu, 15 May 2014) $
-# $Revision: 916 $
+# $Date: 2015-07-24 01:44:28 +0300 (Пт., 24 июля 2015) $
+# $Revision: 1050 $
 
 cmake_minimum_required(VERSION 2.8.7 FATAL_ERROR)
 
@@ -36,10 +36,9 @@ set (PYTHON_REQUIRED ON)
 
 include_directories (/usr/local/include ../include)
 
-string(REGEX REPLACE "[ ]*\([0-9]+\)[ ]*" "example_\\1;" FUNCTION_EXAMPLES "0010 0020 0030 0040 0050 0060 0070 0080 0090 0100 0110 0120")
+string(REGEX REPLACE "[ ]*\([0-9]+\)[ ]*" "example_\\1;" FUNCTION_EXAMPLES "0010 0020 0030 0040 0050 0060 0070 0080 0090 0095 0100 0110 0120")
 foreach (PYHROL_TARGET ${FUNCTION_EXAMPLES})
   add_library(${PYHROL_TARGET} MODULE EXCLUDE_FROM_ALL
-    ../cpp/pyhrol_starter.cpp
     ${PYHROL_TARGET}.cpp
   )
   set_target_properties(${PYHROL_TARGET} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -49,7 +48,6 @@ endforeach()
 string(REGEX REPLACE "[ ]*\([0-9]+\)[ ]*" "example_\\1;" CLASS_EXAMPLES "0400 0410 0420 0430 0440 0450 0455 0460 0470 0480 0490 0495 0500 0505 0510 0520 0540 0550 0560")
 foreach (PYHROL_TARGET ${CLASS_EXAMPLES})
   add_library(${PYHROL_TARGET} MODULE EXCLUDE_FROM_ALL
-    ../cpp/pyhrol_starter.cpp
     ${PYHROL_TARGET}.cpp
     myclass.cpp
   )
@@ -63,7 +61,6 @@ foreach (PYHROL_TARGET ${OTHER_EXAMPLES})
     #No such target
   else()
     add_library(${PYHROL_TARGET} MODULE EXCLUDE_FROM_ALL
-      ../cpp/pyhrol_starter.cpp
       ${PYHROL_TARGET}.cpp
     )
     set_target_properties(${PYHROL_TARGET} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -71,13 +68,12 @@ foreach (PYHROL_TARGET ${OTHER_EXAMPLES})
 endforeach()
 
 
-string(REGEX REPLACE "[ ]*\([0-9]+\)[ ]*" "example_\\1;" ERRORS_EXAMPLES "0900 0910 0920 0925 0926 0930 0940 0950 0960")
+string(REGEX REPLACE "[ ]*\([0-9]+\)[ ]*" "example_\\1;" ERRORS_EXAMPLES "0900 0910 0920 0925 0926 0930 0940 0950 0960 0970")
 foreach (PYHROL_TARGET ${ERRORS_EXAMPLES})
   if (${PYHROL_TARGET} MATCHES "example_0(910|926)")
 #     No such target
   else()
     add_library(${PYHROL_TARGET} MODULE EXCLUDE_FROM_ALL
-      ../cpp/pyhrol_starter.cpp
       ${PYHROL_TARGET}.cpp
       myclass.cpp
     )
@@ -88,13 +84,15 @@ endforeach()
 
 set (PYHROL_TARGETS ${FUNCTION_EXAMPLES} ${CLASS_EXAMPLES} ${OTHER_EXAMPLES} ${ERRORS_EXAMPLES})
 
-
+# Excluded from static mode (PYHROL_USE_STATIC):
+#   example_08[02]0 because every loaded library has own container and `pyself(std|safe).so' shows only self components
+#   example_092[05] because global `_G_signature_hack_enabled' has its own copy in every loaded library; so, `pyself(std|safe).so' can't set it
 enable_testing()
 foreach (PYHROL_TARGET ${PYHROL_TARGETS})
   if (${PYHROL_TARGET} STREQUAL "example_0120")
     #Target without test
   elseif (${PYHROL_TARGET} MATCHES "example_0800")
-    if (NOT PYHROL_SAFE_MODE)
+    if (NOT PYHROL_SAFE_MODE AND NOT PYHROL_USE_STATIC)
       add_test(NAME ${PYHROL_TARGET}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMAND ${CMAKE_CURRENT_LIST_DIR}/test.sh "example_0010 example_0495" "pyhrol example_0010 example_0495" ${PYHROL_TARGET})
@@ -106,7 +104,7 @@ foreach (PYHROL_TARGET ${PYHROL_TARGETS})
       COMMAND ${CMAKE_CURRENT_LIST_DIR}/test.sh "" "pyhrol" ${PYHROL_TARGET})
     endif()
   elseif (${PYHROL_TARGET} MATCHES "example_0820")
-    if (NOT PYHROL_SAFE_MODE)
+    if (NOT PYHROL_SAFE_MODE AND NOT PYHROL_USE_STATIC)
       add_test(NAME ${PYHROL_TARGET}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMAND ${CMAKE_CURRENT_LIST_DIR}/test.sh "example_0120 example_0495" "pyhrol example_0120 example_0495" ${PYHROL_TARGET})
@@ -124,7 +122,7 @@ foreach (PYHROL_TARGET ${PYHROL_TARGETS})
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     COMMAND ${CMAKE_CURRENT_LIST_DIR}/test.sh "example_0500 example_0505" "example_0500 example_0505" ${PYHROL_TARGET})
   elseif (${PYHROL_TARGET} MATCHES "example_092[05]")
-    if (NOT PYHROL_SAFE_MODE)
+    if (NOT PYHROL_SAFE_MODE AND NOT PYHROL_USE_STATIC)
       add_test(NAME ${PYHROL_TARGET}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMAND ${CMAKE_CURRENT_LIST_DIR}/test.sh "${PYHROL_TARGET}" "pyhrol ${PYHROL_TARGET}" ${PYHROL_TARGET})
@@ -147,6 +145,13 @@ foreach (PYHROL_TARGET ${PYHROL_TARGETS})
     set (TMP_PROPS "USE_TRACER")
     if (${PYHROL_TARGET} STREQUAL "example_0960" AND DISABLE_EXPLICIT_TEMPLATE_INSTANTIATION)
       set (TMP_PROPS "DISABLE_EXPLICIT_TEMPLATE_INSTANTIATION;${TMP_PROPS}")
+    elseif (${PYHROL_TARGET} STREQUAL "example_0970")
+      if (DISABLE_TYPEBASE_DEFAULT_CONSTRUCTOR)
+        set (TMP_PROPS "DISABLE_TYPEBASE_DEFAULT_CONSTRUCTOR;${TMP_PROPS}")
+      endif()
+      if (ENABLE_TYPEBASE_UNHANDLED_EXCEPTION)
+        set (TMP_PROPS "ENABLE_TYPEBASE_UNHANDLED_EXCEPTION;${TMP_PROPS}")
+      endif()
     endif()
     set_target_properties (${PYHROL_TARGET} PROPERTIES
       COMPILE_DEFINITIONS "${TMP_PROPS}"

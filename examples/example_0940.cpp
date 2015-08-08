@@ -29,10 +29,7 @@
 
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void lambda(Tuples &_args)
+void lambda(pyhrol::Tuples &_args)
 {
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
@@ -40,7 +37,7 @@ void lambda(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-void _function(Tuples &_args)
+void _function(pyhrol::Tuples &_args)
 {
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
@@ -48,31 +45,31 @@ void _function(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-class PyType: public TypeWrapper<string>
+class PyType: public pyhrol::TypeWrapper<std::string>
 {
   PyType()
-    : TypeBase<string>("MyClass", NULL)
+    : pyhrol::TypeBase<std::string>("MyClass", NULL)
   {
     m_add_method<PyType, &PyType::method>("_method", NULL);
     m_type_object.tp_repr = NULL;
     m_type_object.tp_str = NULL;
   }
 
-  virtual void constructor(string &obj, Tuples &_args) const
+  virtual void constructor(std::string &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    new (&obj) string;
+    new (&obj) std::string;
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void destructor(string &) const
+  virtual void destructor(std::string &) const
   {
   }
 
-  void method(const Ptr<const string> &, Tuples &_args) const
+  void method(const pyhrol::Ptr<const std::string> &, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -87,9 +84,7 @@ public:
   }
 };
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(lambda, NULL)
   PYHROL_REGISTER_FUNCTION(_function, NULL);

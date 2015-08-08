@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void function_with_keywords(Tuples &_args)
+void function_with_keywords(pyhrol::Tuples &_args)
 {
   int counter;
   const char *description;
@@ -42,17 +39,15 @@ void function_with_keywords(Tuples &_args)
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
+  std::cout
     << __func__ << ": I am called\n"
-    << "  My args: counter = " << counter << ", description = \"" << description << "\"" << endl
+    << "  My args: counter = " << counter << ", description = \"" << description << "\"\n"
   ;
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION_WITH_KEYWORDS(function_with_keywords, "Function with named arguments")
 }

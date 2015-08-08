@@ -1,0 +1,3 @@
+*** Exception! Default constructor for "TypeBase<MyClass>" should never called
+    Type `PyType' not inited
+*** 'module' object has no attribute 'MyClass'

@@ -27,11 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 namespace disambiguate
 {
@@ -39,17 +36,17 @@ namespace disambiguate
 class MyClass2: public MyClass
 {
 public:
-  const string &message() const
+  const std::string &message() const
   {
     return m_msg;
   }
 
-  void set_message(const string &msg)
+  void set_message(const std::string &msg)
   {
     m_msg = msg;
   }
 
-  MyClass2(const string &msg)
+  MyClass2(const std::string &msg)
     : MyClass(msg.c_str())
   {
   }
@@ -59,15 +56,15 @@ public:
 
 using namespace disambiguate;
 
-class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeSequence<MyClass2>, public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
-    : TypeBase<MyClass2>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -77,7 +74,7 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
@@ -94,11 +91,11 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     obj.~MyClass2();
   }
 
-  virtual void concat(const Ptr<MyClass2> &res, Tuples &_args) const
+  virtual void concat(const pyhrol::Ptr<MyClass2> &res, pyhrol::Tuples &_args) const
   {
     const char *arg;
     int64_t num;
-    TypeBase<MyClass2>::argObject like_me;
+    pyhrol::TypeBase<MyClass2>::argObject like_me;
 
     PYHROL_PARSE_TUPLE_1(NULL, _args, arg)
     PYHROL_PARSE_TUPLE_2(NULL, _args, like_me.cls, like_me.pobj)
@@ -106,7 +103,7 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     ostr << res->message();
     switch (_args.parsed_variant())
     {
@@ -125,11 +122,11 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void concat(const Ptr<MyClass2> &dst, const Ptr<const MyClass2> &left, Tuples &_args) const
+  virtual void concat(const pyhrol::Ptr<MyClass2> &dst, const pyhrol::Ptr<const MyClass2> &left, pyhrol::Tuples &_args) const
   {
     const char *arg;
     int64_t num;
-    TypeBase<MyClass2>::argObject like_me;
+    pyhrol::TypeBase<MyClass2>::argObject like_me;
 
     PYHROL_PARSE_TUPLE_1(NULL, _args, arg)
     PYHROL_PARSE_TUPLE_2(NULL, _args, like_me.cls, like_me.pobj)
@@ -137,7 +134,7 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     ostr << left->message();
     switch (_args.parsed_variant())
     {
@@ -156,11 +153,11 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void assign(const Ptr<MyClass2> &dst, Tuples &_args, Py_ssize_t begin, Py_ssize_t end) const
+  virtual void assign(const pyhrol::Ptr<MyClass2> &dst, pyhrol::Tuples &_args, Py_ssize_t begin, Py_ssize_t end) const
   {
     const char *arg;
     int64_t num;
-    TypeBase<MyClass2>::argObject like_me;
+    pyhrol::TypeBase<MyClass2>::argObject like_me;
 
     PYHROL_PARSE_TUPLE_1(NULL, _args, arg)
     PYHROL_PARSE_TUPLE_2(NULL, _args, like_me.cls, like_me.pobj)
@@ -168,9 +165,9 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    check_range(dst->message().length(), begin, end);
+    pyhrol::check_range(dst->message().length(), begin, end);
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     switch (_args.parsed_variant())
     {
       case 0:
@@ -184,7 +181,7 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
         break;
     }
 
-    string res = dst->message().substr(0, begin);
+    std::string res = dst->message().substr(0, begin);
     res += ostr.str();
     res += dst->message().substr(end);
     dst->set_message(res);
@@ -192,11 +189,11 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void contains(bool &res, const Ptr<const MyClass2> &src, Tuples &_args) const
+  virtual void contains(bool &res, const pyhrol::Ptr<const MyClass2> &src, pyhrol::Tuples &_args) const
   {
     const char *arg;
     int64_t num;
-    TypeBase<MyClass2>::argObject like_me;
+    pyhrol::TypeBase<MyClass2>::argObject like_me;
 
     PYHROL_PARSE_TUPLE_1(NULL, _args, arg)
     PYHROL_PARSE_TUPLE_2(NULL, _args, like_me.cls, like_me.pobj)
@@ -204,7 +201,7 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     switch (_args.parsed_variant())
     {
       case 0:
@@ -218,7 +215,7 @@ class PyType: public TypeSequence<MyClass2>, public TypeWrapper<MyClass2>
         break;
     }
 
-    res = src->message().find(ostr.str()) != string::npos;
+    res = src->message().find(ostr.str()) != std::string::npos;
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }

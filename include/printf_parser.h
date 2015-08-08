@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-23 20:22:57 +0400 (Sun, 23 Feb 2014) $
+// $Date: 2014-02-23 20:22:57 +0400 (Вс., 23 февр. 2014) $
 // $Revision: 895 $
 
 #ifndef __printf_parser_h__

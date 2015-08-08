@@ -27,17 +27,13 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
+#include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-
-class PyType: public TypeWrapper<MyClass>
+class PyType: public pyhrol::TypeWrapper<MyClass>
 {
   PyType()
-    : TypeBase<MyClass>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass>("MyClass", "help")
   {
   }
 

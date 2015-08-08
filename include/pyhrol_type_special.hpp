@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_type_special_hpp__
 #define __pyhrol_type_special_hpp__
@@ -117,48 +117,48 @@ template <typename T> template <void (*F)(const PyTypeObject &, Tuples &)> TypeS
 
 template <typename T> template <void (*F)(Tuples &)> PyObject *TypeSpecial<T>::m_static_method(PyObject *self)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_static_method_no_arg, reinterpret_cast<size_t>(m_static_method<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_static_method_no_arg, reinterpret_cast<size_t>(m_static_method<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_static<F> c(*tuples, self ? NULL : __PRETTY_FUNCTION__);
   return tuples->ubiquitous_caller(c, NULL, NULL, self);
 }
 
 template <typename T> template <void (*F)(Tuples &)> PyObject *TypeSpecial<T>::m_static_method2(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_static_method, reinterpret_cast<size_t>(m_static_method2<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_static_method, reinterpret_cast<size_t>(m_static_method2<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_static<F> c(*tuples, self ? NULL : __PRETTY_FUNCTION__);
   return tuples->ubiquitous_caller(c, args, NULL, self);
 }
 
 template <typename T> template <void (*F)(Tuples &)> PyObject *TypeSpecial<T>::m_static_method3(PyObject *self, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_static_method_kw, reinterpret_cast<size_t>(m_static_method3<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_static_method_kw, reinterpret_cast<size_t>(m_static_method3<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_static<F> c(*tuples, self ? NULL : __PRETTY_FUNCTION__);
   return tuples->ubiquitous_caller(c, args, kwds, self);
 }
 
 template <typename T> template <void (*F)(const PyTypeObject &, Tuples &)> PyObject *TypeSpecial<T>::m_class_method(PyObject *self)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method_no_arg, reinterpret_cast<size_t>(m_class_method<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method_no_arg, reinterpret_cast<size_t>(m_class_method<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_class<F> c(*tuples, self ? __PRETTY_FUNCTION__ : NULL, self);
   return tuples->ubiquitous_caller(c, NULL, NULL, !self);
 }
 
 template <typename T> template <void (*F)(const PyTypeObject &, Tuples &)> PyObject *TypeSpecial<T>::m_class_method2(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method, reinterpret_cast<size_t>(m_class_method2<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method, reinterpret_cast<size_t>(m_class_method2<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_class<F> c(*tuples, self ? __PRETTY_FUNCTION__ : NULL, self);
   return tuples->ubiquitous_caller(c, args, NULL, !self);
 }
 
 template <typename T> template <void (*F)(const PyTypeObject &, Tuples &)> PyObject *TypeSpecial<T>::m_class_method3(PyObject *self, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method_kw, reinterpret_cast<size_t>(m_class_method3<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method_kw, reinterpret_cast<size_t>(m_class_method3<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_class<F> c(*tuples, self ? __PRETTY_FUNCTION__ : NULL, self);
   return tuples->ubiquitous_caller(c, args, kwds, !self);
 }

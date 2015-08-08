@@ -27,11 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
@@ -47,17 +44,17 @@ public:
   }
 };
 
-class PyType: public TypeWrapper<MyClass>
+class PyType: public pyhrol::TypeWrapper<MyClass>
 {
 protected:
   PyType()
-    : TypeBase<MyClass>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass>("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
 private:
-  void say(const Ptr<MyClass> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -67,7 +64,7 @@ private:
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(MyClass &obj, Tuples &_args) const
+  virtual void constructor(MyClass &obj, pyhrol::Tuples &_args) const
   {
     char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
@@ -103,7 +100,7 @@ class PyType2: public PyType
     //m_add_method<PyType2, &PyType2::reset>("reset", NULL);
   }
 
-  void reset(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void reset(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

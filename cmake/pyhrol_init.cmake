@@ -38,15 +38,17 @@
 #     not defined warns and continue;
 #     Python related targets must be inactivated by PYTHONLIBS_FOUND switch
 
-# $Date: 2014-05-15 01:28:53 +0400 (Thu, 15 May 2014) $
-# $Revision: 917 $
+# $Date: 2015-06-05 01:14:02 +0300 (Пт., 05 июня 2015) $
+# $Revision: 1035 $
 
 find_package (PythonLibs 2.4)
 
 
+set (TMP_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../tmp/include CACHE PATH "Path to temporary \"include\" directory")
+set (TMP_RES_DIR ${CMAKE_CURRENT_LIST_DIR}/../tmp/res CACHE PATH "Path to directory for generated files")
 set (PYHROL_MAX_INPUT_ARGS 16 CACHE STRING "Max number of arguments for PyArg_*ParseTuple* function, limited by the number of relevant macros PYHROL_PARSE_TUPLE_{M}")
 set (PYHROL_MAX_OUTPUT_ARGS 8 CACHE STRING "Max number of arguments for Py_VaBuildValue, limited by the number of relevant macros PYHROL_BUILD_VALUE_{N}")
-# set (PYHROL_DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/dist-packages/ CACHE PATH "Directory where compiled Pyhrol modules should be installed")
+
 
 if (NOT PYTHONLIBS_FOUND)
   if (PYTHON_REQUIRED)
@@ -67,19 +69,16 @@ if (CMAKE_VERBOSE_MAKEFILE)
 ")
 endif()
 
-string(REPLACE ";" " -I" TMP_INCLUDE "${PYTHON_INCLUDE_DIRS}")
-
 if (PYTHONLIBS_FOUND)
   set (PYHROL_SAFE_MODE OFF CACHE BOOL "Use library version with minimal functionality")
+  set (PYHROL_USE_STATIC OFF CACHE BOOL "Use static Pyhrol libraries instead of dynamic")
 
-  set (PYHROL_BASE
+  add_library(pyhrolbase OBJECT
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/array_square.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/binary_operations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/demangling.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_auto_holder.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_common.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_container.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_exception_handler.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_index.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_keywords.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_trace.cpp
@@ -87,7 +86,6 @@ if (PYTHONLIBS_FOUND)
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuple_in.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuple_out.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuples.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuples_exceptions.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_type_base.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_type_iterable.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_type_number_any.cpp
@@ -97,9 +95,15 @@ if (PYTHONLIBS_FOUND)
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/signature_parser.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/strings_manip.cpp
   )
+  set_target_properties (pyhrolbase PROPERTIES
+    COMPILE_FLAGS "-fPIC -I${PYTHON_INCLUDE_PATH}"
+    COMPILE_DEFINITIONS USE_TRACER
+  )
 
   set (PYHROL_COMMON_DEV
-    ${PYHROL_BASE}
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_container.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_exception_handler.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuples_exceptions.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/array_void.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/printf_parser.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_check_calls.cpp
@@ -117,12 +121,17 @@ if (PYTHONLIBS_FOUND)
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuples_default_impl.cpp
   )
 
-  set (PYHROL_COMMON_LIB
-    ${PYHROL_COMMON_DEV}
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_init.cpp
+  add_library(pyhrolstddev OBJECT ${PYHROL_COMMON_DEV})
+  set_target_properties (pyhrolstddev PROPERTIES
+    COMPILE_FLAGS "-fPIC -I${PYTHON_INCLUDE_PATH}"
+    COMPILE_DEFINITIONS USE_TRACER
   )
 
-  add_library(pyhrol SHARED ${PYHROL_COMMON_LIB})
+  add_library(pyhrol SHARED
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_init.cpp
+    $<TARGET_OBJECTS:pyhrolstddev>
+    $<TARGET_OBJECTS:pyhrolbase>
+  )
   add_dependencies(pyhrol pygen)
   set_target_properties (pyhrol PROPERTIES
     COMPILE_FLAGS "-I${PYTHON_INCLUDE_PATH}"
@@ -130,13 +139,23 @@ if (PYTHONLIBS_FOUND)
   )
   target_link_libraries (pyhrol ${PYTHON_LIBRARIES})
 
-  set (PYHROL_COMMON
-    ${PYHROL_COMMON_LIB}
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_starter.cpp
+  add_library(pyhrola STATIC
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_init.cpp
+    $<TARGET_OBJECTS:pyhrolstddev>
+    $<TARGET_OBJECTS:pyhrolbase>
   )
+  add_dependencies(pyhrola pygen)
+  set_target_properties (pyhrola PROPERTIES
+    COMPILE_FLAGS "-fPIC -I${PYTHON_INCLUDE_PATH}"
+    COMPILE_DEFINITIONS USE_TRACER
+    OUTPUT_NAME pyhrol
+  )
+  target_link_libraries (pyhrola ${PYTHON_LIBRARIES})
 
   set (PYHROL_SAFE_DEV
-    ${PYHROL_BASE}
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_container.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_exception_handler.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuples_exceptions.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuple_base_safe.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuple_describer_safe.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuple_in_safe_impl.cpp
@@ -145,12 +164,17 @@ if (PYTHONLIBS_FOUND)
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_tuples_safe_impl.cpp
   )
 
-  set (PYHROL_SAFE_LIB
-    ${PYHROL_SAFE_DEV}
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_init.cpp
+  add_library(pyhrolsafedev OBJECT ${PYHROL_SAFE_DEV})
+  set_target_properties (pyhrolsafedev PROPERTIES
+    COMPILE_FLAGS "-fPIC -I${PYTHON_INCLUDE_PATH}"
+    COMPILE_DEFINITIONS "USE_TRACER; PYHROL_SAFE_MODE"
   )
 
-  add_library(pyhrolsafe SHARED ${PYHROL_SAFE_LIB})
+  add_library(pyhrolsafe SHARED
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_init.cpp
+    $<TARGET_OBJECTS:pyhrolsafedev>
+    $<TARGET_OBJECTS:pyhrolbase>
+  )
   add_dependencies(pyhrolsafe pygen)
   set_target_properties (pyhrolsafe PROPERTIES
     COMPILE_FLAGS "-I${PYTHON_INCLUDE_PATH}"
@@ -158,9 +182,18 @@ if (PYTHONLIBS_FOUND)
   )
   target_link_libraries (pyhrolsafe ${PYTHON_LIBRARIES})
 
-  if (PYHROL_SAFE_MODE)
-    set (PYHROL_SUFFIX safe)
-  endif()
+  add_library(pyhrolsafea STATIC
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_init.cpp
+    $<TARGET_OBJECTS:pyhrolsafedev>
+    $<TARGET_OBJECTS:pyhrolbase>
+  )
+  add_dependencies(pyhrolsafea pygen)
+  set_target_properties (pyhrolsafea PROPERTIES
+    COMPILE_FLAGS "-fPIC -I${PYTHON_INCLUDE_PATH}"
+    COMPILE_DEFINITIONS "USE_TRACER; PYHROL_SAFE_MODE"
+    OUTPUT_NAME pyhrolsafe
+  )
+  target_link_libraries (pyhrolsafea ${PYTHON_LIBRARIES})
 
 
   add_executable(pygen
@@ -180,43 +213,59 @@ if (PYTHONLIBS_FOUND)
   )
 
 
-  set (PYSELF_SOURCE
+  string(REPLACE ";" " -I" TMP_INCLUDE "${PYTHON_INCLUDE_DIRS}")
+
+  add_library(pyselfdev STATIC
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_flags.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_starter.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_self.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_self_modules.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_self_types.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_self_methods.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_self_functions.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../cpp/smart_flag_int.cpp
   )
+  set_target_properties (pyselfdev PROPERTIES
+    COMPILE_DEFINITIONS "USE_TRACER"
+    COMPILE_FLAGS "-fPIC \\
+      -I${TMP_INCLUDE} \\
+      -I${CMAKE_CURRENT_LIST_DIR}/../include"
+  )
+  add_dependencies(pyselfdev pygen)
 
-  add_library(pyself MODULE ${PYSELF_SOURCE})
+  set (PYHROL_STARTER_FILE ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_starter_pyhrol.cpp)
+  file(WRITE ${PYHROL_STARTER_FILE} "//Generated by ${CMAKE_CURRENT_LIST_FILE}\n\nvoid pyhrol_init(const char *);\n\nextern \"C\" void initpyhrol()\n{\n  pyhrol_init(\"pyhrol\");\n}\n")
+  add_library (starter_pyhrol STATIC ${PYHROL_STARTER_FILE})
+  set_target_properties (starter_pyhrol PROPERTIES COMPILE_FLAGS "-fPIC")
+
+  add_library(pyself MODULE
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_self.cpp
+  )
   set_target_properties (pyself PROPERTIES
     PREFIX ""
-    COMPILE_DEFINITIONS "USE_TRACER;_OUTPUT=pyhrol"
-    COMPILE_FLAGS "${TMP_FLAGS} \\
+    COMPILE_DEFINITIONS "USE_TRACER"
+    COMPILE_FLAGS " \\
       -I${TMP_INCLUDE} \\
       -I${CMAKE_CURRENT_LIST_DIR}/../include"
     OUTPUT_NAME pyselfstd
   )
-  target_link_libraries (pyself pyhrol)
-  add_dependencies(pyself pygen)
+  target_link_libraries (pyself pyhrol pyselfdev -Wl,-whole-archive starter_pyhrol -Wl,-no-whole-archive)
 
 
-  add_library(pyselfsafe MODULE ${PYSELF_SOURCE})
+  add_library(pyselfsafe MODULE
+    ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_self.cpp
+  )
   set_target_properties (pyselfsafe PROPERTIES
     PREFIX ""
-    COMPILE_DEFINITIONS "USE_TRACER;_OUTPUT=pyhrol;PYHROL_SAFE_MODE"
-    COMPILE_FLAGS "${TMP_FLAGS} \\
+    COMPILE_DEFINITIONS "USE_TRACER;PYHROL_SAFE_MODE"
+    COMPILE_FLAGS " \\
       -I${TMP_INCLUDE} \\
       -I${CMAKE_CURRENT_LIST_DIR}/../include"
     OUTPUT_NAME pyselfsafe
   )
-  target_link_libraries (pyselfsafe pyhrolsafe)
-  add_dependencies(pyselfsafe pygen)
+  target_link_libraries (pyselfsafe pyhrolsafe pyselfdev -Wl,-whole-archive starter_pyhrol -Wl,-no-whole-archive)
 
-
+  if (PYHROL_SAFE_MODE)
+    set (PYHROL_SUFFIX safe)
+  endif()
   add_custom_target(link COMMAND sh -c "ln -sf $<TARGET_FILE:pyself${PYHROL_SUFFIX}> pyhrol.so" DEPENDS pyself pyselfsafe)
 
 endif (PYTHONLIBS_FOUND)
@@ -225,38 +274,45 @@ endif (PYTHONLIBS_FOUND)
 function (pyhrol_configure_targets)
   string(REGEX MATCHALL "([^ ]+)" PYHROL_TARGETS "${ARGV}")
   foreach (PYHROL_TARGET ${PYHROL_TARGETS})
+    get_target_property (TMP_FLAGS ${PYHROL_TARGET} COMPILE_FLAGS)
+    if (NOT TMP_FLAGS)
+      unset(TMP_FLAGS)
+    endif()
+
+    string(REPLACE ";" " -I" TMP_INCLUDE "${PYTHON_INCLUDE_DIRS}")
+
+    set_target_properties (${PYHROL_TARGET} PROPERTIES
+      COMPILE_FLAGS "${TMP_FLAGS} \\
+        -I${TMP_INCLUDE} \\
+        -I${CMAKE_CURRENT_LIST_DIR}/../include"
+    )
+
     get_target_property (TMP_NAME ${PYHROL_TARGET} PREFIX)
     if (NOT TMP_NAME)
       set_target_properties (${PYHROL_TARGET} PROPERTIES PREFIX "")
     endif()
     get_target_property (TMP_NAME ${PYHROL_TARGET} LOCATION)
     get_filename_component(TMP_NAME ${TMP_NAME} NAME_WE)
-    get_target_property (TMP_FLAGS ${PYHROL_TARGET} COMPILE_FLAGS)
-    if (NOT TMP_FLAGS)
-      unset(TMP_FLAGS)
-    endif()
-    get_target_property (TMP_DEFS ${PYHROL_TARGET} COMPILE_DEFINITIONS)
-    if (NOT TMP_DEFS)
-      unset(TMP_DEFS)
-    endif()
 
-    set_target_properties (${PYHROL_TARGET} PROPERTIES
-      COMPILE_FLAGS "${TMP_FLAGS} \\
-        -I${TMP_INCLUDE} \\
-        -I${CMAKE_CURRENT_LIST_DIR}/../include"
-      COMPILE_DEFINITIONS "${TMP_DEFS}; _OUTPUT=${TMP_NAME}"
-    )
+    set (PYHROL_STARTER_FILE ${CMAKE_CURRENT_LIST_DIR}/../cpp/pyhrol_starter_${TMP_NAME}.cpp)
+    file(WRITE ${PYHROL_STARTER_FILE} "//Generated by ${CMAKE_CURRENT_LIST_FILE}\n\nvoid pyhrol_init(const char *);\n\nextern \"C\" void init${TMP_NAME}()\n{\n  pyhrol_init(\"${TMP_NAME}\");\n}\n")
+    add_library (starter_${PYHROL_TARGET} STATIC ${PYHROL_STARTER_FILE})
+    set_target_properties (starter_${PYHROL_TARGET} PROPERTIES COMPILE_FLAGS "-fPIC")
 
     if (PYTHONLIBS_FOUND)
-      target_link_libraries (${PYHROL_TARGET} pyhrol${PYHROL_SUFFIX} ${PYTHON_LIBRARIES})
+      if (PYHROL_USE_STATIC)
+        set (TMP_BEFORE_LIB -Wl,-whole-archive)
+        set (TMP_AFTER_LIB -Wl,-no-whole-archive)
+      endif ()
+      if (PYHROL_SAFE_MODE AND PYHROL_USE_STATIC)
+        set (PYHROL_SUFFIX safea)
+      elseif (PYHROL_SAFE_MODE)
+        set (PYHROL_SUFFIX safe)
+      elseif (PYHROL_USE_STATIC)
+        set (PYHROL_SUFFIX a)
+      endif()
+      target_link_libraries (${PYHROL_TARGET} ${TMP_BEFORE_LIB} pyhrol${PYHROL_SUFFIX} ${TMP_AFTER_LIB} ${PYTHON_LIBRARIES} -Wl,-whole-archive starter_${PYHROL_TARGET} -Wl,-no-whole-archive)
       add_dependencies(${PYHROL_TARGET} pygen link)
-    endif()
-
-    if (CMAKE_VERBOSE_MAKEFILE)
-      get_target_property (TMP_FLAGS ${PYHROL_TARGET} COMPILE_FLAGS)
-      message (STATUS "CXXFLAGS for ${PYHROL_TARGET}: \"${TMP_FLAGS}\"")
-      get_target_property (TMP_DEFS ${PYHROL_TARGET} COMPILE_DEFINITIONS)
-      message (STATUS "Definitions for ${PYHROL_TARGET}: \"${TMP_DEFS}\"")
     endif()
   endforeach()
 endfunction (pyhrol_configure_targets)

@@ -29,11 +29,7 @@
 
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-
-void function_A(Tuples &_args)
+void function_A(pyhrol::Tuples &_args)
 {
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
@@ -41,7 +37,7 @@ void function_A(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-void function_B(Tuples &_args)
+void function_B(pyhrol::Tuples &_args)
 {
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
@@ -49,11 +45,9 @@ void function_B(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
-  Container::container().add_function<function_A>("A", NULL);
-  Container::container().add_function<function_A>("B", NULL);
-  Container::container().add_function<function_B>("B", NULL);
+  pyhrol::Container::container().add_function<function_A>("A", NULL);
+  pyhrol::Container::container().add_function<function_A>("B", NULL);
+  pyhrol::Container::container().add_function<function_B>("B", NULL);
 }

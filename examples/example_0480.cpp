@@ -27,13 +27,9 @@
  *   SUCH DAMAGE.
  */
 
+#include "myclass.h"
 #include <pyhrol.h>
 #include <tr1/memory>
-#include "myclass.h"
-
-using namespace std;
-using namespace std::tr1;
-using namespace pyhrol;
 
 class MyClass2: public MyClass
 {
@@ -41,40 +37,40 @@ public:
   MyClass2(const MyClass2 &cp)
     : MyClass(cp.m_msg.c_str())
   {
-    cout << __func__ << ": (copy)\n";
+    std::cout << __func__ << ": (copy)\n";
   }
 
   MyClass2(const char *msg)
     : MyClass(msg)
   {
-    cout << __func__ << ": " << m_msg << '\n';
+    std::cout << __func__ << ": " << m_msg << '\n';
   }
 
   ~MyClass2()
   {
-    cout << __func__ << ": " << m_msg << '\n';
+    std::cout << __func__ << ": " << m_msg << '\n';
   }
 };
 
 
-MyClass2 *from_shared(shared_ptr<MyClass2> *ptr)
+MyClass2 *from_shared(std::tr1::shared_ptr<MyClass2> *ptr)
 {
   return ptr->get();
 }
 
 
-class PyType: public TypeSmart<shared_ptr<MyClass2>, MyClass2, from_shared>
+class PyType: public pyhrol::TypeSmart<std::tr1::shared_ptr<MyClass2>, MyClass2, from_shared>
 {
   PyType()
-    : TypeBase<shared_ptr<MyClass2> >("MyClass", "help")
+    : pyhrol::TypeBase<std::tr1::shared_ptr<MyClass2> >("MyClass", "help")
   {
-    TypeWrapper<shared_ptr<MyClass2> >::m_add_method<PyType, &PyType::cnt>("cnt", NULL);
+    pyhrol::TypeWrapper<std::tr1::shared_ptr<MyClass2> >::m_add_method<PyType, &PyType::cnt>("cnt", NULL);
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  virtual void constructor(shared_ptr<MyClass2> &obj, Tuples &_args) const
+  virtual void constructor(std::tr1::shared_ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
-    TypeBase<shared_ptr<MyClass2> >::argObject cp;
+    pyhrol::TypeBase<std::tr1::shared_ptr<MyClass2> >::argObject cp;
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
     PYHROL_PARSE_TUPLE_2(NULL, _args, cp.cls, cp.pobj)
@@ -83,22 +79,22 @@ class PyType: public TypeSmart<shared_ptr<MyClass2>, MyClass2, from_shared>
 
     if (_args.parsed_variant() == 0)
     {
-      new (&obj) shared_ptr<MyClass2> (new MyClass2(msg));
+      new (&obj) std::tr1::shared_ptr<MyClass2> (new MyClass2(msg));
     }
     else if (_args.parsed_variant() == 1)
     {
-      new (&obj) shared_ptr<MyClass2> (cp);
+      new (&obj) std::tr1::shared_ptr<MyClass2> (cp);
     }
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void destructor(shared_ptr<MyClass2> &obj) const
+  virtual void destructor(std::tr1::shared_ptr<MyClass2> &obj) const
   {
     obj.~shared_ptr();
   }
 
-  void cnt(const Ptr<const shared_ptr<MyClass2> > &obj, Tuples &_args) const
+  void cnt(const pyhrol::Ptr<const std::tr1::shared_ptr<MyClass2> > &obj, pyhrol::Tuples &_args) const
   {
     long res;
     PYHROL_AFTER_PARSE_TUPLE(_args)
@@ -110,7 +106,7 @@ class PyType: public TypeSmart<shared_ptr<MyClass2>, MyClass2, from_shared>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)

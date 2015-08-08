@@ -27,15 +27,12 @@
  *   SUCH DAMAGE.
  */
 
-#include <iostream>
-
 #include "myclass.h"
-
-using namespace std;
+#include <iostream>
 
 void MyClass::say()
 {
-  cout << m_msg << '\n';
+  std::cout << m_msg << '\n';
 }
 
 MyClass::MyClass(const char *msg)

@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_container_hpp__
 #define __pyhrol_container_hpp__
@@ -91,24 +91,24 @@ template <void (*F)(Tuples &)> void Container::add_function_no_args(const char *
 
 template <void (*F)(Tuples &)> PyObject *Container::m_function(PyObject *self)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function_no_arg, reinterpret_cast<size_t>(m_function<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_function_no_arg, reinterpret_cast<size_t>(m_function<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   __container_internal::call_function<F> c(*tuples, __PRETTY_FUNCTION__, self);
   return tuples->ubiquitous_caller(c, NULL, NULL, self);
 }
 
 template <void (*F)(Tuples &)> PyObject *Container::m_function2(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function, reinterpret_cast<size_t>(m_function2<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_function, reinterpret_cast<size_t>(m_function2<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   __container_internal::call_function<F> c(*tuples, __PRETTY_FUNCTION__, self);
   return tuples->ubiquitous_caller(c, args, NULL, self);
 }
 
 template <void (*F)(Tuples &)> PyObject *Container::m_function3(PyObject *self, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_function_kw, reinterpret_cast<size_t>(m_function3<F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_function_kw, reinterpret_cast<size_t>(m_function3<F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   __container_internal::call_function<F> c(*tuples, __PRETTY_FUNCTION__, self);
   return tuples->ubiquitous_caller(c, args, kwds, self);
 }

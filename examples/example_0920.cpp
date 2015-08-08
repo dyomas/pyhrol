@@ -29,11 +29,7 @@
 
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-
-void function_incorrect_order(Tuples &_args)
+void function_incorrect_order(pyhrol::Tuples &_args)
 {
   uint32_t res_int;
 
@@ -44,7 +40,7 @@ void function_incorrect_order(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-void function_with_args(Tuples &_args)
+void function_with_args(pyhrol::Tuples &_args)
 {
   int i;
 
@@ -55,7 +51,7 @@ void function_with_args(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-void function_incorrect_input(Tuples &_args)
+void function_incorrect_input(pyhrol::Tuples &_args)
 {
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
@@ -65,7 +61,7 @@ void function_incorrect_input(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-void function_incorrect_return(Tuples &_args)
+void function_incorrect_return(pyhrol::Tuples &_args)
 {
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
@@ -73,7 +69,7 @@ void function_incorrect_return(Tuples &_args)
   PYHROL_AFTER_EXECUTE(_args, 1)
 }
 
-void function_invalid_tuple(Tuples &_args)
+void function_invalid_tuple(pyhrol::Tuples &_args)
 {
   PyTypeObject &t = PyString_Type;
 
@@ -84,7 +80,7 @@ void function_invalid_tuple(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-void function_non_unique_keywords(Tuples &_args)
+void function_non_unique_keywords(pyhrol::Tuples &_args)
 {
   int i;
 
@@ -95,9 +91,7 @@ void function_non_unique_keywords(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_incorrect_order, NULL)
   PYHROL_REGISTER_FUNCTION_NO_ARGS(function_with_args, NULL);

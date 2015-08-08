@@ -31,17 +31,14 @@
 #include <pyhrol.h>
 #include <pyerrors.h>
 
-using namespace std;
-using namespace pyhrol;
-
-struct input: public TupleIn::anything
+struct input: public pyhrol::TupleIn::anything
 {
   int n;
   virtual int m_converter(PyObject *args)
   {
     if (!PyString_Check(args))
     {
-      throw runtime_error(string("Unexpected data type (") + args->ob_type->tp_name +")");
+      throw std::runtime_error(std::string("Unexpected data type (") + args->ob_type->tp_name +")");
     }
 
     PyStringObject *s = reinterpret_cast<PyStringObject *>(args);
@@ -59,13 +56,13 @@ struct input: public TupleIn::anything
     }
     else
     {
-      throw runtime_error(string("Input value \"") + s->ob_sval +"\" invalid");
+      throw std::runtime_error(std::string("Input value \"") + s->ob_sval +"\" invalid");
     }
     return 1;
   }
 };
 
-struct output: public TupleOut::anything
+struct output: public pyhrol::TupleOut::anything
 {
   int n;
   virtual PyObject *m_converter() const
@@ -80,12 +77,12 @@ struct output: public TupleOut::anything
     }
     else
     {
-      throw runtime_error("Unexpected output value");
+      throw std::runtime_error("Unexpected output value");
     }
   }
 };
 
-void function_with_convertor(Tuples &_args)
+void function_with_convertor(pyhrol::Tuples &_args)
 {
   input i;
   output o;
@@ -95,9 +92,9 @@ void function_with_convertor(Tuples &_args)
   PYHROL_BUILD_VALUE_2(NULL, _args, output::converter, &o)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-    << "  My arg: " << i.n << endl
+  std::cout
+    << __func__ << ": I am called\n"
+    << "  My arg: " << i.n << '\n'
   ;
 
   o.n = i.n;
@@ -105,9 +102,7 @@ void function_with_convertor(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_with_convertor, "Function calls special function to convert self argument and return value")
 }

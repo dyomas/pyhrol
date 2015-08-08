@@ -72,8 +72,14 @@ unset PYHROL_ERROR_HEADER_FORMAT
 unset PYHROL_ERROR_BODY_FORMAT
 
 
+PYTHON=python
+which stdbuf 2>&1 > /dev/null && {
+  PYTHON="stdbuf -oL $PYTHON"
+}
+PYTHON="$PYTHON -EsS"
+
 readonly TMP_FILE=`mktemp /tmp/__phe_XXXX`
-python -SsE $EXAMPLE.py > $TMP_FILE 2>&1 && {
+$PYTHON $EXAMPLE.py > $TMP_FILE 2>&1 && {
   diff --label="<$EXAMPLE.txt>" --label="(obtained)" -U0 $EXAMPLE.txt $TMP_FILE || {
     RETVAL=$?
   }

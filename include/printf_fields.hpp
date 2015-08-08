@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2011-03-20 01:39:26 +0300 (Sun, 20 Mar 2011) $
+// $Date: 2011-03-20 01:39:26 +0300 (Вс., 20 марта 2011) $
 // $Revision: 517 $
 
 #include "printf_fields.h"

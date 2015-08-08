@@ -27,27 +27,49 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-03-07 00:18:03 +0400 (Fri, 07 Mar 2014) $
-// $Revision: 899 $
+#include "myclass.h"
 
+#include <pyhrol.h>
 #include <stdio.h>
-#include <pyport.h>
-#include <sys/cdefs.h>
+#include <stdarg.h>
 
-#ifndef _OUTPUT
-#error Macro _OUTPUT is required and must equal library file name (without suffix)
-#endif
-
-#define __INIT_MODULE_NAME(arg) __STRING(arg)
-#define __INIT_MODULE_INITIALIZER(arg) __CONCAT(init, arg)
-
-#define __PY_POEHALI __INIT_MODULE_INITIALIZER(_OUTPUT)
-#define __PY_MODULE_NAME __INIT_MODULE_NAME(_OUTPUT)
-
-
-void pyhrol_init(const char *);
-
-PyMODINIT_FUNC __PY_POEHALI()
+class PyType: public pyhrol::TypeWrapper<MyClass>
 {
-  pyhrol_init(__PY_MODULE_NAME);
-}
+  PyType()
+    /* NOTE
+      Call to `TypeBase(const char *, const char *)' intentionally omitted here to provoke `std::logic_error' as expected in example scenario. Instead, default `TypeBase' constructor called
+      To fix error:
+        cmake -D DISABLE_TYPEBASE_DEFAULT_CONSTRUCTOR:BOOL=ON .
+        make example_0970
+      To provoke abort(3) due to unhandled exception:
+        cmake -D DISABLE_TYPEBASE_DEFAULT_CONSTRUCTOR:BOOL=OFF -D ENABLE_TYPEBASE_UNHANDLED_EXCEPTION:BOOL=ON .
+        make example_0970
+    */
+#ifdef DISABLE_TYPEBASE_DEFAULT_CONSTRUCTOR
+    : TypeBase("MyClass", NULL)
+#endif //DISABLE_TYPEBASE_DEFAULT_CONSTRUCTOR
+  {
+  }
+
+  virtual void destructor(MyClass &obj) const
+  {
+    obj.~MyClass();
+  }
+
+public:
+  static void __attribute__ ((constructor)) init()
+  {
+#ifdef ENABLE_TYPEBASE_UNHANDLED_EXCEPTION
+      m_get(new PyType);
+#else //ENABLE_TYPEBASE_UNHANDLED_EXCEPTION
+    try
+    {
+      m_get(new PyType);
+    }
+    catch (std::exception &ex)
+    {
+      fprintf(stderr, "*** Exception! %s\n    Type `PyType' not inited\n", ex.what());
+    }
+#endif //ENABLE_TYPEBASE_UNHANDLED_EXCEPTION
+  }
+};

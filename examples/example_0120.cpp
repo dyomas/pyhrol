@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void help_generation_example(Tuples &_args)
+void help_generation_example(pyhrol::Tuples &_args)
 {
   const char *str;
   int32_t strlen;
@@ -47,14 +44,12 @@ void help_generation_example(Tuples &_args)
   PYHROL_BUILD_VALUE_4("\nhelp on res1\nhelp on res2\nhelp on res3\nhelp on res4", _args, i, f, strlen, str)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout << __func__ << ": I am called\n";
+  std::cout << __func__ << ": I am called\n";
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION_WITH_KEYWORDS(help_generation_example, "Automatic help generation on function arguments")
 }

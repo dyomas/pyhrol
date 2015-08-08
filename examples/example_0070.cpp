@@ -30,11 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-
-void function_with_overloaded_retvals(Tuples &_args)
+void function_with_overloaded_retvals(pyhrol::Tuples &_args)
 {
   uint8_t build_variant;
   int i;
@@ -50,51 +46,37 @@ void function_with_overloaded_retvals(Tuples &_args)
   PYHROL_BUILD_VALUE_3(NULL, _args, i, pch, f)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-  ;
+  std::cout << __func__ << ": I am called\n";
 
   switch (build_variant)
   {
     case 0:
       i = 1;
-      cout
-        << "  Variant 0: i = " << i << endl
-      ;
+      std::cout << "  Variant 0: i = " << i << '\n';
       break;
     case 1:
       pch = "One";
-      cout
-        << "  Variant 1: pch = \"" << pch << "\"" << endl
-      ;
+      std::cout << "  Variant 1: pch = \"" << pch << "\"\n";
       break;
     case 2:
       f = 2.72;
-      cout
-        << "  Variant 2: f = " << f << endl
-      ;
+      std::cout << "  Variant 2: f = " << f << '\n';
       break;
     case 3:
-      cout
-        << "  Variant 3: <no result>" << endl
-      ;
+      std::cout << "  Variant 3: <no result>\n";
       break;
     case 4:
       i = 3;
       pch = "Three";
       f = 3.14;
-      cout
-        << "  Variant 4: i = " << i << ", pch = \"" << pch << "\", f = " << f << endl
-      ;
+      std::cout << "  Variant 4: i = " << i << ", pch = \"" << pch << "\", f = " << f << '\n';
       break;
   }
 
   PYHROL_AFTER_EXECUTE(_args, build_variant)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_with_overloaded_retvals, "Function returns  different result types depend on argument value")
 }

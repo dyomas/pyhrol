@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-07-20 23:24:41 +0300 (Пн., 20 июля 2015) $
+// $Revision: 1047 $
 
 #ifndef __pyhrol_tuple_describer_flexible_h__
 #define __pyhrol_tuple_describer_flexible_h__
@@ -92,7 +92,8 @@ class TupleDescriberFlexible: public SelfAddressedCstringBase<TupleDescriberFlex
     , const tupleDirection /*dir*/
     , const describeOptions /*opt*/
   ) const;
-  const std::string m_signature(const TupleBase &tuple, const tupleDirection /*dir*/) const;
+  const std::string m_signature_cpp(const TupleBase &tuple, const tupleDirection /*dir*/) const;
+  const std::string m_signature_python(const TupleBase &tuple, const tupleDirection /*dir*/) const;
 
 public:
   virtual const char *to_string() const;

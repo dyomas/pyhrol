@@ -27,11 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
@@ -47,34 +44,35 @@ public:
     return *this;
   }
 
-  MyClass2(const string &msg)
+  MyClass2(const std::string &msg)
     : MyClass(msg.c_str())
   {
   }
 };
 
 
-class PyTypeString: public TypeWrapper<string>
+class PyTypeString: public pyhrol::TypeWrapper<std::string>
 {
   PyTypeString()
-    : TypeBase<string>("MyString", NULL)
+    : pyhrol::TypeBase<std::string>("MyString", NULL)
   {
   }
 
-  virtual void constructor(string &res, Tuples &_args) const
+  virtual void constructor(std::string &res, pyhrol::Tuples &_args) const
   {
     const char *data;
     PYHROL_PARSE_TUPLE_1(NULL, _args, data)
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    new(&res) string(data);
+    new(&res) std::string(data);
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void destructor(string &obj) const
+  virtual void destructor(std::string &obj) const
   {
+    using std::string;
     obj.~string();
   }
 
@@ -84,16 +82,16 @@ class PyTypeString: public TypeWrapper<string>
   }
 };
 
-class PyType: public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
-    : TypeBase<MyClass2>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
     m_add_method<PyType, &PyType::set>("set", NULL);
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -103,7 +101,7 @@ class PyType: public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  void set(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void set(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     const char *arg;
     argObject as_me;
@@ -115,9 +113,7 @@ class PyType: public TypeWrapper<MyClass2>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    cout
-      << __func__ << ": " << static_cast<uint16_t>(_args.parsed_variant()) << endl
-    ;
+    std::cout << __func__ << ": " << static_cast<uint16_t>(_args.parsed_variant()) << '\n';
 
     switch (_args.parsed_variant())
     {
@@ -135,7 +131,7 @@ class PyType: public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

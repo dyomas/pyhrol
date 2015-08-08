@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-11-28 03:36:46 +0400 (Thu, 28 Nov 2013) $
+// $Date: 2013-11-28 03:36:46 +0400 (Чт., 28 нояб. 2013) $
 // $Revision: 844 $
 
 #ifndef __signature_parser_h__

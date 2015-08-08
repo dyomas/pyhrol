@@ -1,0 +1,308 @@
+//kate: hl Doxygen;
+
+/**
+\file ../include/pyhrol_type_base.h
+See <a href="../wiki/Reference.html#TypeBase">description</a>
+
+\file ../include/pyhrol_type.h
+See <a href="../wiki/Reference.html#TypeWrapper">description</a>
+
+\file ../include/pyhrol_type_iterable.h
+See <a href="../wiki/Reference.html#TypeIterable">description</a>
+
+\file ../include/pyhrol_type_map.h
+See <a href="../wiki/Reference.html#TypeMap">description</a>
+
+\file ../include/pyhrol_type_number_any.h
+See <a href="../wiki/Reference.html#TypeNumberAny">description</a>
+
+\file ../include/pyhrol_type_number.h
+See <a href="../wiki/Reference.html#TypeNumber">description</a>
+
+\file ../include/pyhrol_type_pointer.h
+See <a href="../wiki/Reference.html#TypePointer">description</a>
+
+\file ../include/pyhrol_type_sequence.h
+See <a href="../wiki/Reference.html#TypeSequence">description</a>
+
+\file ../include/pyhrol_type_smart.h
+See <a href="../wiki/Reference.html#TypeSmart">description</a>
+
+\file ../include/pyhrol_type_special.h
+See <a href="../wiki/Reference.html#TypeSpecial">description</a>
+
+\file ../include/pyhrol_auto_holder.h
+See <a href="../wiki/Reference.html#AutoHolder">description</a>
+
+\file ../include/pyhrol_container.h
+See <a href="../wiki/Reference.html#Container">description</a>
+
+\file ../include/pyhrol_tuples.h
+See <a href="../wiki/Reference.html#Tuples">description</a>
+*/
+
+/**
+\file examples/example_0010.cpp
+See <a href="../wiki/Tutorial.html#0010">description</a>
+
+\file examples/example_0020.cpp
+See <a href="../wiki/Tutorial.html#0020">description</a>
+
+\file examples/example_0030.cpp
+See <a href="../wiki/Tutorial.html#0030">description</a>
+
+\file examples/example_0040.cpp
+See <a href="../wiki/Tutorial.html#0040">description</a>
+
+\file examples/example_0050.cpp
+See <a href="../wiki/Tutorial.html#0050">description</a>
+
+\file examples/example_0060.cpp
+See <a href="../wiki/Tutorial.html#0060">description</a>
+
+\file examples/example_0070.cpp
+See <a href="../wiki/Tutorial.html#0070">description</a>
+
+\file examples/example_0080.cpp
+See <a href="../wiki/Tutorial.html#0080">description</a>
+
+\file examples/example_0090.cpp
+See <a href="../wiki/Tutorial.html#0090">description</a>
+
+\file examples/example_0100.cpp
+See <a href="../wiki/Tutorial.html#0100">description</a>
+
+\file examples/example_0110.cpp
+See <a href="../wiki/Tutorial.html#0110">description</a>
+
+\file examples/example_0120.cpp
+See <a href="../wiki/Tutorial.html#0120">description</a>
+
+
+\file examples/example_0400.cpp
+See <a href="../wiki/Tutorial.html#0400">description</a>
+
+\file examples/example_0410.cpp
+See <a href="../wiki/Tutorial.html#0410">description</a>
+
+\file examples/example_0420.cpp
+See <a href="../wiki/Tutorial.html#0420">description</a>
+
+\file examples/example_0430.cpp
+See <a href="../wiki/Tutorial.html#0430">description</a>
+
+\file examples/example_0440.cpp
+See <a href="../wiki/Tutorial.html#0440">description</a>
+
+\file examples/example_0450.cpp
+See <a href="../wiki/Tutorial.html#0450">description</a>
+
+\file examples/example_0455.cpp
+See <a href="../wiki/Tutorial.html#0455">description</a>
+
+\file examples/example_0460.cpp
+See <a href="../wiki/Tutorial.html#0460">description</a>
+
+\file examples/example_0470.cpp
+See <a href="../wiki/Tutorial.html#0470">description</a>
+
+\file examples/example_0480.cpp
+See <a href="../wiki/Tutorial.html#0480">description</a>
+
+\file examples/example_0490.cpp
+See <a href="../wiki/Tutorial.html#0490">description</a>
+
+\file examples/example_0495.cpp
+See <a href="../wiki/Tutorial.html#0495">description</a>
+
+\file examples/example_0500.cpp
+See <a href="../wiki/Tutorial.html#0500">description</a>
+
+\file examples/example_0505.cpp
+See <a href="../wiki/Tutorial.html#0505">description</a>
+
+\file examples/example_0510.cpp
+See <a href="../wiki/Tutorial.html#0510">description</a>
+
+\file examples/example_0520.cpp
+See <a href="../wiki/Tutorial.html#0520">description</a>
+
+\file examples/example_0540.cpp
+See <a href="../wiki/Tutorial.html#0540">description</a>
+
+\file examples/example_0550.cpp
+See <a href="../wiki/Tutorial.html#0550">description</a>
+
+\file examples/example_0560.cpp
+See <a href="../wiki/Tutorial.html#0560">description</a>
+
+
+\file examples/example_0840.cpp
+See <a href="../wiki/Tutorial.html#0840">description</a>
+
+\file examples/example_0850.cpp
+See <a href="../wiki/Tutorial.html#0850">description</a>
+
+
+\file examples/example_0900.cpp
+See <a href="../wiki/Tutorial.html#0900">description</a>
+
+\file examples/example_0920.cpp
+See <a href="../wiki/Tutorial.html#0920">description</a>
+
+\file examples/example_0925.cpp
+See <a href="../wiki/Tutorial.html#0925">description</a>
+
+\file examples/example_0930.cpp
+See <a href="../wiki/Tutorial.html#0930">description</a>
+
+\file examples/example_0940.cpp
+See <a href="../wiki/Tutorial.html#0940">description</a>
+
+\file examples/example_0950.cpp
+See <a href="../wiki/Tutorial.html#0950">description</a>
+
+\file examples/example_0960.cpp
+See <a href="../wiki/Tutorial.html#0960">description</a>
+*/
+
+
+/**
+\file examples/example_0010.py
+See <a href="../wiki/Tutorial.html#0010">description</a>
+
+\file examples/example_0020.py
+See <a href="../wiki/Tutorial.html#0020">description</a>
+
+\file examples/example_0030.py
+See <a href="../wiki/Tutorial.html#0030">description</a>
+
+\file examples/example_0040.py
+See <a href="../wiki/Tutorial.html#0040">description</a>
+
+\file examples/example_0050.py
+See <a href="../wiki/Tutorial.html#0050">description</a>
+
+\file examples/example_0060.py
+See <a href="../wiki/Tutorial.html#0060">description</a>
+
+\file examples/example_0070.py
+See <a href="../wiki/Tutorial.html#0070">description</a>
+
+\file examples/example_0080.py
+See <a href="../wiki/Tutorial.html#0080">description</a>
+
+\file examples/example_0090.py
+See <a href="../wiki/Tutorial.html#0090">description</a>
+
+\file examples/example_0100.py
+See <a href="../wiki/Tutorial.html#0100">description</a>
+
+\file examples/example_0110.py
+See <a href="../wiki/Tutorial.html#0110">description</a>
+
+
+\file examples/example_0400.py
+See <a href="../wiki/Tutorial.html#0400">description</a>
+
+\file examples/example_0410.py
+See <a href="../wiki/Tutorial.html#0410">description</a>
+
+\file examples/example_0420.py
+See <a href="../wiki/Tutorial.html#0420">description</a>
+
+\file examples/example_0430.py
+See <a href="../wiki/Tutorial.html#0430">description</a>
+
+\file examples/example_0440.py
+See <a href="../wiki/Tutorial.html#0440">description</a>
+
+\file examples/example_0450.py
+See <a href="../wiki/Tutorial.html#0450">description</a>
+
+\file examples/example_0455.py
+See <a href="../wiki/Tutorial.html#0455">description</a>
+
+\file examples/example_0460.py
+See <a href="../wiki/Tutorial.html#0460">description</a>
+
+\file examples/example_0470.py
+See <a href="../wiki/Tutorial.html#0470">description</a>
+
+\file examples/example_0480.py
+See <a href="../wiki/Tutorial.html#0480">description</a>
+
+\file examples/example_0490.py
+See <a href="../wiki/Tutorial.html#0490">description</a>
+
+\file examples/example_0495.py
+See <a href="../wiki/Tutorial.html#0495">description</a>
+
+\file examples/example_0500.py
+See <a href="../wiki/Tutorial.html#0500">description</a>
+
+\file examples/example_0505.py
+See <a href="../wiki/Tutorial.html#0505">description</a>
+
+\file examples/example_0510.py
+See <a href="../wiki/Tutorial.html#0510">description</a>
+
+\file examples/example_0520.py
+See <a href="../wiki/Tutorial.html#0520">description</a>
+
+\file examples/example_0540.py
+See <a href="../wiki/Tutorial.html#0540">description</a>
+
+\file examples/example_0550.py
+See <a href="../wiki/Tutorial.html#0550">description</a>
+
+\file examples/example_0560.py
+See <a href="../wiki/Tutorial.html#0560">description</a>
+
+
+\file examples/example_0800.py
+See <a href="../wiki/Tutorial.html#0800">description</a>
+
+\file examples/example_0810.py
+See <a href="../wiki/Tutorial.html#0810">description</a>
+
+\file examples/example_0820.py
+See <a href="../wiki/Tutorial.html#0820">description</a>
+
+\file examples/example_0830.py
+See <a href="../wiki/Tutorial.html#0830">description</a>
+
+\file examples/example_0840.py
+See <a href="../wiki/Tutorial.html#0840">description</a>
+
+\file examples/example_0850.py
+See <a href="../wiki/Tutorial.html#0850">description</a>
+
+
+\file examples/example_0900.py
+See <a href="../wiki/Tutorial.html#0900">description</a>
+
+\file examples/example_0910.py
+See <a href="../wiki/Tutorial.html#0910">description</a>
+
+\file examples/example_0920.py
+See <a href="../wiki/Tutorial.html#0920">description</a>
+
+\file examples/example_0925.py
+See <a href="../wiki/Tutorial.html#0925">description</a>
+
+\file examples/example_0926.py
+See <a href="../wiki/Tutorial.html#0926">description</a>
+
+\file examples/example_0930.py
+See <a href="../wiki/Tutorial.html#0930">description</a>
+
+\file examples/example_0940.py
+See <a href="../wiki/Tutorial.html#0940">description</a>
+
+\file examples/example_0950.py
+See <a href="../wiki/Tutorial.html#0950">description</a>
+
+\file examples/example_0960.py
+See <a href="../wiki/Tutorial.html#0960">description</a>
+*/

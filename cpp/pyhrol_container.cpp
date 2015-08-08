@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-08-08 11:22:54 +0300 (Сб., 08 авг. 2015) $
+// $Revision: 1052 $
 
 #include <iostream>
 #include <sstream>
@@ -50,7 +50,7 @@
 #include "pyhrol_index.h"
 #ifndef PYHROL_SAFE_MODE
 #include "pyhrol_tuple_format.h"
-#endif
+#endif //PYHROL_SAFE_MODE
 
 using namespace std;
 
@@ -109,9 +109,6 @@ Container::InvalidLink::InvalidLink(const void *address)
 Container::Container()
 {
   PYHROL_TRACE(tpInternal, this, __PRETTY_FUNCTION__);
-#ifndef PYHROL_SAFE_MODE
-  m_tuple_format.reset(new TupleFormat(TupleFormat::initer()));
-#endif //PYHROL_SAFE_MODE
   m_index.reset(new Index);
 
   PyMethodDef md_sentinel;
@@ -154,11 +151,20 @@ Container &Container::container()
 #ifndef PYHROL_SAFE_MODE
 const TupleFormat &Container::tupleFormat()
 {
+  if (!m_tuple_format.get())
+  {
+    m_tuple_format.reset(new TupleFormat(TupleFormat::initer()));
+  }
   return *m_tuple_format;
 }
 
 void Container::setTupleFormat(const char *th, const char *tb, const char *eh, const char *eb)
 {
+  if (!m_tuple_format.get())
+  {
+    m_tuple_format.reset(new TupleFormat(TupleFormat::initer()));
+  }
+
   if (th)
   {
     m_tuple_format->setTupleHeaderFormat(th);
@@ -1541,7 +1547,7 @@ void Container::m_describe_tuples(const module &m)
       {
         (*current_method->ml_meth)(&dummy, NULL);
       }
-      else if (current_method->ml_flags == METH_KEYWORDS | METH_VARARGS)
+      else if (current_method->ml_flags == (METH_KEYWORDS | METH_VARARGS))
       {
         (*reinterpret_cast<PyCFunctionWithKeywords>(current_method->ml_meth))(&dummy, NULL, NULL);
       }

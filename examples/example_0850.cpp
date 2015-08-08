@@ -29,15 +29,12 @@
 
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
+typedef std::map<int, int> dummy_t;
 
-typedef map<int, int> dummy_t;
-
-class DummyType: public TypeWrapper<dummy_t>, public TypeMap<dummy_t>, TypeSequence<dummy_t>, TypeNumber<dummy_t>, TypeIterable<dummy_t, dummy_t>
+class DummyType: public pyhrol::TypeWrapper<dummy_t>, public pyhrol::TypeMap<dummy_t>, pyhrol::TypeSequence<dummy_t>, pyhrol::TypeNumber<dummy_t>, pyhrol::TypeIterable<dummy_t, dummy_t>
 {
   DummyType()
-    : TypeBase<dummy_t>("MyClass", NULL)
+    : pyhrol::TypeBase<dummy_t>("MyClass", NULL)
   {
     //Assigned by TypeWrapper
     m_type_object.tp_dealloc = NULL;
@@ -119,5 +116,4 @@ class DummyType: public TypeWrapper<dummy_t>, public TypeMap<dummy_t>, TypeSeque
   {
     m_get(new DummyType);
   }
-
 };

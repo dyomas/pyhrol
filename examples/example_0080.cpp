@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void function_manipulate_objects(Tuples &_args)
+void function_manipulate_objects(pyhrol::Tuples &_args)
 {
   PyObject *parg, *pres = NULL;
 
@@ -42,9 +39,9 @@ void function_manipulate_objects(Tuples &_args)
   PYHROL_BUILD_VALUE_1(NULL, _args, pres)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-    << "  Arg type is: \"" << parg->ob_type->tp_name << "\"" << endl
+  std::cout
+    << __func__ << ": I am called\n"
+    << "  Arg type is: \"" << parg->ob_type->tp_name << "\"\n"
   ;
 
   pres = PyString_FromString(parg->ob_type->tp_name);
@@ -52,9 +49,7 @@ void function_manipulate_objects(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_manipulate_objects, "Function takes any PyObject as argument and returns object type name")
 }

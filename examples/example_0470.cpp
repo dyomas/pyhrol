@@ -27,12 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
-
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
@@ -50,16 +46,16 @@ public:
 
 MyClass2 _G_obj("Здравствуй мир!");
 
-class PyType: public TypePointer<MyClass2>, public TypeSpecial<pointer<MyClass2> >
+class PyType: public pyhrol::TypePointer<MyClass2>, public pyhrol::TypeSpecial<pyhrol::pointer<MyClass2> >
 {
   PyType()
-    : TypeBase<pointer<MyClass2> >("MyClass", "help")
+    : pyhrol::TypeBase<pyhrol::pointer<MyClass2> >("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
     m_add_static_method<&PyType::set>("set", NULL);
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -69,17 +65,17 @@ class PyType: public TypePointer<MyClass2>, public TypeSpecial<pointer<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(pointer<MyClass2> &obj, Tuples &_args) const
+  virtual void constructor(pyhrol::pointer<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    new (&obj) pointer<MyClass2> (&_G_obj);
+    new (&obj) pyhrol::pointer<MyClass2> (&_G_obj);
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void destructor(pointer<MyClass2> &obj) const
+  virtual void destructor(pyhrol::pointer<MyClass2> &obj) const
   {
     obj.~pointer();
   }
@@ -90,7 +86,7 @@ class PyType: public TypePointer<MyClass2>, public TypeSpecial<pointer<MyClass2>
   }
 
 public:
-  static void set(Tuples &_args)
+  static void set(pyhrol::Tuples &_args)
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

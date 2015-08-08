@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_type_pointer_hpp__
 #define __pyhrol_type_pointer_hpp__
@@ -91,7 +91,7 @@ namespace __ptr_internal
 
 template <typename T, typename O, void (O::*G)(const Ptr<const T> &, Tuples &) const, void (O::*S)(const Ptr<T> &, Tuples &) const> TuplesData &data(const size_t address)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_getsetter, address));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_getsetter, address));
   return *data;
 }
 
@@ -151,19 +151,19 @@ template <typename T, typename I> template <void (I::*F)(const Ptr<T> &, Tuples 
   TypeBase<pointer<T> >::m_add_method(name, m_method<I, F>, help);
 }
 
-template <typename T, typename I> template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method(const char *name, const char *help)
+template <typename T, typename I> template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_const(const char *name, const char *help)
 {
-  TypeBase<pointer<T> >::m_add_method(name, m_method2<I, F>, help);
+  TypeBase<pointer<T> >::m_add_method(name, m_method2_const<I, F>, help);
 }
 
-template <typename T, typename I> template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_with_keywords(const char *name, const char *help)
+template <typename T, typename I> template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_with_keywords_const(const char *name, const char *help)
 {
-  TypeBase<pointer<T> >::m_add_method(name, m_method3<I, F>, help);
+  TypeBase<pointer<T> >::m_add_method(name, m_method3_const<I, F>, help);
 }
 
-template <typename T, typename I> template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_no_args(const char *name, const char *help)
+template <typename T, typename I> template <void (I::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_no_args_const(const char *name, const char *help)
 {
-  TypeBase<pointer<T> >::m_add_method(name, m_method<I, F>, help);
+  TypeBase<pointer<T> >::m_add_method(name, m_method_const<I, F>, help);
 }
 
 template <typename T, typename I> template <void (I::*G)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_getter(const char *name, const char *doc)
@@ -197,19 +197,19 @@ template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<T
   TypeBase<pointer<T> >::m_add_method(name, m_method<O, F>, help);
 }
 
-template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method(const char *name, const char *help)
+template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_const(const char *name, const char *help)
 {
-  TypeBase<pointer<T> >::m_add_method(name, m_method2<O, F>, help);
+  TypeBase<pointer<T> >::m_add_method(name, m_method2_const<O, F>, help);
 }
 
-template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_with_keywords(const char *name, const char *help)
+template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_with_keywords_const(const char *name, const char *help)
 {
-  TypeBase<pointer<T> >::m_add_method(name, m_method3<O, F>, help);
+  TypeBase<pointer<T> >::m_add_method(name, m_method3_const<O, F>, help);
 }
 
-template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_no_args(const char *name, const char *help)
+template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_method_no_args_const(const char *name, const char *help)
 {
-  TypeBase<pointer<T> >::m_add_method(name, m_method<O, F>, help);
+  TypeBase<pointer<T> >::m_add_method(name, m_method_const<O, F>, help);
 }
 
 template <typename T, typename I> template <typename O, void (O::*G)(const Ptr<const T> &, Tuples &) const> void TypePointer<T, I>::m_add_getter(const char *name, const char *doc)
@@ -266,69 +266,69 @@ template <class T, class I> template <typename O, void (O::*F)(const Ptr<const T
 
 template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method(PyObject *self)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method_no_arg, reinterpret_cast<size_t>(m_method<O, F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method_no_arg, reinterpret_cast<size_t>(m_method<O, F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr<O, F> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, NULL, NULL, !self);
 }
 
 template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method2(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method, reinterpret_cast<size_t>(m_method2<O, F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method, reinterpret_cast<size_t>(m_method2<O, F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr<O, F> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, args, NULL, !self);
 }
 
 template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method3(PyObject *self, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method_kw, reinterpret_cast<size_t>(m_method3<O, F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method_kw, reinterpret_cast<size_t>(m_method3<O, F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr<O, F> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, args, kwds, !self);
 }
 
-template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method(PyObject *self)
+template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method_const(PyObject *self)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method_no_arg_const, reinterpret_cast<size_t>(m_method<O, F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method_no_arg_const, reinterpret_cast<size_t>(m_method_const<O, F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr_const<O, F> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, NULL, NULL, !self);
 }
 
-template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method2(PyObject *self, PyObject *args)
+template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method2_const(PyObject *self, PyObject *args)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method_const, reinterpret_cast<size_t>(m_method2<O, F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method_const, reinterpret_cast<size_t>(m_method2_const<O, F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr_const<O, F> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, args, NULL, !self);
 }
 
-template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method3(PyObject *self, PyObject *args, PyObject *kwds)
+template <typename T, typename I> template <typename O, void (O::*F)(const Ptr<const T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_method3_const(PyObject *self, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_method_kw_const, reinterpret_cast<size_t>(m_method3<O, F>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_method_kw_const, reinterpret_cast<size_t>(m_method3_const<O, F>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr_const<O, F> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, args, kwds, !self);
 }
 
 template <typename T, typename I> template <typename O, void (O::*G)(const Ptr<const T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_getter(PyObject *self, void */*closure*/)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_getter, reinterpret_cast<size_t>(m_getter<O, G>)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_getter, reinterpret_cast<size_t>(m_getter<O, G>)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr_const<O, G> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, NULL, NULL, !self);
 }
 
 template <typename T, typename I> template <typename O, void (O::*S)(const Ptr<T> &, Tuples &) const> int TypePointer<T, I>::m_setter(PyObject *self, PyObject *value, void */*closure*/)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_setter, reinterpret_cast<size_t>(m_setter<O, S>)));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_setter, reinterpret_cast<size_t>(m_setter<O, S>)));
   PyObject *value_packed = pack_tuple(value);
   if (value && !value_packed)
   {
     return -1;
   }
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_ptr<O, S> c(*tuples, self, __PRETTY_FUNCTION__ );
   tuples->ubiquitous_caller(c, value_packed, NULL, !self);
   Py_DecRef(value_packed);
@@ -337,7 +337,7 @@ template <typename T, typename I> template <typename O, void (O::*S)(const Ptr<T
 
 template <typename T, typename I> template <typename O, void (O::*G)(const Ptr<const T> &, Tuples &) const, void (O::*S)(const Ptr<T> &, Tuples &) const> PyObject *TypePointer<T, I>::m_getter_paired(PyObject *self, void */*closure*/)
 {
-  std::auto_ptr<Tuples> tuples(Tuples::factory(__ptr_internal::data<T, O, G, S>(reinterpret_cast<size_t>(m_getter_paired<O, G, S>))));
+  tuples_auto_release_t tuples(Tuples::factory(__ptr_internal::data<T, O, G, S>(reinterpret_cast<size_t>(m_getter_paired<O, G, S>))));
   call_ptr_const<O, G> c(*tuples, self, __PRETTY_FUNCTION__ );
   return tuples->ubiquitous_caller(c, NULL, NULL, !self, Tuples::ctGetter);
 }
@@ -349,7 +349,7 @@ template <typename T, typename I> template <typename O, void (O::*G)(const Ptr<c
   {
     return -1;
   }
-  std::auto_ptr<Tuples> tuples(Tuples::factory(__ptr_internal::data<T, O, G, S>(reinterpret_cast<size_t>(m_setter_paired<O, G, S>))));
+  tuples_auto_release_t tuples(Tuples::factory(__ptr_internal::data<T, O, G, S>(reinterpret_cast<size_t>(m_setter_paired<O, G, S>))));
   call_ptr<O, S> c(*tuples, self, __PRETTY_FUNCTION__ );
   tuples->ubiquitous_caller(c, value_packed, NULL, !self, Tuples::ctSetter);
   Py_DecRef(value_packed);

@@ -3,17 +3,17 @@ Help on built-in function help_generation_example in module example_0120:
 
 help_generation_example(...)
     Automatic help generation on function arguments
-    ->    s#|id tuple with per argument help:
+    ->    (str, int = 12, float = 3.14) tuple with per argument help:
           char */*not null*/, int32_t   si  str                                sample string
           int32_t                       i   i                   12             integer value with default
           double                        d   f                   3.14           float value with default
-    ->    ids# tuple with brief help
+    ->    (int, float, str) tuple with brief help
     ...and addition
           int32_t                       i   i                                  
           double                        d   f                                  
           char */*not null*/, int32_t   si  str                                
     
-    <-    idis 
+    <-    (int, float, int, str) 
           int32_t                       i                                      help on res1
           double                        d                                      help on res2
           int32_t                       i                                      help on res3

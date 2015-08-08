@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void function_with_overloading_by_keyword(Tuples &_args)
+void function_with_overloading_by_keyword(pyhrol::Tuples &_args)
 {
   int i, j, k, l;
   double f;
@@ -45,40 +42,28 @@ void function_with_overloading_by_keyword(Tuples &_args)
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-  ;
+  std::cout << __func__ << ": I am called\n";
 
   switch (_args.parsed_variant())
   {
     case 0:
-      cout
-        << "  Signature 0: i = " << i << endl
-      ;
+      std::cout << "  Signature 0: i = " << i << '\n';
       break;
     case 1:
-      cout
-        << "  Signature 1: j = " << j << ", f = " << f << endl
-      ;
+      std::cout << "  Signature 1: j = " << j << ", f = " << f << '\n';
       break;
     case 2:
-      cout
-        << "  Signature 2: k = " << k << endl
-      ;
+      std::cout << "  Signature 2: k = " << k << '\n';
       break;
     case 3:
-      cout
-        << "  Signature 3: l = " << l << endl
-      ;
+      std::cout << "  Signature 3: l = " << l << '\n';
       break;
   }
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION_WITH_KEYWORDS(function_with_overloading_by_keyword, "Function with some identical signatures, accessed by different keywords")
 }

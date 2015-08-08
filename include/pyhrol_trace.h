@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-10-30 22:37:28 +0400 (Wed, 30 Oct 2013) $
-// $Revision: 824 $
+// $Date: 2015-04-18 15:32:17 +0300 (Сб., 18 апр. 2015) $
+// $Revision: 1031 $
 
 #ifndef __pyhrol_trace_h__
 #define __pyhrol_trace_h__
@@ -49,14 +49,11 @@ namespace pyhrol
     , tpOptionsMask = tpHideAddress | tpShowNum
   };
 
-  bool start_message(const traceParts tp);
-  std::ostream &get_tracer();
-
+  traceParts tracer_state();
+  void reset_tracer(const traceParts);
   void trace(const traceParts, const void *address, const char *signature);
   bool user_trace_enbled();
   std::ostream &user_trace(const void *address, const char *signature);
-
-  extern traceParts _G_show_parts;
 } //namespace pyhrol
 
 typedef SmartFlag<pyhrol::traceParts> trace_parts_flag_t;

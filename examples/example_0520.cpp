@@ -30,15 +30,12 @@
 #include <pyhrol.h>
 #include <pyhrol_auto_holder.h>
 
-using namespace std;
-using namespace pyhrol;
-
 struct iterator
 {
-  string::const_iterator iter;
-  const string::const_iterator iter_end;
+  std::string::const_iterator iter;
+  const std::string::const_iterator iter_end;
 
-  iterator(const Ptr<const string> &container)
+  iterator(const pyhrol::Ptr<const std::string> &container)
     : iter(container->begin())
     , iter_end(container->end())
     , m_container(container)
@@ -55,48 +52,49 @@ private:
   PyObject *m_container;
 };
 
-struct item: AutoHolder
+struct item: pyhrol::AutoHolder
 {
   const char data;
-  item(const Ptr< ::iterator> &iter)
-    : AutoHolder(iter)
+  item(const pyhrol::Ptr< ::iterator> &iter)
+    : pyhrol::AutoHolder(iter)
     , data(*iter->iter ++)
   {
   }
 };
 
 
-class Container: public TypeWrapper<string>, public TypeIterable<string, ::iterator>
+class Container: public pyhrol::TypeWrapper<std::string>, public pyhrol::TypeIterable<std::string, ::iterator>
 {
   Container()
-    : TypeBase<string>("MyClass", NULL)
+    : pyhrol::TypeBase<std::string>("MyClass", NULL)
   {
     m_type_object.tp_iternext = NULL;
   }
 
-  virtual void constructor(string &res, Tuples &_args) const
+  virtual void constructor(std::string &res, pyhrol::Tuples &_args) const
   {
     const char *data;
     PYHROL_PARSE_TUPLE_1(NULL, _args, data)
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    new(&res) string(data);
+    new(&res) std::string(data);
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void destructor(string &obj) const
+  virtual void destructor(std::string &obj) const
   {
+    using std::string;
     obj.~string();
   }
 
-  virtual void print(ostream &os, const string &obj) const
+  virtual void print(std::ostream &os, const std::string &obj) const
   {
     os << obj;
   }
 
-  virtual void iter(const Ptr< ::iterator> &iter, const Ptr<const string> &container) const
+  virtual void iter(const pyhrol::Ptr< ::iterator> &iter, const pyhrol::Ptr<const std::string> &container) const
   {
     new(&*iter) ::iterator(container);
   }
@@ -107,15 +105,15 @@ class Container: public TypeWrapper<string>, public TypeIterable<string, ::itera
   }
 };
 
-class Iterator: public TypeWrapper< ::iterator>, public TypeIterable< ::iterator, item>
+class Iterator: public pyhrol::TypeWrapper< ::iterator>, public pyhrol::TypeIterable< ::iterator, item>
 {
   Iterator()
-    : TypeBase< ::iterator>("iter", NULL)
+    : pyhrol::TypeBase< ::iterator>("iter", NULL)
   {
     m_type_object.tp_iter = NULL;
   }
 
-  virtual void constructor(::iterator &res, Tuples &_args) const
+  virtual void constructor(::iterator &res, pyhrol::Tuples &_args) const
   {
     const char *data;
     PYHROL_PARSE_TUPLE_1(NULL, _args, data)
@@ -123,8 +121,8 @@ class Iterator: public TypeWrapper< ::iterator>, public TypeIterable< ::iterator
     PYHROL_AFTER_BUILD_VALUE(_args)
 
     ::Container::T_struct *obj = ::Container::allocate_static();
-    new(&obj->endosome) string(data);
-    new(&res) ::iterator(Ptr<const string>(&obj->endosome, *obj));
+    new(&obj->endosome) std::string(data);
+    new(&res) ::iterator(pyhrol::Ptr<const std::string>(&obj->endosome, *obj));
 
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
@@ -134,7 +132,7 @@ class Iterator: public TypeWrapper< ::iterator>, public TypeIterable< ::iterator
     obj.~iterator();
   }
 
-  virtual bool next(const Ptr<item> &itm, const Ptr< ::iterator> &iter) const
+  virtual bool next(const pyhrol::Ptr<item> &itm, const pyhrol::Ptr< ::iterator> &iter) const
   {
     bool retval = false;
     if (iter->iter != iter->iter_end)
@@ -151,10 +149,10 @@ class Iterator: public TypeWrapper< ::iterator>, public TypeIterable< ::iterator
   }
 };
 
-class Data: public TypeWrapper<item>
+class Data: public pyhrol::TypeWrapper<item>
 {
   Data()
-    : TypeBase< ::item>("item", NULL)
+    : pyhrol::TypeBase< ::item>("item", NULL)
   {
     m_add_member<const char, &item::data>("data", NULL);
   }

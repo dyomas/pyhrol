@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-12-06 19:11:19 +0400 (Fri, 06 Dec 2013) $
+// $Date: 2013-12-06 19:11:19 +0400 (Пт., 06 дек. 2013) $
 // $Revision: 861 $
 
 #include "pyhrol_auto_holder.h"

@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_type_base_hpp__
 #define __pyhrol_type_base_hpp__
@@ -222,7 +222,13 @@ template <class T> void TypeBase<T>::m_add_getseter(const char *name, const gett
 
 template <class T> TypeBase<T> &TypeBase<T>::m_get(TypeBase<T> *arg)
 {
-  static std::auto_ptr<TypeBase<T> > t;
+  static
+#if __cplusplus > 201100L
+  std::unique_ptr<TypeBase<T>>
+#else
+  std::auto_ptr<TypeBase<T> >
+#endif
+  t;
   if (arg)
   {
     if (t.get())
@@ -335,8 +341,8 @@ template <class T> void TypeBase<T>::m_init(const char *name, const char *doc)
 
 template <class T> PyObject *TypeBase<T>::mediator_constructor(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_ctor, reinterpret_cast<size_t>(mediator_constructor)));
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_ctor, reinterpret_cast<size_t>(mediator_constructor)));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   call_constructor c(*tuples, type, __PRETTY_FUNCTION__, !type);
   tuples->ubiquitous_caller(c, args, kwds, !type);
   return clear_on_error(c.retval);

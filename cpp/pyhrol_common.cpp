@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-30 17:24:23 +0400 (Wed, 30 Apr 2014) $
-// $Revision: 914 $
+// $Date: 2015-08-08 11:22:54 +0300 (Сб., 08 авг. 2015) $
+// $Revision: 1052 $
 
 #include <string.h>
 #include <stdlib.h>
@@ -106,7 +106,7 @@ const string TypeInitException::m_describe(const char *tp_name)
 
 const string TypeInitException::m_describe(const type_info &t)
 {
-  return string("Type wrapper \"") + demangle(t) +"\" uninitialized";
+  return string("Type wrapper \"") + ::demangle(t) +"\" uninitialized";
 }
 
 
@@ -166,6 +166,11 @@ KeyException::KeyException(const std::string &msg)
 TypeException::TypeException(const std::string &msg)
   : runtime_error(msg)
 {
+}
+
+const string demangle(const std::type_info &ti)
+{
+  return ::demangle(ti);
 }
 
 }

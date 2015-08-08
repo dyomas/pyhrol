@@ -1,0 +1,6 @@
+Signature 0: string `God kväll', 10 bytes length
+Signature 1: string `Take' and integer 5
+Signature 2: Py_UNICODE `საღამო მშვიდობისა', 17 wide chars length
+Signature 0: buffer `ging in', 7 bytes length
+Signature 1: PyUnicodeObject `мінеки біз', 10 wide chars length
+String encoded to `cp1251': [cff0e8e2e5f221], 7, bytes length

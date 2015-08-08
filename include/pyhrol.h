@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-01-08 14:43:52 +0400 (Wed, 08 Jan 2014) $
-// $Revision: 867 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_h__
 #define __pyhrol_h__
@@ -50,7 +50,6 @@
 #include "pyhrol_type_special.hpp"
 #include "pyhrol_type_iterable.hpp"
 #include "pyhrol_common.h"
-#include "pyhrol_container.h"
 #include "pyhrol_helpers.hpp"
 
 #endif //__pyhrol_h__

@@ -43,11 +43,10 @@ add_subdirectory(examples)
 
 
 find_package (PythonInterp 2.4 REQUIRED)
-install (TARGETS pyhrol pyhrolsafe pyself pyselfsafe DESTINATION lib PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+install (TARGETS pyhrol pyhrola pyhrolsafe pyhrolsafea pyself pyselfsafe DESTINATION lib PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 install (FILES
   include/pyhrol_fmt_in_macro.h
   include/pyhrol_fmt_out_macro.h
-  cpp/pyhrol_starter.cpp
   include/pyhrol.h
   include/pyhrol_auto_holder.h
   include/pyhrol_common.h
@@ -91,7 +90,7 @@ install (FILES
   include/smart_flag.h
 DESTINATION include/pyhrol PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 
-foreach (TARGET_NAME pyhrol pyhrolsafe pyself pyselfsafe)
+foreach (TARGET_NAME pyself pyselfsafe)
   get_target_property (TMP_NAME ${TARGET_NAME} LOCATION)
   get_filename_component(TMP_NAME ${TMP_NAME} NAME)
   set(LIBRARY_${TARGET_NAME}_DESTINATION lib/${TMP_NAME})
@@ -105,13 +104,23 @@ execute_process(COMMAND ${ROOT_DIR}/sh/maintain/doxy_conf.sh ${VERBOSE} WORKING_
 if (DOXY_CONF_RESULT)
   message(WARNING "Documentation generating with doxygen impossible")
 else()
-  set (HAVE_DOT FALSE CACHE BOOL "")
+  set (HAVE_DOT FALSE CACHE BOOL "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_have_dot ")
+  set (SEARCHENGINE FALSE CACHE BOOL "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_searchengine")
+  set (SERVER_BASED_SEARCH FALSE CACHE BOOL "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_server_based_search")
+  set (HTML_HEADER ${ROOT_DIR}/html/pyhrol_ru_doxy_header.html CACHE FILEPATH "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_header")
+  set (HTML_FOOTER ${ROOT_DIR}/html/pyhrol_ru_doxy_footer.html CACHE FILEPATH "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_html_footer")
+  set (OUTPUT_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE PATH "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_output_directory")
+  set (OUTPUT_LANGUAGE "English" CACHE STRING "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_output_language")
+  set (GENERATE_TREEVIEW FALSE CACHE BOOL "Doxygen option, see http://www.stack.nl/~dimitri/doxygen/manual/config.html#cfg_generate_treeview")
   include (${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.vars)
   set (DOXY_PROJECT_NAME pyhrol)
   set (DOXY_PROJECT_NUMBER 0.1)
   set (DOXY_PROJECT_BRIEF "Python binding for C++")
+  set (DOXY_HTML_HEADER ${HTML_HEADER})
+  set (DOXY_HTML_FOOTER ${HTML_FOOTER})
   set (DOXY_PROJECT_LOGO ${ROOT_DIR}/jpg/pyhrol.jpg)
-  set (DOXY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  set (DOXY_OUTPUT_DIRECTORY ${OUTPUT_DIR})
+  set (DOXY_OUTPUT_LANGUAGE ${OUTPUT_LANGUAGE})
   set (DOXY_STRIP_FROM_PATH ${ROOT_DIR})
   set (DOXY_STRIP_FROM_INC_PATH ${ROOT_DIR})
   set (DOXY_TAB_SIZE 2)
@@ -123,7 +132,8 @@ else()
   set (DOXY_WARN_LOGFILE ${CMAKE_BINARY_DIR}/doxy.log)
   set (DOXY_INPUT "${ROOT_DIR}/include\" \\
     \"${ROOT_DIR}/cpp\" \\
-    \"${ROOT_DIR}/examples/")
+    \"${ROOT_DIR}/examples/\" \\
+    \"${ROOT_DIR}/dox/pyhrol.doxy")
   set (DOXY_FILE_PATTERNS "pyhrol.h\" \\
     \"pyhrol_*.h\" \\
     \"pyhrol_*.hpp\" \\
@@ -139,8 +149,10 @@ else()
   set (DOXY_SOURCE_BROWSER TRUE)
   set (DOXY_INLINE_SOURCES TRUE)
   set (DOXY_COLS_IN_ALPHA_INDEX 4)
-  set (DOXY_SERVER_BASED_SEARCH TRUE)
+  set (DOXY_SEARCHENGINE ${SEARCHENGINE})
+  set (DOXY_SERVER_BASED_SEARCH ${SERVER_BASED_SEARCH})
   set (DOXY_GENERATE_LATEX FALSE)
+  set (DOXY_GENERATE_TREEVIEW ${GENERATE_TREEVIEW})
   set (DOXY_HAVE_DOT ${HAVE_DOT})
   set (DOXY_CALL_GRAPH TRUE)
   set (DOXY_CALLER_GRAPH TRUE)

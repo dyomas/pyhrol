@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-02-13 01:38:33 +0400 (Thu, 13 Feb 2014) $
+// $Date: 2014-02-13 01:38:33 +0400 (Чт., 13 февр. 2014) $
 // $Revision: 888 $
 
 #ifndef __pyhrol_common_h__

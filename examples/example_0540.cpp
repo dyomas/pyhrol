@@ -27,11 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
@@ -47,9 +44,9 @@ public:
   }
 };
 
-template <class T> class PyTypeCommon: public TypeWrapper<T>
+template <class T> class PyTypeCommon: public pyhrol::TypeWrapper<T>
 {
-  virtual void constructor(T &obj, Tuples &_args) const
+  virtual void constructor(T &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
@@ -67,7 +64,7 @@ template <class T> class PyTypeCommon: public TypeWrapper<T>
   }
 
 public:
-  void say(const Ptr<T> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<T> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -81,7 +78,7 @@ public:
 class PyType: public PyTypeCommon<MyClass>
 {
   PyType()
-    : TypeBase<MyClass>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass>("MyClass", "help")
   {
     m_add_method<PyTypeCommon<MyClass>, &PyType::say>("say", NULL);
   }
@@ -95,13 +92,13 @@ class PyType: public PyTypeCommon<MyClass>
 class PyType2: public PyTypeCommon<MyClass2>
 {
   PyType2()
-    : TypeBase<MyClass2>("MyClass2", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass2", "help")
   {
     m_add_method<PyTypeCommon<MyClass2>, &PyType2::say>("say", NULL);
     m_add_method<PyType2, &PyType2::reset>("reset", NULL);
   }
 
-  void reset(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void reset(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

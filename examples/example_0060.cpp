@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void function_with_overloaded_args(Tuples &_args)
+void function_with_overloaded_args(pyhrol::Tuples &_args)
 {
   int i;
   const char *pch;
@@ -47,45 +44,31 @@ void function_with_overloaded_args(Tuples &_args)
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-  ;
+  std::cout << __func__ << ": I am called\n";
 
   switch (_args.parsed_variant())
   {
     case 0:
-      cout
-        << "  Signature 0: i = " << i << endl
-      ;
+      std::cout << "  Signature 0: i = " << i << '\n';
       break;
     case 1:
-      cout
-        << "  Signature 1: pch = \"" << pch << "\"" << endl
-      ;
+      std::cout << "  Signature 1: pch = \"" << pch << "\"\n";
       break;
     case 2:
-      cout
-        << "  Signature 2: f = " << f << endl
-      ;
+      std::cout << "  Signature 2: f = " << f << '\n';
       break;
     case 3:
-      cout
-        << "  Signature 3: <no args>" << endl
-      ;
+      std::cout << "  Signature 3: <no args>\n";
       break;
     case 4:
-      cout
-        << "  Signature 4: i = " << i << ", pch = \"" << pch << "\", f = " << f << endl
-      ;
+      std::cout << "  Signature 4: i = " << i << ", pch = \"" << pch << "\", f = " << f << '\n';
       break;
   }
 
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_with_overloaded_args, "Function with some different argument signatures")
 }

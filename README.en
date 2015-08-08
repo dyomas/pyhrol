@@ -39,6 +39,7 @@ Examples list (directory examples/):
     0070 "Overload" return values
     0080 Object types
     0090 Objects of the specified type
+    0095 String types
     0100 Arbitrary types
     0110 Error Handling
     0120 Help
@@ -79,3 +80,4 @@ Examples list (directory examples/):
     0940 Invalid names and symbols
     0950 std::bad_cast
     0960 Noncopyable objects
+    0970 Calling default constructor of TypeBase

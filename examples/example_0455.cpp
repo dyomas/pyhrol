@@ -29,25 +29,22 @@
 
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
 struct point
 {
   double X, Y;
 };
 
-class PyType: public TypeWrapper<point>
+class PyType: public pyhrol::TypeWrapper<point>
 {
   PyType()
-    : TypeBase<point>("point", NULL)
+    : pyhrol::TypeBase<point>("point", NULL)
   {
     PYHROL_REGISTER_GETTER(PyType, ro, NULL)
     PYHROL_REGISTER_SETTER(PyType, wo, NULL)
     PYHROL_REGISTER_GETSETER(PyType, "rw", ro, wo, NULL)
   }
 
-  virtual void constructor(point &obj, Tuples &_args) const
+  virtual void constructor(point &obj, pyhrol::Tuples &_args) const
   {
     double _X, _Y;
     PYHROL_PARSE_TUPLE_2(NULL, _args, _X, _Y)
@@ -66,7 +63,7 @@ class PyType: public TypeWrapper<point>
     obj.~point();
   }
 
-  void ro(const Ptr<const point> &obj, Tuples &_args) const
+  void ro(const pyhrol::Ptr<const point> &obj, pyhrol::Tuples &_args) const
   {
     uint8_t build_variant;
     double _X, _Y;
@@ -82,12 +79,12 @@ class PyType: public TypeWrapper<point>
     PYHROL_AFTER_EXECUTE(_args, build_variant)
   }
 
-  void wo(const Ptr<point> &obj, Tuples &_args) const
+  void wo(const pyhrol::Ptr<point> &obj, pyhrol::Tuples &_args) const
   {
     double _X, _Y;
     Py_complex c;
     PYHROL_PARSE_TUPLE_1(NULL, _args, _X)
-    _args.set_options(optTuple);
+    _args.set_options(pyhrol::optTuple);
     PYHROL_PARSE_TUPLE_2(NULL, _args, _X, _Y)
     PYHROL_PARSE_TUPLE_1(NULL, _args, c)
     PYHROL_AFTER_PARSE_TUPLE(_args)
@@ -116,5 +113,4 @@ class PyType: public TypeWrapper<point>
   {
     m_get(new PyType);
   }
-
 };

@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2010-10-01 13:44:37 +0400 (Fri, 01 Oct 2010) $
+// $Date: 2010-10-01 13:44:37 +0400 (Пт., 01 окт. 2010) $
 // $Revision: 473 $
 
 #ifndef __binary_operations_h__

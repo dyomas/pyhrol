@@ -27,7 +27,7 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2013-10-29 01:08:20 +0400 (Tue, 29 Oct 2013) $
+// $Date: 2013-10-29 01:08:20 +0400 (Вт., 29 окт. 2013) $
 // $Revision: 821 $
 
 #ifndef __pyhrol_tuples_data_default_impl_h__

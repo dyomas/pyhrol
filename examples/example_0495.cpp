@@ -27,40 +27,37 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
 public:
-  const string &message() const
+  const std::string &message() const
   {
     return m_msg;
   }
 
-  void set_message(const string &msg)
+  void set_message(const std::string &msg)
   {
     m_msg = msg;
   }
 
-  MyClass2(const string &msg)
+  MyClass2(const std::string &msg)
     : MyClass(msg.c_str())
   {
   }
 };
 
-class PyTypeAny: public TypeNumberAny<MyClass2>, public TypeWrapper<MyClass2>
+class PyTypeAny: public pyhrol::TypeNumberAny<MyClass2>, public pyhrol::TypeWrapper<MyClass2>
 {
   PyTypeAny()
-    : TypeBase<MyClass2>("MyClass", NULL)
+    : pyhrol::TypeBase<MyClass2>("MyClass", NULL)
   {
     m_add_method<PyTypeAny, &PyTypeAny::say>("say", "Returns previously assigned message");
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -70,7 +67,7 @@ class PyTypeAny: public TypeNumberAny<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void add(const Ptr<MyClass2> &res, Tuples &_args) const
+  virtual void add(const pyhrol::Ptr<MyClass2> &res, pyhrol::Tuples &_args) const
   {
     int i;
     const char *str;
@@ -84,7 +81,7 @@ class PyTypeAny: public TypeNumberAny<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     switch (_args.parsed_variant())
     {
       case 0:
@@ -108,7 +105,7 @@ class PyTypeAny: public TypeNumberAny<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void inplace_add(const Ptr<MyClass2> &obj, Tuples &_args) const
+  virtual void inplace_add(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     int i;
     const char *str;
@@ -120,7 +117,7 @@ class PyTypeAny: public TypeNumberAny<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
 
-    ostringstream ostr;
+    std::ostringstream ostr;
     ostr << obj->message();
 
     switch (_args.parsed_variant())
@@ -140,7 +137,7 @@ class PyTypeAny: public TypeNumberAny<MyClass2>, public TypeWrapper<MyClass2>
     PYHROL_AFTER_EXECUTE_DEFAULT(_args)
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

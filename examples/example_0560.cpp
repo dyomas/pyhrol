@@ -27,11 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
@@ -41,20 +38,20 @@ public:
   {
     if (!*msg)
     {
-      throw logic_error("Message can not be empty");
+      throw std::logic_error("Message can not be empty");
     }
   }
 };
 
-class PyType: public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
-    : TypeBase<MyClass2>("MyClass", "help")
+    : pyhrol::TypeBase<MyClass2>("MyClass", "help")
   {
     m_add_method<PyType, &PyType::say>("say", NULL);
   }
 
-  void say(const Ptr<MyClass2> &obj, Tuples &_args) const
+  void say(const pyhrol::Ptr<MyClass2> &obj, pyhrol::Tuples &_args) const
   {
     PYHROL_AFTER_PARSE_TUPLE(_args)
     PYHROL_AFTER_BUILD_VALUE(_args)
@@ -82,7 +79,7 @@ public:
 };
 
 
-void new_myclass(Tuples &_args)
+void new_myclass(pyhrol::Tuples &_args)
 {
   const char *msg;
   PyObject *retval;
@@ -107,7 +104,7 @@ void new_myclass(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-void new_myclass2(Tuples &_args)
+void new_myclass2(pyhrol::Tuples &_args)
 {
   const char *msg;
   PyObject *retval;
@@ -133,9 +130,7 @@ void new_myclass2(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PyType::init();
   PYHROL_REGISTER_FUNCTION(new_myclass, NULL)

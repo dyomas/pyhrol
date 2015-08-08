@@ -30,10 +30,7 @@
 #include <iostream>
 #include <pyhrol.h>
 
-using namespace std;
-using namespace pyhrol;
-
-void function_manipulate_objects_strict(Tuples &_args)
+void function_manipulate_objects_strict(pyhrol::Tuples &_args)
 {
   PyObject *parg;
 
@@ -42,26 +39,20 @@ void function_manipulate_objects_strict(Tuples &_args)
   PYHROL_AFTER_PARSE_TUPLE(_args)
   PYHROL_AFTER_BUILD_VALUE(_args)
 
-  cout
-    << __func__ << ": I am called" << endl
-  ;
+  std::cout << __func__ << ": I am called\n";
 
   switch (_args.parsed_variant())
   {
     case 0:
       {
         PyIntObject *i = reinterpret_cast<PyIntObject *>(parg);
-        cout
-          << "  Signature 0: " << i->ob_ival << endl
-        ;
+        std::cout << "  Signature 0: " << i->ob_ival << '\n';
       }
       break;
     case 1:
       {
         PyStringObject *s = reinterpret_cast<PyStringObject *>(parg);
-        cout
-          << "  Signature 1: \"" << s->ob_sval << "\" " << s->ob_size << " bytes length" << endl
-        ;
+        std::cout << "  Signature 1: \"" << s->ob_sval << "\" " << s->ob_size << " bytes length\n";
       }
       break;
   }
@@ -69,9 +60,7 @@ void function_manipulate_objects_strict(Tuples &_args)
   PYHROL_AFTER_EXECUTE_DEFAULT(_args)
 }
 
-static void __on_load() __attribute__ ((constructor));
-
-void __on_load()
+static void __attribute__ ((constructor)) __on_load()
 {
   PYHROL_REGISTER_FUNCTION(function_manipulate_objects_strict, "PyObject argument of this function strictly checked for required type")
 }

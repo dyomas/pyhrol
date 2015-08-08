@@ -27,18 +27,15 @@
  *   SUCH DAMAGE.
  */
 
-#include <pyhrol.h>
 #include "myclass.h"
-
-using namespace std;
-using namespace pyhrol;
+#include <pyhrol.h>
 
 class MyClass2: public MyClass
 {
 public:
   static void say(const char *tp_name, const char *msg)
   {
-    cout << tp_name << ": " << msg << '\n';
+    std::cout << tp_name << ": " << msg << '\n';
   }
   MyClass2(const char *msg)
     : MyClass(msg)
@@ -46,7 +43,7 @@ public:
   }
 };
 
-class PyType: public TypeSpecial<MyClass2>, public TypeWrapper<MyClass2>
+class PyType: public pyhrol::TypeSpecial<MyClass2>, public pyhrol::TypeWrapper<MyClass2>
 {
   PyType()
     : TypeBase<MyClass2>("MyClass", "help")
@@ -54,7 +51,7 @@ class PyType: public TypeSpecial<MyClass2>, public TypeWrapper<MyClass2>
     m_add_class_method_with_keywords<&PyType::say>("say", NULL);
   }
 
-  virtual void constructor(MyClass2 &obj, Tuples &_args) const
+  virtual void constructor(MyClass2 &obj, pyhrol::Tuples &_args) const
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)
@@ -77,7 +74,7 @@ class PyType: public TypeSpecial<MyClass2>, public TypeWrapper<MyClass2>
   }
 
 public:
-  static void say(const PyTypeObject &type, Tuples &_args)
+  static void say(const PyTypeObject &type, pyhrol::Tuples &_args)
   {
     const char *msg;
     PYHROL_PARSE_TUPLE_1(NULL, _args, msg)

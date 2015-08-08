@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-04-06 21:03:10 +0300 (Пн., 06 апр. 2015) $
+// $Revision: 1027 $
 
 #include "smart_flag_int.h"
 
@@ -121,13 +121,13 @@ template <typename T> void SmartFlagNumeric<T>::clear()
   m_value = 0;
 }
 
-template <typename T> ostream &operator << (ostream &os, const SmartFlagInt &f)
+ostream &operator << (ostream &os, const SmartFlagInt &f)
 {
   f.convert(os);
   return os;
 }
 
-template <typename T> ostream &operator << (ostream &os, const SmartFlagUint &f)
+ostream &operator << (ostream &os, const SmartFlagUint &f)
 {
   f.convert(os);
   return os;

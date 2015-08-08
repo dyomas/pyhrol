@@ -27,8 +27,8 @@
  *   SUCH DAMAGE.
  */
 
-// $Date: 2014-04-04 16:35:38 +0400 (Fri, 04 Apr 2014) $
-// $Revision: 906 $
+// $Date: 2015-06-06 00:53:03 +0300 (Сб., 06 июня 2015) $
+// $Revision: 1036 $
 
 #ifndef __pyhrol_type_map_hpp__
 #define __pyhrol_type_map_hpp__
@@ -165,13 +165,13 @@ template <typename T> Py_ssize_t TypeMap<T>::mediator_mp_length(PyObject *self)
 
 template <typename T> PyObject *TypeMap<T>::mediator_mp_subscript(PyObject *self, PyObject *key)
 {
-  static std::auto_ptr<TuplesData> data(TuplesData::factory(v_protof_retval, reinterpret_cast<size_t>(mediator_mp_subscript)));
+  static tuples_data_auto_release_t data(TuplesData::factory(v_protof_retval, reinterpret_cast<size_t>(mediator_mp_subscript)));
   PyObject *key_packed = pack_tuple(key);
   if (key && !key_packed)
   {
     return NULL;
   }
-  std::auto_ptr<Tuples> tuples(Tuples::factory(*data));
+  tuples_auto_release_t tuples(Tuples::factory(*data));
   mp_call_get c(*tuples, self, __PRETTY_FUNCTION__);
   PyObject *retval = tuples->ubiquitous_caller(c, key_packed, NULL, !self);
   Py_DecRef(key_packed);
@@ -180,7 +180,7 @@ template <typename T> PyObject *TypeMap<T>::mediator_mp_subscript(PyObject *self
 
 template <typename T> int TypeMap<T>::mediator_mp_ass_subscript(PyObject *self, PyObject *key, PyObject *value)
 {
-  static std::auto_ptr<TuplesData>
+  static tuples_data_auto_release_t
       data_assign(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_mp_ass_subscript)))
     , data_del(TuplesData::factory(v_protof, reinterpret_cast<size_t>(mediator_mp_ass_subscript)))
   ;
@@ -191,13 +191,13 @@ template <typename T> int TypeMap<T>::mediator_mp_ass_subscript(PyObject *self, 
   }
   if (value)
   {
-    std::auto_ptr<Tuples> tuples(Tuples::factory(*data_assign));
+    tuples_auto_release_t tuples(Tuples::factory(*data_assign));
     mp_call_change<&TypeMap<T>::assign> c(*tuples, self, __PRETTY_FUNCTION__);
     tuples->ubiquitous_caller(c, args_packed, NULL, !self);
   }
   else
   {
-    std::auto_ptr<Tuples> tuples(Tuples::factory(*data_del));
+    tuples_auto_release_t tuples(Tuples::factory(*data_del));
     mp_call_change<&TypeMap<T>::del> c(*tuples, self, __PRETTY_FUNCTION__);
     tuples->ubiquitous_caller(c, args_packed, NULL, !self);
   }
